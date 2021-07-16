@@ -1,0 +1,15 @@
+version: "3.7"
+
+services:
+        nodejs:
+                container_name: nodejs
+                image: "my_express_app"
+                ports: 
+                        - "3000:3000"
+                environment:
+                        - NODE_ENV=development
+        nginx: 
+                container_name: nginx
+                image: "my_nginx"
+                ports:
+                        - "80:80"
