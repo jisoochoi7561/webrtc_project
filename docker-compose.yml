@@ -4,12 +4,11 @@ services:
         nodejs:
                 container_name: nodejs
                 image: "my_express_app"
-                ports: 
-                        - "3000:3000"
-                environment:
-                        - NODE_ENV=development
+                volumes:
+                        - ./node_app_local:/app 
+
         nginx: 
                 container_name: nginx
                 image: "my_nginx"
-                ports:
-                        - "80:80"
+                ports: 
+                        - "8080:80"
