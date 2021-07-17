@@ -6,9 +6,15 @@ services:
                 image: "my_express_app"
                 volumes:
                         - ./node_app_local:/app 
+                ports:
+                        - "3000:3000"
 
         nginx: 
                 container_name: nginx
                 image: "my_nginx"
-                ports: 
-                        - "8080:80"
+                ports:
+                        - "8080:8080" 
+        kurento:
+                container_name: kurento
+                image: "kurento/kurento-media-server:latest"
+                network_mode: "host"
