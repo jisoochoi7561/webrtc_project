@@ -26,6 +26,7 @@ var kurento = require('kurento-client');
 var fs    = require('fs');
 var https = require('https');
 
+// pass args. we have default here.
 var argv = minimist(process.argv.slice(2), {
     default: {
         as_uri: 'https://localhost:8443/',
@@ -33,12 +34,14 @@ var argv = minimist(process.argv.slice(2), {
     }
 });
 
+// to make https, configure certificates.
 var options =
 {
   key:  fs.readFileSync('keys/server.key'),
   cert: fs.readFileSync('keys/server.crt')
 };
 
+// make express app.
 var app = express();
 
 /*
@@ -65,6 +68,7 @@ var kurentoClient = null;
 /*
  * Server startup
  */
+// express app listens to localhost:8443
 var asUrl = url.parse(argv.as_uri);
 var port = asUrl.port;
 var server = https.createServer(options, app).listen(port, function() {
@@ -72,6 +76,7 @@ var server = https.createServer(options, app).listen(port, function() {
     console.log('Open ' + url.format(asUrl) + ' with a WebRTC capable browser');
 });
 
+//make websocket at localhost:8443/helloworld
 var wss = new ws.Server({
     server : server,
     path : '/helloworld'

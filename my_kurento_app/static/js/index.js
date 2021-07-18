@@ -15,6 +15,10 @@
  *
  */
 
+
+
+
+//sucere websocket connection to localhost node app server
 var ws = new WebSocket('wss://' + location.host + '/helloworld');
 var videoInput;
 var videoOutput;
@@ -25,36 +29,55 @@ const I_CAN_START = 0;
 const I_CAN_STOP = 1;
 const I_AM_STARTING = 2;
 
+// onload -> you should not run script before everything(like index.html) loads
 window.onload = function() {
+	//make new(blank) console 
 	console = new Console();
 	console.log('Page loaded ...');
+	//configure local video
 	videoInput = document.getElementById('videoInput');
+	//configure remote video
 	videoOutput = document.getElementById('videoOutput');
 	setState(I_CAN_START);
 }
 
+// onbeforeunlaod -> event when you leave page
 window.onbeforeunload = function() {
+	//should close websocket connection
 	ws.close();
 }
 
+// make websocket message handler
 ws.onmessage = function(message) {
+	// websocket messages
+	// server will send message data as JSON so parse it
 	var parsedMessage = JSON.parse(message.data);
+
 	console.info('Received message: ' + message.data);
 
 	switch (parsedMessage.id) {
 	case 'startResponse':
+		// when you get message "startResponse"
+		// it means someone responsed to make webrtc connetc and gave you "sdp answer"
+		// so start treat Response 	
 		startResponse(parsedMessage);
 		break;
 	case 'error':
+		// if there was an error message
+		// go back to intial state
 		if (state == I_AM_STARTING) {
 			setState(I_CAN_START);
 		}
 		onError('Error message from server: ' + parsedMessage.message);
 		break;
 	case 'iceCandidate':
+		// server sent you "icecandidate"
+		// it means other peer gave you their icecandiate
+		// so you should add it to your peer connection with "addicecandidate"
 		webRtcPeer.addIceCandidate(parsedMessage.candidate)
 		break;
 	default:
+		// default means something unrecognized so act as error
 		if (state == I_AM_STARTING) {
 			setState(I_CAN_START);
 		}
@@ -63,27 +86,41 @@ ws.onmessage = function(message) {
 }
 
 function start() {
+
+	//this is logic to start webrtc call when you click "start" button
 	console.log('Starting video call ...')
 
 	// Disable start button
 	setState(I_AM_STARTING);
+	// show spinner while loading
 	showSpinner(videoInput, videoOutput);
 
+
+	// should make WebRTCPeer and make all the signals
 	console.log('Creating WebRtcPeer and generating local sdp offer ...');
 
+
+	// this is option to configure peer connection and local stream. it is not pure webrtc it is kurentoUtils.js so has little different configuration. you should change it.
+	// it is configuring html element to print media stream. you know its little different from pure webrtc
     var options = {
       localVideo: videoInput,
       remoteVideo: videoOutput,
       onicecandidate : onIceCandidate
     }
 
+	// it is making webrtcpeerconnection in kurento-utils-way.
+	// it looks like it makes peerconnection,sets streams, and then add it into peerconnection.
     webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
         if(error) return onError(error);
+		// makes offer and send it. 
+		// you should change this part to pure webrtc api
         this.generateOffer(onOffer);
     });
 }
 
 function onIceCandidate(candidate) {
+	//this will perfomred when peerconnection finds icecandidate
+	//so send siganlling server your icecandiate info with id "onIceCandidate"
 	   console.log('Local candidate' + JSON.stringify(candidate));
 
 	   var message = {
@@ -94,8 +131,10 @@ function onIceCandidate(candidate) {
 }
 
 function onOffer(error, offerSdp) {
+	//this is callback receives offersdp from upper function.
 	if(error) return onError(error);
 
+	//is is offer sdp, and you will send it to  siganling server with id "start"
 	console.info('Invoking SDP offer callback function ' + location.host);
 	var message = {
 		id : 'start',
@@ -109,6 +148,8 @@ function onError(error) {
 }
 
 function startResponse(message) {
+	// you got answer from peer
+	// so set in remotedescription. you should do it with pure webrtc API
 	setState(I_CAN_STOP);
 	console.log('SDP answer received from server. Processing ...');
 	webRtcPeer.processAnswer(message.sdpAnswer);
