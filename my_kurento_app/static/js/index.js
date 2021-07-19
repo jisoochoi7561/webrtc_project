@@ -107,15 +107,25 @@ function start() {
 	// it is configuring html element to print media stream. you know its little different from pure webrtc
     var constraints = {
 		video: true,
-		audio: true
+		audio: false
 	}
-	navigator.mediaDevices.getUserMedia(constraints,(stream)=>{my_stream=stream},(error)=>{console.log(error)})
+
 	var options = {
-      localVideo: videoInput,
-      remoteVideo: videoOutput,
-	  videoStream: my_stream,
-	  onicecandidate:onIceCandidate
-    }
+		localVideo: videoInput,
+		remoteVideo: videoOutput,
+		videoStream: my_stream,
+		onicecandidate:onIceCandidate
+	  }
+
+
+	navigator.mediaDevices.getDisplayMedia().then(stream =>{
+		my_stream = stream
+	
+	
+	
+	
+	})
+	
 
 	// it is making webrtcpeerconnection in kurento-utils-way.
 	// it looks like it makes peerconnection,sets streams, and then add it into peerconnection.
