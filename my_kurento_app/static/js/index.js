@@ -113,7 +113,15 @@ function start() {
 	var options = {
 		remoteVideo: videoOutput,
 		videoStream: my_stream,
-		onicecandidate:onIceCandidate
+		onicecandidate:function(candidate){
+			console.log('Local candidate' + JSON.stringify(candidate));
+
+	   var message = {
+	      id : 'onIceCandidate',
+	      candidate : candidate
+	   };
+	   sendMessage(message);
+		}
 	  }
 
 	  
@@ -154,18 +162,6 @@ function start() {
 		(e)=>{console.log(e)
 		})
     });
-}
-
-function onIceCandidate(candidate) {
-	//this will perfomred when peerconnection finds icecandidate
-	//so send siganlling server your icecandiate info with id "onIceCandidate"
-	   console.log('Local candidate' + JSON.stringify(candidate));
-
-	   var message = {
-	      id : 'onIceCandidate',
-	      candidate : candidate
-	   };
-	   sendMessage(message);
 }
 
 function onError(error) {
