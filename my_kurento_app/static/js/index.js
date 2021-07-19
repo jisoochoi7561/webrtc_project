@@ -25,6 +25,8 @@ var videoOutput;
 var webRtcPeer;
 var state = null;
 var my_conn;
+var my_stream;
+
 
 const I_CAN_START = 0;
 const I_CAN_STOP = 1;
@@ -103,10 +105,16 @@ function start() {
 
 	// this is option to configure peer connection and local stream. it is not pure webrtc it is kurentoUtils.js so has little different configuration. you should change it.
 	// it is configuring html element to print media stream. you know its little different from pure webrtc
-    var options = {
+    var constraints = {
+		video: true,
+		audio: true
+	}
+	navigator.mediaDevices.getUserMedia(constraints,(stream)=>{my_stream=stream},(error)=>{console.log(error)})
+	var options = {
       localVideo: videoInput,
       remoteVideo: videoOutput,
-      onicecandidate : onIceCandidate
+	  videoStream: my_stream,
+	  onicecandidate:onIceCandidate
     }
 
 	// it is making webrtcpeerconnection in kurento-utils-way.
@@ -116,6 +124,18 @@ function start() {
 		// i'll work with my peerconnection
 		my_conn = this.peerConnection;
 
+		// make onIceCandidate
+
+		// my_conn.onicecandidate = ((e)=>{
+		// 	if (e.candidate == null){return}
+			
+		// 	console.log('Local candidate' + JSON.stringify(candidate));
+		// 	var message = {
+		// 		id : 'onIceCandidate',
+		// 		candidate : candidate
+		// 	 };
+		// 	 sendMessage(message);
+		// },(error)=>{console.log(error)})
 
 		//create my offer
 		my_conn.createOffer((offerSdp)=>{
