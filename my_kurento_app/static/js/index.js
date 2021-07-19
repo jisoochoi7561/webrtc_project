@@ -24,6 +24,7 @@ var videoInput;
 var videoOutput;
 var webRtcPeer;
 var state = null;
+var my_conn;
 
 const I_CAN_START = 0;
 const I_CAN_STOP = 1;
@@ -74,7 +75,7 @@ ws.onmessage = function(message) {
 		// server sent you "icecandidate"
 		// it means other peer gave you their icecandiate
 		// so you should add it to your peer connection with "addicecandidate"
-		webRtcPeer.addIceCandidate(parsedMessage.candidate)
+		my_conn.addIceCandidate(parsedMessage.candidate)
 		break;
 	default:
 		// default means something unrecognized so act as error
@@ -112,9 +113,11 @@ function start() {
 	// it looks like it makes peerconnection,sets streams, and then add it into peerconnection.
     webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
         if(error) return onError(error);
-		// makes offer and send it. 
-		// you should change this part to pure webrtc api
+		// i'll work with my peerconnection
 		my_conn = this.peerConnection;
+
+
+		//create my offer
 		my_conn.createOffer((offerSdp)=>{
 			my_conn.setLocalDescription(offerSdp);
 			console.info('Invoking SDP offer callback function ' + location.host);
