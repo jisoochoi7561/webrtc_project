@@ -114,7 +114,18 @@ function start() {
         if(error) return onError(error);
 		// makes offer and send it. 
 		// you should change this part to pure webrtc api
-        this.generateOffer(onOffer);
+		my_conn = this.peerConnection;
+		my_conn.createOffer((offerSdp)=>{
+			my_conn.setLocalDescription(offerSdp);
+			console.info('Invoking SDP offer callback function ' + location.host);
+			var message = {
+				id : 'start',
+				sdpOffer : offerSdp.sdp
+			}
+			sendMessage(message);
+		},
+		(e)=>{console.log(e)
+		})
     });
 }
 
@@ -128,19 +139,6 @@ function onIceCandidate(candidate) {
 	      candidate : candidate
 	   };
 	   sendMessage(message);
-}
-
-function onOffer(error, offerSdp) {
-	//this is callback receives offersdp from upper function.
-	if(error) return onError(error);
-
-	//is is offer sdp, and you will send it to  siganling server with id "start"
-	console.info('Invoking SDP offer callback function ' + location.host);
-	var message = {
-		id : 'start',
-		sdpOffer : offerSdp
-	}
-	sendMessage(message);
 }
 
 function onError(error) {
@@ -227,3 +225,4 @@ $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
 	event.preventDefault();
 	$(this).ekkoLightbox();
 });
+

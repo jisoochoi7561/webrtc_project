@@ -282,4 +282,5 @@ function onIceCandidate(sessionId, _candidate) {
     }
 }
 
+//serve client codes.
 app.use(express.static(path.join(__dirname, 'static')));
