@@ -111,25 +111,19 @@ function start() {
 	}
 
 	var options = {
-		localVideo: videoInput,
 		remoteVideo: videoOutput,
 		videoStream: my_stream,
 		onicecandidate:onIceCandidate
 	  }
 
-
-	navigator.mediaDevices.getDisplayMedia().then(stream =>{
-		my_stream = stream
-	
-	
-	
-	
-	})
+	  
+	navigator.mediaDevices.getDisplayMedia().then(stream =>{my_stream = stream})
 	
 
 	// it is making webrtcpeerconnection in kurento-utils-way.
 	// it looks like it makes peerconnection,sets streams, and then add it into peerconnection.
     webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+		videoInput.srcObject = my_stream
         if(error) return onError(error);
 		// i'll work with my peerconnection
 		my_conn = this.peerConnection;
