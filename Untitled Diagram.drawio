@@ -1,1 +1,160 @@
-<mxfile host="app.diagrams.net" modified="2021-07-19T06:44:39.531Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Safari/605.1.15" version="14.9.0" etag="2AhUm7zRLJOA9jarrAyS" type="github"><diagram id="9Dh8LbP0nSCl1uCkSDWa">UzV2zq1wL0osyPDNT0nNUTV2VTV2LsrPL4GwciucU3NyVI0MMlNUjV1UjYwMgFjVyA2HrCFY1qAgsSg1rwSLBiADYTaQg2Y1AA==</diagram></mxfile>
+<mxfile host="app.diagrams.net" modified="2021-07-19T07:47:01.208Z" agent="5.0 (Macintosh; Intel Mac OS X 10_15_7) AppleWebKit/605.1.15 (KHTML, like Gecko) Version/14.1 Safari/605.1.15" etag="NlBlLnOJ8pmuYQ8Y2K1k" version="14.9.0" type="github">
+  <diagram id="9Dh8LbP0nSCl1uCkSDWa" name="Page-1">
+    <mxGraphModel dx="1897" dy="1160" grid="1" gridSize="10" guides="1" tooltips="1" connect="1" arrows="1" fold="1" page="1" pageScale="1" pageWidth="827" pageHeight="1169" math="0" shadow="0">
+      <root>
+        <mxCell id="0" />
+        <mxCell id="1" parent="0" />
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-1" value="viewer 1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="10" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-2" value="viewer2" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="190" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-3" value="nodejs server" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="370" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-4" value="presenter 1" style="rounded=0;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-5" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="80" y="130" as="sourcePoint" />
+            <mxPoint x="374" y="130" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-7" value="make ws connect" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="90" y="140" width="250" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-10" value="sessionid:1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="20" y="120" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-11" value="sessionid:1" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="379" y="120" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-12" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="240" y="190" as="sourcePoint" />
+            <mxPoint x="374" y="190" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-13" value="make ws connect" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="190" y="200" width="250" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-14" value="sessionid:2" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="170" y="180" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-15" value="sessionid:2" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="379" y="180" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-16" value="" style="shape=flexArrow;endArrow=classic;startArrow=classic;html=1;" edge="1" parent="1">
+          <mxGeometry width="100" height="100" relative="1" as="geometry">
+            <mxPoint x="450" y="250" as="sourcePoint" />
+            <mxPoint x="584" y="250" as="targetPoint" />
+          </mxGeometry>
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-17" value="make ws connect" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="400" y="260" width="250" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-18" value="sessionid:3" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="380" y="240" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-19" value="sessionid:3" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="589" y="240" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-22" value="I&#39;m presenter" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="399" y="330" width="250" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-23" value="startPresenter&lt;br&gt;with&lt;br&gt;sessioId,&lt;br&gt;ws,&lt;br&gt;sdpOffer" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="379" y="310" width="70" height="80" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-47" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=0;exitY=0.5;exitDx=0;exitDy=0;entryX=1;entryY=0.25;entryDx=0;entryDy=0;" edge="1" parent="1" source="pQiD4cBXiMC-lZQncHBs-24" target="pQiD4cBXiMC-lZQncHBs-23">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-24" value="send message" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="588" y="310" width="70" height="30" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-26" value="candidatesQueue" style="swimlane;startSize=23;" vertex="1" parent="1">
+          <mxGeometry x="331" y="430" width="165" height="140" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-28" value="sessionid:3 [empty]" style="whiteSpace=wrap;html=1;" vertex="1" parent="pQiD4cBXiMC-lZQncHBs-26">
+          <mxGeometry x="19" y="30" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-29" value="presenter 변수에&lt;br&gt;아이디,파이프라인,webRTCEndpoint 를 object로 초기화해둔다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="590" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-30" value="getKurentoClient(처음이므로 &amp;nbsp;kurento(ws)로 만든다. 전역변수 kurentoclient에 만든 애를 저장해둔다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="670" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-31" value="MediaPipeline &amp;nbsp;만들라고 명령 (쿠렌토와 presenter)" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="760" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-32" value="presenter의 파이프라인에 저장해둔다" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="850" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-33" value="파이프라인에 &amp;nbsp;WebRtcEndpoint create" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="920" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-34" value="presenter의 webRtcEndpoint에 저장해둔다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="1000" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-35" value="우선 candidate queue에 가서 저장된 icecandidate가 있으면 webRtcEndpoint에 addIceCandidate한다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="355" y="1080" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-43" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pQiD4cBXiMC-lZQncHBs-36" target="pQiD4cBXiMC-lZQncHBs-42">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-36" value="webRtcEndpoint.on &#39;OnIceCandidate&#39;로 onicecandidate설정.&lt;br&gt;만약 발견하면, 웹소켓으로 send하도록" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="1180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-37" value="webRtcEndpoint에 processOffer해서 answer을 내노라고 요구한다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="1260" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-41" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;exitX=1;exitY=0.5;exitDx=0;exitDy=0;entryX=0;entryY=0.5;entryDx=0;entryDy=0;" edge="1" parent="1" source="pQiD4cBXiMC-lZQncHBs-38" target="pQiD4cBXiMC-lZQncHBs-39">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-38" value="그 answer을 ws로 presenter에게 보낸다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="1340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-39" value="받은 answer 을 set remote description한다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="1340" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-42" value="받아오면 자기 webrtcpeer에 addIceCandidate한다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="550" y="1180" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-44" value="webrtcendpoint.gathercandidate로&lt;br&gt;&amp;nbsp;candidates를 모으는 것도 한다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="1420" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-46" value="현재 presenter와 kurento는 p2p연결 형성되있음." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="360" y="1510" width="320" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-50" value="" style="edgeStyle=orthogonalEdgeStyle;rounded=0;orthogonalLoop=1;jettySize=auto;html=1;" edge="1" parent="1" source="pQiD4cBXiMC-lZQncHBs-48" target="pQiD4cBXiMC-lZQncHBs-49">
+          <mxGeometry relative="1" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-48" value="send message" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="200" y="1610" width="100" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-49" value="start viewer" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1610" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-51" value="i&#39;m viewer and this is my offer" style="text;html=1;strokeColor=none;fillColor=none;align=center;verticalAlign=middle;whiteSpace=wrap;rounded=0;" vertex="1" parent="1">
+          <mxGeometry x="300" y="1680" width="40" height="20" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-52" value="presenter의 파이프라인을 가져온다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1724" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-53" value="그 파이프라인에 WebRtcEndpoint를 만든다" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1810" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-54" value="리스트에 세션아이디와 WebRtcEndpoint를 엮어서 저장해둔다." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="1890" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-55" value="이 WebRtcEndpoint&lt;span style=&quot;color: rgba(0 , 0 , 0 , 0) ; font-family: monospace ; font-size: 0px&quot;&gt;%3CmxGraphModel%3E%3Croot%3E%3CmxCell%20id%3D%220%22%2F%3E%3CmxCell%20id%3D%221%22%20parent%3D%220%22%2F%3E%3CmxCell%20id%3D%222%22%20value%3D%22%EB%A6%AC%EC%8A%A4%ED%8A%B8%EC%97%90%20%EC%84%B8%EC%85%98%EC%95%84%EC%9D%B4%EB%94%94%EC%99%80%20WebRtcEndpoint%EB%A5%BC%20%EC%97%AE%EC%96%B4%EC%84%9C%20%EC%A0%80%EC%9E%A5%ED%95%B4%EB%91%94%EB%8B%A4.%22%20style%3D%22rounded%3D1%3BwhiteSpace%3Dwrap%3Bhtml%3D1%3B%22%20vertex%3D%221%22%20parent%3D%221%22%3E%3CmxGeometry%20x%3D%22350%22%20y%3D%221890%22%20width%3D%22120%22%20height%3D%2260%22%20as%3D%22geometry%22%2F%3E%3C%2FmxCell%3E%3C%2Froot%3E%3C%2FmxGraphModel%3E&lt;/span&gt;&lt;br&gt;에게 위에처럼 연결을 형성한다" style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="354" y="1960" width="120" height="60" as="geometry" />
+        </mxCell>
+        <mxCell id="pQiD4cBXiMC-lZQncHBs-56" value="processOffer 내부에서.presenter의 WebRTCEndpoint에 viewer가 쓰던 webrtcendpoint를 connect한다.&lt;br&gt;그리고 answer을 보내고,gathercandidate하면 된단." style="rounded=1;whiteSpace=wrap;html=1;" vertex="1" parent="1">
+          <mxGeometry x="350" y="2080" width="120" height="60" as="geometry" />
+        </mxCell>
+      </root>
+    </mxGraphModel>
+  </diagram>
+</mxfile>
