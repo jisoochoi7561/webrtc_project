@@ -26,6 +26,7 @@ var webRtcPeer;
 var state = null;
 var my_conn;
 var my_stream;
+var options;
 
 
 const I_CAN_START = 0;
@@ -110,58 +111,70 @@ function start() {
 		audio: false
 	}
 
-	var options = {
-		remoteVideo: videoOutput,
-		videoStream: my_stream,
-		onicecandidate:function(candidate){
-			console.log('Local candidate' + JSON.stringify(candidate));
-
-	   var message = {
-	      id : 'onIceCandidate',
-	      candidate : candidate
-	   };
-	   sendMessage(message);
-		}
-	  }
-
-	  
-	navigator.mediaDevices.getDisplayMedia().then(stream =>{my_stream = stream})
 	
+	  
+	navigator.mediaDevices.getDisplayMedia().then(stream =>{
+		my_stream = stream
+		options = {
+			videoStream: my_stream,
+			remoteVideo: videoOutput,
+			
+			onicecandidate:function(candidate){
+				console.log('Local candidate' + JSON.stringify(candidate));
+	
+		   var message = {
+			  id : 'onIceCandidate',
+			  candidate : candidate
+		   };
+		   sendMessage(message);
+			}
+		  }
+	
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+			videoInput.srcObject = my_stream
+			if(error) return onError(error);
+			// i'll work with my peerconnection
+			my_conn = this.peerConnection;
+	
+			// make onIceCandidate
+	
+			// my_conn.onicecandidate = ((e)=>{
+			// 	if (e.candidate == null){return}
+				
+			// 	console.log('Local candidate' + JSON.stringify(candidate));
+			// 	var message = {
+			// 		id : 'onIceCandidate',
+			// 		candidate : candidate
+			// 	 };
+			// 	 sendMessage(message);
+			// },(error)=>{console.log(error)})
+	
+			//create my offer
+			my_conn.createOffer((offerSdp)=>{
+				my_conn.setLocalDescription(offerSdp);
+				console.info('Invoking SDP offer callback function ' + location.host);
+				var message = {
+					id : 'start',
+					sdpOffer : offerSdp.sdp
+				}
+				sendMessage(message);
+			},
+			(e)=>{console.log(e)
+			})
+		});
+	
+	
+	}
 
+
+
+		
+		
+		)
+	
 	// it is making webrtcpeerconnection in kurento-utils-way.
 	// it looks like it makes peerconnection,sets streams, and then add it into peerconnection.
-    webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-		videoInput.srcObject = my_stream
-        if(error) return onError(error);
-		// i'll work with my peerconnection
-		my_conn = this.peerConnection;
-
-		// make onIceCandidate
-
-		// my_conn.onicecandidate = ((e)=>{
-		// 	if (e.candidate == null){return}
-			
-		// 	console.log('Local candidate' + JSON.stringify(candidate));
-		// 	var message = {
-		// 		id : 'onIceCandidate',
-		// 		candidate : candidate
-		// 	 };
-		// 	 sendMessage(message);
-		// },(error)=>{console.log(error)})
-
-		//create my offer
-		my_conn.createOffer((offerSdp)=>{
-			my_conn.setLocalDescription(offerSdp);
-			console.info('Invoking SDP offer callback function ' + location.host);
-			var message = {
-				id : 'start',
-				sdpOffer : offerSdp.sdp
-			}
-			sendMessage(message);
-		},
-		(e)=>{console.log(e)
-		})
-    });
+    
 }
 
 function onError(error) {
