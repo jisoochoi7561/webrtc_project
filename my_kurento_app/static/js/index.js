@@ -54,6 +54,9 @@ window.onload = function() {
 	document.getElementById('makeRoom').addEventListener('click', function() {
 		directorRecognize();
 	});
+	document.getElementById('joinRoom').addEventListener('click', function() {
+		studentRecognize();
+	});
 	setState(I_CAN_START);
 }
 
