@@ -136,6 +136,9 @@ wss.on('connection', function(ws, req) {
             onIceCandidate(sessionId, message.candidate);
             break;
 
+        case 'directorName':
+            break;
+
         default:
             ws.send(JSON.stringify({
                 id : 'error',

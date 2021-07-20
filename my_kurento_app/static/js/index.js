@@ -19,9 +19,15 @@
 
 
 //sucere websocket connection to localhost node app server
+
+var director_db = ["GOD","ADMIN","WILDMAN"]
+
+var director = null
+
 var ws = new WebSocket('wss://' + location.host + '/helloworld');
 var videoInput;
 var videoOutput;
+var videoOutput2;
 var webRtcPeer;
 var state = null;
 var my_conn;
@@ -41,6 +47,10 @@ window.onload = function() {
 	videoInput = document.getElementById('videoInput');
 	//configure remote video
 	videoOutput = document.getElementById('videoOutput');
+	videoOutput2 = document.getElementById('videoOutput2');
+	document.getElementById('makeRoom').addEventListener('click', function() {
+		directorRecognize();
+	});
 	setState(I_CAN_START);
 }
 
@@ -261,3 +271,25 @@ $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
 	$(this).ekkoLightbox();
 });
 
+
+
+
+// 여기다가 감독이 이름을 입력하면, 감독을 인식하는 로직을 작성할 것이다!!
+function directorRecognize() {
+	// 감독의 이름을 받고, 저장해둔다.
+	console.log("director recognizing...")
+	var name = document.getElementById('directorName').value;
+	if (director_db.includes(name)) {
+		window.alert("잘못된 감독자 이름입니다. 관리자에게 문의하십시오.");
+		return;
+	}else{
+		console.log("welcome 감독관님.")
+		director = name;
+	}
+	var message = {
+		id : 'directorName',
+		name : name
+	};
+	sendMessage(message);
+	
+}
