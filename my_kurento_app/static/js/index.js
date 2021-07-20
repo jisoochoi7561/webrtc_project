@@ -28,7 +28,6 @@ var my_conn;
 var my_stream;
 var options;
 
-
 const I_CAN_START = 0;
 const I_CAN_STOP = 1;
 const I_AM_STARTING = 2;
