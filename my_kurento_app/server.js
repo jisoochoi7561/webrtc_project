@@ -138,6 +138,8 @@ wss.on('connection', function(ws, req) {
 
         case 'directorName':
             break;
+        case 'studentName':
+            break;
 
         default:
             ws.send(JSON.stringify({

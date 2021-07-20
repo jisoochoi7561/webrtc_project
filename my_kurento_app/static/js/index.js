@@ -23,6 +23,9 @@
 var director_db = ["GOD","ADMIN","WILDMAN"]
 
 var director = null
+var student = null
+
+
 
 var ws = new WebSocket('wss://' + location.host + '/helloworld');
 var videoInput;
@@ -291,5 +294,25 @@ function directorRecognize() {
 		name : name
 	};
 	sendMessage(message);
+	start();
+	
+}
+
+function studentRecognize() {
+	// 학생의 이름을 받고, 저장해둔다.
+	console.log("학생 recognizing...")
+	var name = document.getElementById('studentName').value;
+	var room = document.getElementById('roomName').value;
+
+
+	console.log("welcome 학생 ${name}.")
+	student = name;
+	
+	var message = {
+		id : 'studentName',
+		name : name
+	};
+	sendMessage(message);
+	start();
 	
 }
