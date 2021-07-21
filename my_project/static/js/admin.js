@@ -18,7 +18,6 @@
 
 
 var ws = new WebSocket('wss://' + location.host + '/one2one');
-var webRtcPeer;
 var director = {};
 
 
@@ -66,7 +65,7 @@ function register() {
 		roomName : roomName
 	};
 	sendMessage(message);
-	console.info(director.name + "님이 " + director.room + " 에 접속하셨습니다.")
+	console.info("관리자" + director.name + "님이 " + director.room + " 에 접속하셨습니다.")
 }
 
 
@@ -84,7 +83,9 @@ ws.onmessage = function(message) {
 }
 
 
-
+function stop(){
+	//TODO
+}
 
 
 

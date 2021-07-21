@@ -23,6 +23,7 @@ var url = require('url');
 var kurento = require('kurento-client');
 var fs    = require('fs');
 var https = require('https');
+const { timingSafeEqual } = require('crypto');
 
 
 
@@ -64,7 +65,8 @@ function nextUniqueId() {
 // 전역변수
 var kurentoClient = null;
 var rooms = {}
-
+var studentSessions = {}
+var directorSessions = {}
 
 
 
@@ -90,13 +92,20 @@ var wss = new ws.Server({
 function Room() {
     this.roomName = "";
     this.directors = {};
+    this.students = {};
 }
 // 하나의 감독관 객체
-function Director(name,ws) {
+function Director(name,ws,roomName) {
     this.name = name;
     this.ws = ws;
+    this.roomName = roomName
 }
-
+// 하나의 학생 객체
+function Student(name,ws,roomName) {
+    this.name = name;
+    this.ws = ws;
+    this.roomName = roomName;
+}
 
 
 
@@ -122,8 +131,8 @@ wss.on('connection', function(ws) {
 
     ws.on('close', function() {
         console.log('Connection ' + sessionId + ' closed');
-        stop(sessionId);
-        userRegistry.unregister(sessionId);
+        // stop(sessionId);
+        // userRegistry.unregister(sessionId);
     });
 
     ws.on('message', function(_message) {
@@ -133,15 +142,23 @@ wss.on('connection', function(ws) {
         
         
         console.log('Connection ' + sessionId + ' received message ', message);
-
+        let director;
+        let room;
+        let roomName;
         switch (message.id) {
        
             case 'directorJoinRoom':
-                let director
-                let room;
+                if (directorSessions[sessionId]){
+                    console.log("한 세션에서 두개의 director로그인시도. 차단합니다.")
+                    ws.send(JSON.stringify({
+                        id : 'error',
+                        message : '한 세션에서 두개의 director로그인시도. 차단합니다. 재접속을 권장합니다.' + message
+                    }));
+                    break;
+                }
                 if (rooms[message.roomName]){
                     room = rooms[message.roomName]
-                    console.log(room.name + "방 입장 완료")
+                    console.log(rooms[message.roomName].name + "방 입장 완료")
                 }
                 else{
                     room = new Room()
@@ -150,20 +167,62 @@ wss.on('connection', function(ws) {
                     console.log(room.name + "방 생성 완료")
                 }
                 if (room.directors[message.directorName]){
-                    console.log("이미 존재하는 이름입니다.")
+                    console.log("이미 존재하는 감독관이름입니다.")
                     ws.send(JSON.stringify({
                         id : 'sameNameError',
-                        message : '이미 존재하는 이름입니다. 다른이름을 선택해 주세요' 
+                        message : '이미 존재하는 감독관이름입니다. 다른이름을 선택해 주세요' 
                     }));
                     break;
                 }else{
-                    director = new Director()
-                    director.name = message.directorName
-                    director.ws = ws
+                    director = new Director(message.directorName,ws,message.roomName)
                 }
                 room.directors[message.directorName] = director
+                directorSessions[sessionId] = director
                 console.log("감독관 추가 완료")
             break;
+
+
+
+
+            case 'studentTryCall':
+                if (studentSessions[sessionId]){
+                    console.log("한 세션에서 두개의 student 로그인시도. 차단합니다.")
+                    ws.send(JSON.stringify({
+                        id : 'error',
+                        message : '한 세션에서 두개의 student 로그인시도. 차단합니다. 재접속을 권장합니다.' + message
+                    }));
+                    break;
+                }
+                roomName = message.roomName
+                if (!rooms[roomName]){
+                    console.log("학생이 존재하지 않는 방에 접근중입니다.")
+                    ws.send(JSON.stringify({
+                        id : 'roomExistence',
+                        value: 'false',
+                        message : message.studentName + '님, 존재하지 않는 방입니다.확인해주세요.' 
+                    }));
+                }
+                else{
+                    if (rooms[roomName].students[message.studentName]){
+                        console.log("이미 존재하는 학생이름입니다.")
+                        ws.send(JSON.stringify({
+                            id : 'sameNameError',
+                            message : '이미 존재하는 학생이름입니다. 다른이름을 선택해 주세요' 
+                        }));
+                        break;
+                    }else{
+                        student = new Student(message.studentName,ws,message.roomName)
+                    }
+                    rooms[roomName].students[message.studentName] = student
+                    studentSessions[sessionId] = student
+                    console.log("학생 추가 완료")
+                    ws.send(JSON.stringify({
+                        id : 'roomExistence',
+                        value: 'true',
+                        message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅해두겠습니다. 연결해주세요.' 
+                    }));
+                }
+                break;
 
 
         default:
@@ -176,6 +235,9 @@ wss.on('connection', function(ws) {
 
     });
 });
+
+
+
 
 
 
