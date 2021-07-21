@@ -140,7 +140,7 @@ wss.on('connection', function(ws) {
                 let director
                 let room;
                 if (rooms[message.roomName]){
-                    room = message.roomName
+                    room = rooms[message.roomName]
                     console.log(room.name + "방 입장 완료")
                 }
                 else{
@@ -152,7 +152,7 @@ wss.on('connection', function(ws) {
                 if (room.directors[message.directorName]){
                     console.log("이미 존재하는 이름입니다.")
                     ws.send(JSON.stringify({
-                        id : 'error',
+                        id : 'sameNameError',
                         message : '이미 존재하는 이름입니다. 다른이름을 선택해 주세요' 
                     }));
                     break;

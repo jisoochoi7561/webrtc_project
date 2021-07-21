@@ -66,7 +66,7 @@ function register() {
 		roomName : roomName
 	};
 	sendMessage(message);
-	console.info(director.name + "님이" + director.room + " 에 접속하셨습니다.")
+	console.info(director.name + "님이 " + director.room + " 에 접속하셨습니다.")
 }
 
 
@@ -75,6 +75,9 @@ ws.onmessage = function(message) {
 	var parsedMessage = JSON.parse(message.data);
 	console.info('Received message: ' + message.data);
 	switch (parsedMessage.id) {
+		case "sameNameError":
+			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
+			break
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
