@@ -23,9 +23,7 @@ var url = require('url');
 var kurento = require('kurento-client');
 var fs    = require('fs');
 var https = require('https');
-const { timingSafeEqual } = require('crypto');
-const { pipeline } = require('stream');
-const { Session } = require('inspector');
+
 
 
 
@@ -35,7 +33,7 @@ const { Session } = require('inspector');
 var argv = minimist(process.argv.slice(2), {
   default: {
       as_uri: "https://localhost:8443/",
-      ws_uri: "ws://3.237.196.49:8888/kurento"
+      ws_uri: "ws://35.175.127.77:8888/kurento"
   }
 });
 
@@ -182,6 +180,35 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 });
                 
                 console.log("디스패처만 만들면 됩니다..")
+
+                //디스패처를 만든다.
+                pipeline.create('WebRtcEndpoint', function(error, dispatcher) {       
+                    if (error) {
+                        console.log("디스패처 생성 실패...")
+                        // pipeline.release();
+                    }
+
+                    //디스패처에 연결한다
+                    studentWebRtcEndpoint.connect(dispatcher, function(error) {
+                        if (error) {
+                            // pipeline.release();
+                        }
+                        //학생객체에 저장.
+                        self.dispatcher = dispatcher;
+                    });
+                });
+
+
+
+
+
+
+
+
+
+
+
+
                 console.log("우선 자기자신에 연결해두겠습니다..")
                 studentWebRtcEndpoint.connect(studentWebRtcEndpoint, function(error) {
                     if (error) {
@@ -193,30 +220,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                     self.webRtcEndpoint = studentWebRtcEndpoint;
                     callback(null);
                 });
-                //디스패처를 만든다.
-                // pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
-                //     if (error) {
-                //         pipeline.release();
-                //         return callback(error);
-                //     }
-
-                //     //디스패처에 연결한다
-                //     studentWebRtcEndpoint.connect(dispatcher, function(error) {
-                //         if (error) {
-                //             pipeline.release();
-                //             return callback(error);
-                //         }
-
-                        
-
-                //         //학생객체에 저장.
-                //         self.pipeline = pipeline;
-                //         self.webRtcEndpoint = studentWebRtcEndpoint;
-                //         self.dispatcher = dispatcher;
-                //         //이제 여기다 할거하면됨.
-                //         callback(null);
-                //     });
-                // });
+                
   
         });
     })
