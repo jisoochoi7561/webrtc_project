@@ -24,6 +24,8 @@ var kurento = require('kurento-client');
 var fs    = require('fs');
 var https = require('https');
 const { timingSafeEqual } = require('crypto');
+const { pipeline } = require('stream');
+const { Session } = require('inspector');
 
 
 
@@ -33,7 +35,7 @@ const { timingSafeEqual } = require('crypto');
 var argv = minimist(process.argv.slice(2), {
   default: {
       as_uri: "https://localhost:8443/",
-      ws_uri: "ws://localhost:8888/kurento"
+      ws_uri: "ws://3.237.196.49:8888/kurento"
   }
 });
 
@@ -55,18 +57,14 @@ function nextUniqueId() {
 
 
 
-
-
-
-
 /*
  * Definition of global variables.
  */
 // 전역변수
 var kurentoClient = null;
 var rooms = {}
-var studentSessions = {}
-var directorSessions = {}
+var sessions = {}
+
 
 
 
@@ -105,11 +103,125 @@ function Student(name,ws,roomName) {
     this.name = name;
     this.ws = ws;
     this.roomName = roomName;
+    this.candidatesQueue = null;
 }
 
 
+// 쿠렌토클라이언트 획득. 이건 완성된 함수임.
+function getKurentoClient(callback) {
+    console.log("쿠렌토 클라이언트 획득을 시도합니다.")
+    if (kurentoClient !== null) {
+        return callback(null, kurentoClient);
+    }
+    
+    kurento(argv.ws_uri, function(error, _kurentoClient) {
+        console.log("쿠렌토 서버 연결중~~.")
+        if (error) {
+            var message = 'Coult not find media server at address ' + argv.ws_uri;
+            return callback(message + ". Exiting with error " + error);
+        }
+
+        kurentoClient = _kurentoClient;
+        console.log("쿠렌토 클라이언트 획득성공.")
+        callback(null, kurentoClient);
+    });
+}
+
+//학생,감독관이 자신의 웹소켓을 통해 메시지를 보내는 함수
+Student.prototype.sendMessage = function(message) {
+    this.ws.send(JSON.stringify(message));
+}
+
+Director.prototype.sendMessage = function(message) {
+    this.ws.send(JSON.stringify(message));
+}
 
 
+//학생이 파이프라인을 만들어서 자신에게 pipeline과 webrtcendpoint를 등록해둔다.
+//그리고 저 webrtcendpoint를 자기와 연결해야한다...이걸 콜백부분에...
+//그리고 방에 있는 모든 시험관들에게 연결을 형성하고 허브에 연결하라고 해야한다.이걸 콜백부분에...
+//여기있는 콜백은,파이프라인을 만든 이후에 할 함수.
+Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
+    console.log("파이프라인 생성 시도합니다")
+    var self = this;
+
+    // 쿠렌토클라이언트에 접근
+    getKurentoClient(function(error, kurentoClient) {
+        if (error) {
+            console.log("쿠렌토클라이언트 생성중 오류")
+        }
+        //파이프라인을 하나 만든다
+        kurentoClient.create('MediaPipeline', function(error, pipeline) {
+            if (error) {
+                console.log("파이프라인 생성중 오류")
+            }
+            //쿠렌토측에 webrtcendpoint를 만든다.
+            console.log("WebRtcEndpoint생성하겠습니다 ")
+            pipeline.create('WebRtcEndpoint', function(error, studentWebRtcEndpoint) {
+                if (error) {
+                    pipeline.release();
+                    console.log("엔드포인트 생성중 오류")
+                }
+                //저장해둔 candidate가 있으면 추가한다
+                console.log("저장해둔 candidates가 있으면 추가합니다. ")
+                if (sessions[callerId].candidatesQueue) {
+                    console.log("저장된 candidates를 추가합니다. ")
+                    while(sessions[callerId].candidatesQueue.length) {
+                        var candidate = sessions[callerId].candidatesQueue.shift();
+                        studentWebRtcEndpoint.addIceCandidate(candidate);
+                    }
+                }
+                //onicecandidate함수를 설정한다
+                console.log("쿠렌토측 endpoint의 onicecandiate설정하겠습니다. ")
+                studentWebRtcEndpoint.on('OnIceCandidate', function(event) {
+                    var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
+                    self.ws.send(JSON.stringify({
+                        id : 'iceCandidate',
+                        candidate : candidate
+                    }));
+                });
+                
+                console.log("디스패처만 만들면 됩니다..")
+                console.log("우선 자기자신에 연결해두겠습니다..")
+                studentWebRtcEndpoint.connect(studentWebRtcEndpoint, function(error) {
+                    if (error) {
+                        //stop(sessionId);
+                        //return callback(error);
+                        console.log("endpoint 연결중 오류")
+                    }
+                    self.pipeline = pipeline
+                    self.webRtcEndpoint = studentWebRtcEndpoint;
+                    callback(null);
+                });
+                //디스패처를 만든다.
+                // pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
+                //     if (error) {
+                //         pipeline.release();
+                //         return callback(error);
+                //     }
+
+                //     //디스패처에 연결한다
+                //     studentWebRtcEndpoint.connect(dispatcher, function(error) {
+                //         if (error) {
+                //             pipeline.release();
+                //             return callback(error);
+                //         }
+
+                        
+
+                //         //학생객체에 저장.
+                //         self.pipeline = pipeline;
+                //         self.webRtcEndpoint = studentWebRtcEndpoint;
+                //         self.dispatcher = dispatcher;
+                //         //이제 여기다 할거하면됨.
+                //         callback(null);
+                //     });
+                // });
+  
+        });
+    })
+})
+}
 
 
 
@@ -136,22 +248,19 @@ wss.on('connection', function(ws) {
     });
 
     ws.on('message', function(_message) {
-        
-        
         var message = JSON.parse(_message);
-        
-        
         console.log('Connection ' + sessionId + ' received message ', message);
         let director;
         let room;
         let roomName;
+        let student;
         switch (message.id) {
        
             case 'directorJoinRoom':
-                if (directorSessions[sessionId]){
+                if (sessions[sessionId]){
                     console.log("한 세션에서 두개의 director로그인시도. 차단합니다.")
                     ws.send(JSON.stringify({
-                        id : 'error',
+                        id : 'sessionError',
                         message : '한 세션에서 두개의 director로그인시도. 차단합니다. 재접속을 권장합니다.' + message
                     }));
                     break;
@@ -177,7 +286,7 @@ wss.on('connection', function(ws) {
                     director = new Director(message.directorName,ws,message.roomName)
                 }
                 room.directors[message.directorName] = director
-                directorSessions[sessionId] = director
+                sessions[sessionId] = director
                 console.log("감독관 추가 완료")
             break;
 
@@ -185,10 +294,10 @@ wss.on('connection', function(ws) {
 
 
             case 'studentTryCall':
-                if (studentSessions[sessionId]){
+                if (sessions[sessionId]){
                     console.log("한 세션에서 두개의 student 로그인시도. 차단합니다.")
                     ws.send(JSON.stringify({
-                        id : 'error',
+                        id : 'sessionError',
                         message : '한 세션에서 두개의 student 로그인시도. 차단합니다. 재접속을 권장합니다.' + message
                     }));
                     break;
@@ -214,15 +323,29 @@ wss.on('connection', function(ws) {
                         student = new Student(message.studentName,ws,message.roomName)
                     }
                     rooms[roomName].students[message.studentName] = student
-                    studentSessions[sessionId] = student
+                    sessions[sessionId] = student
                     console.log("학생 추가 완료")
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'true',
-                        message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅해두겠습니다. 연결해주세요.' 
+                        message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅했습니다. 연결합니다.' 
                     }));
                 }
                 break;
+
+
+
+            case 'studentRequestCallOffer':
+                console.log("학생에게서 call offer를 받았습니다. ")
+                sessions[sessionId].sdpoffer = message.sdpOffer
+                console.log("학생의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
+                studentCall(sessionId, message.roomName,ws);
+                break;
+            
+            case 'studentOnIceCandidate':
+                studentOnIceCandidate(sessionId, message.candidate);
+                break;
+                
 
 
         default:
@@ -243,24 +366,86 @@ wss.on('connection', function(ws) {
 
 
 
-// 쿠렌토클라이언트 획득. 이건 완성된 함수임.
-function getKurentoClient(callback) {
-    if (kurentoClient !== null) {
-        return callback(null, kurentoClient);
-    }
 
-    kurento(argv.ws_uri, function(error, _kurentoClient) {
-        if (error) {
-            var message = 'Coult not find media server at address ' + argv.ws_uri;
-            return callback(message + ". Exiting with error " + error);
-        }
 
-        kurentoClient = _kurentoClient;
-        callback(null, kurentoClient);
-    });
+//TODO
+function studentCall(sessionId,roomName,ws){
+    // 새통화
+    console.log("기존 학생의 candidate queue 삭제");
+    clearCandidatesQueue(sessionId);
+    // 입장요청을 한 학생
+    console.log("학생 식별완료");
+    var student = sessions[sessionId]
+
+    console.log("파이프라인 만들기를 시도합니다.");
+    //todo
+    student.createPipeline(sessionId, roomName, ws, function(error) {
+            console.log("createPipeline이후 콜백 실행하겠습니다.")
+            var pipeline = sessions[sessionId].pipeline
+            var studentWebRtcEndpoint = sessions[sessionId].webRtcEndpoint
+            if (error) {
+                console.log("students.createPipeline에서 오류")
+                return ws.send(error);
+            }
+
+            studentWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
+                if (error) {
+                    console.log("student kurentoside 프로세스 offer도중 에러")
+                    return ws.send(error);
+                }
+                
+                var message ={
+                    id: "serverToStudentSdpAnswer",
+                    sdpAnswer:callerSdpAnswer
+                }
+                ws.send(JSON.stringify(message))
+              
+            });
+
+            studentWebRtcEndpoint.gatherCandidates(function(error) {
+                if (error) {
+                    console.log("studentWebRtcEndpoint.gatherCandidates 도중 에러")
+                    return ws.send(error);
+                }
+            });
+        });
+    
+
+
+
 }
 
 
+
+
+//세션아이디로, 그 사람의 저장해둔 candidates를 지운다.
+function clearCandidatesQueue(sessionId) {
+    if (sessions[sessionId].candidatesQueue) {
+        delete sessions[sessionId].candidatesQueue;
+    }
+}
+
+
+
+
+//sessionid 해당하는 유저의 webrtcendpoint가 있다면 addicecandidate.없다면 유저에게 cadidatesQueue를 만들어주고 거기에 저장해둠.
+function studentOnIceCandidate(sessionId,candidate){
+    
+    var candidate = kurento.getComplexType('IceCandidate')(candidate);
+    var student = sessions[sessionId]
+    if (student.webRtcEndpoint) {
+        console.log("학생에게 addIceCandidate하겠습니다.")
+        var webRtcEndpoint = student.webRtcEndpoint
+        webRtcEndpoint.addIceCandidate(candidate);
+    }else {
+        console.log("아직 해당유저의 webrtcEndpoint가 없으므로 큐에 저장하겠습니다.")
+        if (!sessions[sessionId].candidatesQueue) {
+            console.log("해당유저의 빈 candidatesQueue생성합니다.")
+            sessions[sessionId].candidatesQueue = [];
+        }
+        sessions[sessionId].candidatesQueue.push(candidate);
+    }
+}
 
 
 app.use(express.static(path.join(__dirname, 'static')));

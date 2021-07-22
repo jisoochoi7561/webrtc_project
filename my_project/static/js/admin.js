@@ -77,6 +77,9 @@ ws.onmessage = function(message) {
 		case "sameNameError":
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
 			break
+		case "sessionError":
+			console.log(parsedMessage.message)
+			break
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}

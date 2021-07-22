@@ -19,7 +19,7 @@
 
 var ws = new WebSocket('wss://' + location.host + '/one2one');
 var student = {};
-
+var webRtcPeer ; 
 
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
@@ -66,7 +66,7 @@ function tryCall() {
 		roomName : roomName
 	};
 	sendMessage(message);
-	console.info(student.name + "님이 " + director.room + " 에 접속시도합니다.")
+	console.info(student.name + "님이 " + student.room + " 에 접속시도합니다.")
 }
 
 
@@ -83,10 +83,21 @@ ws.onmessage = function(message) {
 				console.log("존재하지 않는 방입니다.확인해주세요.")
 			}else{
 				console.log("방이 확인 되었습니다. 연결을 시작합니다.")
-
 				startCall();
 			}
 			break
+		case "sessionError":
+			console.log(parsedMessage.message)
+			break
+
+		case 'iceCandidate':
+			webRtcPeer.addIceCandidate(parsedMessage.candidate)
+			break;
+
+
+		case 'serverToStudentSdpAnswer':
+			webRtcPeer.processAnswer(parsedMessage.sdpAnswer)
+			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -95,12 +106,90 @@ ws.onmessage = function(message) {
 
 
 
+function startCall(){
+
+	console.log('화면전송을 시작합니다')
+	//화면캡처의 경우에는 audio는 필요하지 않음
+	var constraints = {
+		video: true,
+		audio: false
+	}
+
+
+	//화면캡처
+	navigator.mediaDevices.getDisplayMedia().then(stream =>{
+		my_stream = stream
+
+		//현재옵션:
+		//스트림 = 화면
+		//로컬스트림 출력 세팅
+		options = {
+			videoStream: my_stream,
+			localVideo: document.getElementById('localstream'),
+			remoteVideo: document.getElementById('remotestream'),
+			onicecandidate:onIceCandidate
+		  }
+	
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+			if(error) return onError(error);
+			// i'll work with my peerconnection
+			my_conn = this.peerConnection;
+	
+			// make onIceCandidate
+	
+			// my_conn.onicecandidate = ((e)=>{
+			// 	if (e.candidate == null){return}
+				
+			// 	console.log('Local candidate' + JSON.stringify(candidate));
+			// 	var message = {
+			// 		id : 'onIceCandidate',
+			// 		candidate : candidate
+			// 	 };
+			// 	 sendMessage(message);
+			// },(error)=>{console.log(error)})
+	
+			//create my offer
+			console.log("offerSdp 생성하겠습니다.")
+			my_conn.createOffer((offerSdp)=>{
+				my_conn.setLocalDescription(offerSdp);
+				console.info('Invoking SDP offer callback function ' + location.host);
+				var message = {
+					id : 'studentRequestCallOffer',
+					studentName:student.name,
+					sdpOffer : offerSdp.sdp
+				}
+				sendMessage(message);
+			},
+			(e)=>{console.log(e)
+			})
+		});
+	
+	
+	})
 
 
 
 
 
 
+	
+	//TODO
+}
+
+
+
+
+function onIceCandidate(candidate) {
+	console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
+	//이 onicecandidate는 식별될 필요가있음
+	//이친구가 식별할건 아니고, 아마 server.js가 해야될텐데...
+	var message = {
+	   id : 'studentOnIceCandidate',
+	   studentName: student.name,
+	   candidate : candidate
+	}
+	sendMessage(message);
+}
 
 
 
@@ -131,6 +220,6 @@ function stop(){
 	//TODO
 }
 
-function startCall(){
-	//TODO
-}
+
+
+
