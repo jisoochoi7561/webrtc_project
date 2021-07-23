@@ -18,7 +18,9 @@
 
 
 var ws = new WebSocket('wss://' + location.host + '/one2one');
-var director = {};
+var director = {
+
+};
 
 
 
@@ -58,6 +60,7 @@ function register() {
 
 	director.name = directorName
 	director.room = roomName
+	director.studentsConnection = {}
 	
 	var message = {
 		id : 'directorJoinRoom',
@@ -80,11 +83,63 @@ ws.onmessage = function(message) {
 		case "sessionError":
 			console.log(parsedMessage.message)
 			break
+		case "shouldConnect":
+			console.log(parsedMessage.message)
+			makeConnection(message.studentName,message.roomName)
+			break
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
 }
 
+
+
+
+function makeConnection(studentName,roomName){
+	options = {
+		//요기를 studentName에 연관시켜서 어케 바꿔야해
+		remoteVideo: document.getElementById('screenVideoFromStudent1'),
+		onicecandidate:onIceCandidate
+	  }
+
+
+	webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function(error) {
+		if(error) return onError(error);
+		// i'll work with my peerconnection
+		my_conn = this.peerConnection;
+
+		// make onIceCandidate
+
+		// my_conn.onicecandidate = ((e)=>{
+		// 	if (e.candidate == null){return}
+			
+		// 	console.log('Local candidate' + JSON.stringify(candidate));
+		// 	var message = {
+		// 		id : 'onIceCandidate',
+		// 		candidate : candidate
+		// 	 };
+		// 	 sendMessage(message);
+		// },(error)=>{console.log(error)})
+
+		//create my offer
+		console.log("offerSdp 생성하겠습니다.")
+		my_conn.createOffer((offerSdp)=>{
+			my_conn.setLocalDescription(offerSdp);
+			console.info('Invoking SDP offer callback function ' + location.host);
+			var message = {
+				id : 'directorOffer',
+				directorName:director.name,
+				roomName:director.room,
+				sdpOffer : offerSdp.sdp
+			}
+			sendMessage(message);
+		},
+		(e)=>{console.log(e)
+		})
+		//학생이름에 peer매칭해서 저장해둔다.
+		director.studentsConnection[studentName] = this
+	});
+}
 
 function stop(){
 	//TODO
@@ -120,3 +175,17 @@ $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
 	event.preventDefault();
 	$(this).ekkoLightbox();
 });
+
+
+//감독관측 onicecandidate
+function onIceCandidate(candidate) {
+	console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
+	//이 onicecandidate는 식별될 필요가있음
+	//이친구가 식별할건 아니고, 아마 server.js가 해야될텐데...
+	var message = {
+	   id : 'direcotrOnIceCandidate',
+	   directorName: director.name,
+	   candidate : candidate
+	}
+	sendMessage(message);
+}

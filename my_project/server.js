@@ -95,6 +95,7 @@ function Director(name,ws,roomName) {
     this.name = name;
     this.ws = ws;
     this.roomName = roomName
+    this.endpointPerStudent = {}
 }
 // 하나의 학생 객체
 function Student(name,ws,roomName) {
@@ -203,7 +204,14 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         //감독관들에게 연결 형성 요구 메시지 날린다
                         console.log("현재 접속 시도하는 방 : " + roomName)
                         for (let key in rooms[roomName].directors){
-                            console.log("현재 존재하는 감독관: " + key)
+                            message = {
+                                id:"shouldConnect",
+                                studentName: sessions[callerId].name,
+                                roomName:rooms[roomName].directors[key].roomName,
+                                message:"학생 "+ sessions[callerId].name + "이 연결요청을 하고 있습니다." 
+                            }
+                            rooms[roomName].directors[key].sendMessage(message)
+                            console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
                         }
                         //임시로 자기자신에게 연결해두었음.
                         dispatcher.createHubPort(function(error,outputHubport) {
