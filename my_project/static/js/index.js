@@ -168,12 +168,6 @@ function startCall(){
 	
 	})
 
-
-
-
-
-
-	
 	//TODO
 }
 

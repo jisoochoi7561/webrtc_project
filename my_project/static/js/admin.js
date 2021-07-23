@@ -19,7 +19,7 @@
 
 var ws = new WebSocket('wss://' + location.host + '/one2one');
 var director = {
-
+	studentsConnection : {}
 };
 
 
@@ -85,8 +85,15 @@ ws.onmessage = function(message) {
 			break
 		case "shouldConnect":
 			console.log(parsedMessage.message)
-			makeConnection(message.studentName,message.roomName)
+			startCall(parsedMessage.studentName,parsedMessage.roomName)
 			break
+		case "iceCandidate":
+			console.log(parsedMessage.message)
+			director.studentsConnection[parsedMessage.studentName].peer.addIceCandidate(parsedMessage.candidate)
+			break
+		case 'serverToDirectorSdpAnswer':
+			director.studentsConnection[parsedMessage.studentName].peer.processAnswer(parsedMessage.sdpAnswer)
+			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -95,58 +102,82 @@ ws.onmessage = function(message) {
 
 
 
-function makeConnection(studentName,roomName){
-	options = {
-		//요기를 studentName에 연관시켜서 어케 바꿔야해
-		remoteVideo: document.getElementById('screenVideoFromStudent1'),
-		onicecandidate:onIceCandidate
-	  }
+function startCall(studentName,roomName){
+
+	console.log('화면전송을 시작합니다')
+	//화면캡처의 경우에는 audio는 필요하지 않음
+	var constraints = {
+		video: true,
+		audio: false
+	}
 
 
-	webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function(error) {
-		if(error) return onError(error);
-		// i'll work with my peerconnection
-		my_conn = this.peerConnection;
+	//화면캡처
+	navigator.mediaDevices.getDisplayMedia().then(stream =>{
+		my_stream = stream
 
-		// make onIceCandidate
-
-		// my_conn.onicecandidate = ((e)=>{
-		// 	if (e.candidate == null){return}
-			
-		// 	console.log('Local candidate' + JSON.stringify(candidate));
-		// 	var message = {
-		// 		id : 'onIceCandidate',
-		// 		candidate : candidate
-		// 	 };
-		// 	 sendMessage(message);
-		// },(error)=>{console.log(error)})
-
-		//create my offer
-		console.log("offerSdp 생성하겠습니다.")
-		my_conn.createOffer((offerSdp)=>{
-			my_conn.setLocalDescription(offerSdp);
-			console.info('Invoking SDP offer callback function ' + location.host);
-			var message = {
-				id : 'directorOffer',
-				directorName:director.name,
-				roomName:director.room,
-				sdpOffer : offerSdp.sdp
+		//현재옵션:
+		//스트림 = 화면
+		//로컬스트림 출력 세팅
+		options = {
+			videoStream: my_stream,
+			localVideo: document.getElementById('screenVideoFromStudent2'),
+			remoteVideo: document.getElementById('screenVideoFromStudent1'),
+			onicecandidate:function (candidate) {
+				console.log("hi");
+				console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
+				//이 onicecandidate는 식별될 필요가있음
+				//이친구가 식별할건 아니고, 아마 server.js가 해야될텐데...
+				var message = {
+				   id : 'directorOnIceCandidate',
+				   directorName:director.name,
+				   studentName: studentName,
+				   candidate : candidate
+				}
+				sendMessage(message);
 			}
-			sendMessage(message);
-		},
-		(e)=>{console.log(e)
-		})
-		//학생이름에 peer매칭해서 저장해둔다.
-		director.studentsConnection[studentName] = this
-	});
+			
+		  }
+	
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+			if(error) return onError(error);
+			// i'll work with my peerconnection
+			my_conn = this.peerConnection;
+	
+			
+	
+			//create my offer
+			console.log("director측 offerSdp 생성하겠습니다.")
+			my_conn.createOffer((offerSdp)=>{
+				my_conn.setLocalDescription(offerSdp);
+				console.info('Invoking SDP offer callback function ' + location.host);
+				var message = {
+					id : 'directorOffer',
+					directorName:director.name,
+					studentName:studentName,
+					roomName:director.room,
+					sdpOffer : offerSdp.sdp
+				}
+				sendMessage(message);
+			},
+			(e)=>{console.log(e)
+			})
+			director.studentsConnection[studentName] = {}
+			director.studentsConnection[studentName].peer = this
+			console.log("reached directorStartCall end")
+		});
+	
+	
+	})
+
+	//TODO
 }
+
+	
 
 function stop(){
 	//TODO
 }
-
-
-
 
 
 
@@ -177,15 +208,3 @@ $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
 });
 
 
-//감독관측 onicecandidate
-function onIceCandidate(candidate) {
-	console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
-	//이 onicecandidate는 식별될 필요가있음
-	//이친구가 식별할건 아니고, 아마 server.js가 해야될텐데...
-	var message = {
-	   id : 'direcotrOnIceCandidate',
-	   directorName: director.name,
-	   candidate : candidate
-	}
-	sendMessage(message);
-}
