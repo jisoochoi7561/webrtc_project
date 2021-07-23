@@ -86,7 +86,7 @@ var wss = new ws.Server({
 
 // 하나의 방 객체.
 function Room() {
-    this.roomName = "";
+    this.name = "";
     this.directors = {};
     this.students = {};
 }
@@ -182,19 +182,38 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 console.log("디스패처만 만들면 됩니다..")
 
                 //디스패처를 만든다.
-                pipeline.create('WebRtcEndpoint', function(error, dispatcher) {       
+                pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
                         console.log("디스패처 생성 실패...")
                         // pipeline.release();
                     }
 
                     //디스패처에 연결한다
-                    studentWebRtcEndpoint.connect(dispatcher, function(error) {
+                    dispatcher.createHubPort(function(error,hubport) {
                         if (error) {
-                            // pipeline.release();
+                            console.log("createHubPort 에러 발생")
                         }
+                        dispatcher.setSource(hubport)
+                        studentWebRtcEndpoint.connect(hubport)
+                        hubport.connect(studentWebRtcEndpoint)
                         //학생객체에 저장.
                         self.dispatcher = dispatcher;
+                        self.pipeline = pipeline
+                        self.webRtcEndpoint = studentWebRtcEndpoint;
+                        //감독관들에게 연결 형성 요구 메시지 날린다
+                        console.log("현재 접속 시도하는 방 : " + roomName)
+                        for (let key in rooms[roomName].directors){
+                            console.log("현재 존재하는 감독관: " + key)
+                        }
+                        //임시로 자기자신에게 연결해두었음.
+                        dispatcher.createHubPort(function(error,outputHubport) {
+                            if (error) {
+                                console.log("createHubPort 에러 발생")
+                            }
+                            outputHubport.connect(studentWebRtcEndpoint)
+                           
+                        });
+                        callback(null);
                     });
                 });
 
@@ -209,17 +228,17 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 
 
 
-                console.log("우선 자기자신에 연결해두겠습니다..")
-                studentWebRtcEndpoint.connect(studentWebRtcEndpoint, function(error) {
-                    if (error) {
-                        //stop(sessionId);
-                        //return callback(error);
-                        console.log("endpoint 연결중 오류")
-                    }
-                    self.pipeline = pipeline
-                    self.webRtcEndpoint = studentWebRtcEndpoint;
-                    callback(null);
-                });
+                // console.log("우선 자기자신에 연결해두겠습니다..")
+                // studentWebRtcEndpoint.connect(studentWebRtcEndpoint, function(error) {
+                //     if (error) {
+                //         //stop(sessionId);
+                //         //return callback(error);
+                //         console.log("endpoint 연결중 오류")
+                //     }
+                //     self.pipeline = pipeline
+                //     self.webRtcEndpoint = studentWebRtcEndpoint;
+                //     callback(null);
+                // });
                 
   
         });
@@ -384,6 +403,7 @@ function studentCall(sessionId,roomName,ws){
     console.log("파이프라인 만들기를 시도합니다.");
     //todo
     student.createPipeline(sessionId, roomName, ws, function(error) {
+        //파이프라인을 만들었으므로, 받아논 offer를 실행해서 연결을 형성한다.
             console.log("createPipeline이후 콜백 실행하겠습니다.")
             var pipeline = sessions[sessionId].pipeline
             var studentWebRtcEndpoint = sessions[sessionId].webRtcEndpoint

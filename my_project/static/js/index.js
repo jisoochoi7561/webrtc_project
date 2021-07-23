@@ -156,6 +156,7 @@ function startCall(){
 				var message = {
 					id : 'studentRequestCallOffer',
 					studentName:student.name,
+					roomName:student.room,
 					sdpOffer : offerSdp.sdp
 				}
 				sendMessage(message);
