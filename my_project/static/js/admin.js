@@ -113,8 +113,7 @@ function startCall(studentName,roomName){
 
 
 	//화면캡처
-	navigator.mediaDevices.getDisplayMedia().then(stream =>{
-		my_stream = null;
+
 		my_student_element = null;
 		if (document.getElementById(studentName)){
 			my_student_element = document.getElementById(studentName)
@@ -134,8 +133,6 @@ function startCall(studentName,roomName){
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
 		options = {
-			videoStream: my_stream,
-			localVideo: document.getElementById('screenVideoFromStudent2'),
 			remoteVideo: document.getElementById(studentName+"screen!"),
 			onicecandidate:function (candidate) {
 				console.log("hi");
@@ -156,33 +153,28 @@ function startCall(studentName,roomName){
 		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function(error) {
 			if(error) return onError(error);
 			// i'll work with my peerconnection
-			my_conn = this.peerConnection;
 	
 			
 	
 			//create my offer
 			console.log("director측 offerSdp 생성하겠습니다.")
-			my_conn.createOffer((offerSdp)=>{
-				my_conn.setLocalDescription(offerSdp);
-				console.info('Invoking SDP offer callback function ' + location.host);
+			this.generateOffer((error,offerSdp)=>{
 				var message = {
 					id : 'directorOffer',
 					directorName:director.name,
 					studentName:studentName,
 					roomName:director.room,
-					sdpOffer : offerSdp.sdp
+					sdpOffer : offerSdp
 				}
 				sendMessage(message);
-			},
-			(e)=>{console.log(e)
-			})
+			});
 			director.studentsConnection[studentName] = {}
 			director.studentsConnection[studentName].peer = this
 			console.log("reached directorStartCall end")
 		});
 	
 	
-	})
+
 
 	//TODO
 }
