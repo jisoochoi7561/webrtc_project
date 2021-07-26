@@ -133,7 +133,7 @@ function startCall(studentName,roomName){
 		else{
 			my_student_element = document.createElement('div');
 			my_student_element.setAttribute("id",studentName);
-			my_label = document.createTextNode( studentName);
+			my_label = document.createTextNode(studentName);
 			my_student_element.appendChild(my_label)
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
@@ -272,10 +272,12 @@ function camStartCall(camName,roomName){
 function stop(){
 	for (key in director.studentsConnection){
 		director.studentsConnection[key].peer.dispose()
+		document.getElementById(key+"screen!").remove();
 		delete director.studentsConnection[key]
 	}
 	for (key in director.camsConnection){
 		director.camsConnection[key].peer.dispose()
+		document.getElementById(key+"cam!").remove();
 		delete director.camsConnection[key]
 	}
 	var message = {
@@ -292,6 +294,7 @@ function studentStop(studentName){
 		delete director.studentsConnection[studentName]
 	}	
 	if( document.getElementById(studentName+"screen!")){
+		console.log("remove screen!")
 		document.getElementById(studentName+"screen!").remove();
 	}
 }
@@ -301,6 +304,7 @@ function camStop(camName){
 		delete director.camsConnection[camName]
 	}	
 	if( document.getElementById(camName+"cam!")){
+		console.log("remove cam!")
 		document.getElementById(camName+"cam!").remove();
 	}
 }
