@@ -104,16 +104,8 @@ ws.onmessage = function(message) {
 
 function startCall(studentName,roomName){
 
-	console.log('화면전송을 시작합니다')
-	//화면캡처의 경우에는 audio는 필요하지 않음
-	var constraints = {
-		video: true,
-		audio: false
-	}
-
-
+	console.log('webrtcpeer 생성을 시작합니다')
 	//화면캡처
-
 		my_student_element = null;
 		if (document.getElementById(studentName)){
 			my_student_element = document.getElementById(studentName)
@@ -121,6 +113,8 @@ function startCall(studentName,roomName){
 		else{
 			my_student_element = document.createElement('div');
 			my_student_element.setAttribute("id",studentName);
+			my_label = document.createTextNode( studentName);
+			my_student_element.appendChild(my_label)
 		}
 		my_element = document.createElement('video');
 		my_element.setAttribute("id",studentName+"screen!");

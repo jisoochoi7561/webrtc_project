@@ -89,6 +89,7 @@ function Room() {
     this.name = "";
     this.directors = {};
     this.students = {};
+    this.cams = {};
 }
 // 하나의 감독관 객체
 function Director(name,ws,roomName) {
@@ -96,6 +97,7 @@ function Director(name,ws,roomName) {
     this.ws = ws;
     this.roomName = roomName
     this.endpointPerStudent = {}
+    this.endpointPerCam = {}
 }
 // 하나의 학생 객체
 function Student(name,ws,roomName) {
@@ -104,7 +106,12 @@ function Student(name,ws,roomName) {
     this.roomName = roomName;
     this.candidatesQueue = null;
 }
-
+function Cam(name,ws,roomName) {
+    this.name = name;
+    this.ws = ws;
+    this.roomName = roomName;
+    this.candidatesQueue = null;
+}
 
 
 
@@ -134,6 +141,9 @@ Student.prototype.sendMessage = function(message) {
 }
 
 Director.prototype.sendMessage = function(message) {
+    this.ws.send(JSON.stringify(message));
+}
+Cam.prototype.sendMessage = function(message) {
     this.ws.send(JSON.stringify(message));
 }
 
@@ -230,36 +240,109 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         callback(null);
                     });
                 });
-
-
-
-
-
-
-
-
-
-
-
-
-                // console.log("우선 자기자신에 연결해두겠습니다..")
-                // studentWebRtcEndpoint.connect(studentWebRtcEndpoint, function(error) {
-                //     if (error) {
-                //         //stop(sessionId);
-                //         //return callback(error);
-                //         console.log("endpoint 연결중 오류")
-                //     }
-                //     self.pipeline = pipeline
-                //     self.webRtcEndpoint = studentWebRtcEndpoint;
-                //     callback(null);
-                // });
-                
-  
         });
     })
 })
 }
 
+
+
+//학생이 파이프라인을 만들어서 자신에게 pipeline과 webrtcendpoint를 등록해둔다.
+//그리고 저 webrtcendpoint를 자기와 연결해야한다...이걸 콜백부분에...
+//그리고 방에 있는 모든 시험관들에게 연결을 형성하고 허브에 연결하라고 해야한다.이걸 콜백부분에...
+//여기있는 콜백은,파이프라인을 만든 이후에 할 함수.
+Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
+    console.log("파이프라인 생성 시도합니다")
+    var self = this;
+
+    // 쿠렌토클라이언트에 접근
+    getKurentoClient(function(error, kurentoClient) {
+        if (error) {
+            console.log("쿠렌토클라이언트 생성중 오류")
+        }
+        //파이프라인을 하나 만든다
+        kurentoClient.create('MediaPipeline', function(error, pipeline) {
+            if (error) {
+                console.log("파이프라인 생성중 오류")
+            }
+            //쿠렌토측에 webrtcendpoint를 만든다.
+            console.log("WebRtcEndpoint생성하겠습니다 ")
+            pipeline.create('WebRtcEndpoint', function(error, camWebRtcEndpoint) {
+                if (error) {
+                    pipeline.release();
+                    console.log("엔드포인트 생성중 오류")
+                }
+                //저장해둔 candidate가 있으면 추가한다
+                console.log("저장해둔 candidates가 있으면 추가합니다. ")
+                if (sessions[callerId].candidatesQueue) {
+                    console.log("저장된 candidates를 추가합니다. ")
+                    while(sessions[callerId].candidatesQueue.length) {
+                        var candidate = sessions[callerId].candidatesQueue.shift();
+                        camWebRtcEndpoint.addIceCandidate(candidate);
+                    }
+                }
+                //onicecandidate함수를 설정한다
+                console.log("쿠렌토측 endpoint의 onicecandiate설정하겠습니다. ")
+                camWebRtcEndpoint.on('OnIceCandidate', function(event) {
+                    var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
+                    self.ws.send(JSON.stringify({
+                        id : 'iceCandidate',
+                        candidate : candidate
+                    }));
+                });
+                
+                console.log("디스패처만 만들면 됩니다..")
+
+                //디스패처를 만든다.
+                pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
+                    if (error) {
+                        console.log("디스패처 생성 실패...")
+                        // pipeline.release();
+                    }
+
+                    //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
+                    dispatcher.createHubPort(function(error,hubport) {
+                        if (error) {
+                            console.log("createHubPort 에러 발생")
+                        }
+                        dispatcher.setSource(hubport)
+                        camWebRtcEndpoint.connect(hubport)
+                        hubport.connect(camWebRtcEndpoint)
+                        //학생객체에 저장.
+                        self.dispatcher = dispatcher;
+                        self.pipeline = pipeline
+                        self.webRtcEndpoint = camWebRtcEndpoint;
+                        //감독관들에게 연결 형성 요구 메시지 날린다
+                        console.log("현재 접속 시도하는 방 : " + roomName)
+                        for (let key in rooms[roomName].directors){
+                            rooms[roomName].directors[key].endpointPerCam[sessions[callerId].name] = {}
+                           //TODO
+                            // message = {
+                            //     id:"camShouldConnect",
+                            //     camName: sessions[callerId].name,
+                            //     roomName:rooms[roomName].directors[key].roomName,
+                            //     message:"cam "+ sessions[callerId].name + "이 연결요청을 하고 있습니다." 
+                            // }
+                            // rooms[roomName].directors[key].sendMessage(message)
+                            console.log(rooms[roomName].directors[key])
+                            console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+                        }
+                        //임시로 자기자신에게 연결해두었음.
+                        console.log("임시로 자기자신에게 연결합니다") 
+                        dispatcher.createHubPort(function(error,outputHubport) {
+                            if (error) {
+                                console.log("createHubPort 에러 발생")
+                            }
+                            outputHubport.connect(studentWebRtcEndpoint)
+                           
+                        });
+                        callback(null);
+                    });
+                });
+        });
+    })
+})
+}
 
 
 
@@ -291,6 +374,7 @@ wss.on('connection', function(ws) {
         let room;
         let roomName;
         let student;
+        let cam;
         switch (message.id) {
        
             case 'directorJoinRoom':
@@ -396,6 +480,63 @@ wss.on('connection', function(ws) {
                 directorOnIceCandidate(sessionId,message.directorName,message.studentName,message.candidate);
                 break;
 
+
+
+
+            case 'camTryCall':
+                if (sessions[sessionId]){
+                    console.log("한 세션에서 두개의 Cam 로그인시도. 차단합니다.")
+                    ws.send(JSON.stringify({
+                        id : 'sessionError',
+                        message : '한 세션에서 두개의 Cam 로그인시도. 차단합니다. 재접속을 권장합니다.' + message
+                    }));
+                    break;
+                }
+                roomName = message.roomName
+                if (!rooms[roomName]){
+                    console.log("학생이 존재하지 않는 방에 접근중입니다.")
+                    ws.send(JSON.stringify({
+                        id : 'roomExistence',
+                        value: 'false',
+                        message : message.studentName + '님, 존재하지 않는 방입니다.확인해주세요.' 
+                    }));
+                }
+                else{
+                    if (rooms[roomName].cams[message.camName]){
+                        console.log("이미 존재하는 학생이름입니다.")
+                        ws.send(JSON.stringify({
+                            id : 'sameNameError',
+                            message : '이미 존재하는 캠이름입니다. 다른이름을 선택해 주세요' 
+                        }));
+                        break;
+                    }else{
+                        cam = new Cam(message.camName,ws,message.roomName)
+                    }
+                    rooms[roomName].cams[message.camName] = cam
+                    sessions[sessionId] = cam
+                    console.log("cam 추가 완료")
+                    ws.send(JSON.stringify({
+                        id : 'roomExistence',
+                        value: 'true',
+                        message : roomName + '존재하는 방이고 새로운 cam 입니다. 유저정보를 세팅했습니다. 연결합니다.' 
+                    }));
+                }
+                break;
+            
+
+
+            case 'camOnIceCandidate':
+                studentOnIceCandidate(sessionId, message.candidate);
+                break;
+
+
+            case 'camRequestCallOffer':
+                console.log("cam에게서 call offer를 받았습니다. ")
+                sessions[sessionId].sdpoffer = message.sdpOffer
+                console.log("cam의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
+                camCall(sessionId, message.roomName,ws);
+                break;
+
         default:
             ws.send(JSON.stringify({
                 id : 'error',
@@ -463,6 +604,56 @@ function studentCall(sessionId,roomName,ws){
 
 
 }
+
+
+function camCall(sessionId,roomName,ws){
+    // 새통화
+    console.log("기존 cam의 candidate queue 삭제");
+    clearCandidatesQueue(sessionId);
+    // 입장요청을 한 학생
+    console.log("학생 식별완료");
+    var cam = sessions[sessionId]
+
+    console.log("cam 파이프라인 만들기를 시도합니다.");
+    //todo
+    cam.createPipeline(sessionId, roomName, ws, function(error) {
+        //파이프라인을 만들었으므로, 받아논 offer를 실행해서 연결을 형성한다.
+            console.log("cam createPipeline이후 콜백 실행하겠습니다.")
+            var pipeline = sessions[sessionId].pipeline
+            var camWebRtcEndpoint = sessions[sessionId].webRtcEndpoint
+            if (error) {
+                console.log("cam.createPipeline에서 오류")
+                return ws.send(error);
+            }
+
+            camWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
+                if (error) {
+                    console.log("cam kurentoside 프로세스 offer도중 에러")
+                    return ws.send(error);
+                }
+                
+                var message ={
+                    id: "serverToCamSdpAnswer",
+                    sdpAnswer:callerSdpAnswer
+                }
+                ws.send(JSON.stringify(message))
+              
+            });
+
+            camWebRtcEndpoint.gatherCandidates(function(error) {
+                if (error) {
+                    console.log("camWebRtcEndpoint.gatherCandidates 도중 에러")
+                    return ws.send(error);
+                }
+            });
+        });
+    
+
+
+
+}
+
+
 
 
 function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
