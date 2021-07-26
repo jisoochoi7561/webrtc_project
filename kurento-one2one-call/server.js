@@ -39,10 +39,28 @@ var options =
 
 var app = express();
 
+
+
+
+
+
+//초기 세팅.. 현재 건드릴 필요 없음.
+
+
+
+
+
+
+
+
+
+
+
+
 /*
  * Definition of global variables.
  */
-
+// 전역변수
 var kurentoClient = null;
 var userRegistry = new UserRegistry();
 var pipelines = {};
@@ -53,6 +71,29 @@ function nextUniqueId() {
     idCounter++;
     return idCounter.toString();
 }
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
+
 
 /*
  * Definition of helper classes
@@ -109,31 +150,40 @@ function CallMediaPipeline() {
     this.webRtcEndpoint = {};
 }
 
+
+//즉 이함수는, caller측과 callee측이 각각 일단 peer을 둔 후 우선 offer를 각각 만들고 onicecandidate도 해서 큐에 저장시켜두고, 그것들을 가지고 바이디렉션 커넥션을 한번에 만드는 함수부분이네.
+// 중요한 점은, callee는 미리 만들어서 주는게 아니라
+// caller가 부르면 그 때 그 메시지를 받아서, 그 caller에 대한 peer라는 것을 저장해두고,, 그때 만들고, 그때 offer와 icecandidate를저장해야겠네....
+// 그렇다면 만약에 연결이 끊기다면, callee는 자기자신의 것들을 만들고,연결을 한 다음에, 자기의 webrtcendpoint를 자기가 말하는 id의 파이프라인에 붙여달라고 해야겠네..
 CallMediaPipeline.prototype.createPipeline = function(callerId, calleeId, ws, callback) {
     var self = this;
+
+    //쿠렌토 클라이언트를 얻는다... 뭐 여긴 아무문제 없지.
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
             return callback(error);
         }
 
+
+        //클라이언트로 미디어파이프라인을 만든다.. 여기도 아무 문제 없음.다만 문제는 caller쪽은 전혀 문제가 없지만, callee쪽은 3명이 달라붙을 예정이므로 이 미디어 파이프라인을 저장해둘 필요가 있지 않나 싶다.?
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
                 return callback(error);
             }
-
+            //파이프라인에서 caller측의 webrtcendpoint를 만든다.
             pipeline.create('WebRtcEndpoint', function(error, callerWebRtcEndpoint) {
                 if (error) {
                     pipeline.release();
                     return callback(error);
                 }
-
+                // 지금까지 저장해둔 caller측의 candidates가 있다면 addIceCandidate.
                 if (candidatesQueue[callerId]) {
                     while(candidatesQueue[callerId].length) {
                         var candidate = candidatesQueue[callerId].shift();
                         callerWebRtcEndpoint.addIceCandidate(candidate);
                     }
                 }
-
+                // caller와 연결할 webrtcendpoint의 onicecandidate설정.
                 callerWebRtcEndpoint.on('OnIceCandidate', function(event) {
                     var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
                     userRegistry.getById(callerId).ws.send(JSON.stringify({
@@ -142,12 +192,21 @@ CallMediaPipeline.prototype.createPipeline = function(callerId, calleeId, ws, ca
                     }));
                 });
 
+
+
+                // 그렇다면 여기에서 dispatcher를 연결해 두어야 하겠네
+
+
+                // webrtcendpoint를 하나 더 만드네??? 여기가 아마 callee 측이겠지!!
+                // 즉 지금의 로직은, caller가 파이프라인을 만들고 연결한 후, callee에게 붙어줄 webrtcendpoint를 만들고
                 pipeline.create('WebRtcEndpoint', function(error, calleeWebRtcEndpoint) {
                     if (error) {
                         pipeline.release();
                         return callback(error);
                     }
 
+
+                    //callee측엑게서 받은 candidate가 있다면 추가해주고
                     if (candidatesQueue[calleeId]) {
                         while(candidatesQueue[calleeId].length) {
                             var candidate = candidatesQueue[calleeId].shift();
@@ -155,6 +214,8 @@ CallMediaPipeline.prototype.createPipeline = function(callerId, calleeId, ws, ca
                         }
                     }
 
+
+                    //onicecandiadte를 설정해주고
                     calleeWebRtcEndpoint.on('OnIceCandidate', function(event) {
                         var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
                         userRegistry.getById(calleeId).ws.send(JSON.stringify({
@@ -163,12 +224,14 @@ CallMediaPipeline.prototype.createPipeline = function(callerId, calleeId, ws, ca
                         }));
                     });
 
+
+                    //쿠렌토 내부의 caller와 calle endpoint를 엮어버리네...
                     callerWebRtcEndpoint.connect(calleeWebRtcEndpoint, function(error) {
                         if (error) {
                             pipeline.release();
                             return callback(error);
                         }
-
+                        //그리고 여기서 지금 양방향으로 엮고잇고.
                         calleeWebRtcEndpoint.connect(callerWebRtcEndpoint, function(error) {
                             if (error) {
                                 pipeline.release();
@@ -176,6 +239,8 @@ CallMediaPipeline.prototype.createPipeline = function(callerId, calleeId, ws, ca
                             }
                         });
 
+
+                        // 연결이 형성된 이후에,,, 파이프라인과 서로의 endpoint를 저장해두네..?
                         self.pipeline = pipeline;
                         self.webRtcEndpoint[callerId] = callerWebRtcEndpoint;
                         self.webRtcEndpoint[calleeId] = calleeWebRtcEndpoint;
@@ -187,6 +252,9 @@ CallMediaPipeline.prototype.createPipeline = function(callerId, calleeId, ws, ca
     })
 }
 
+
+
+//이 함수는 id를 건네주면 해당하는 내부의 endpoint에서 offer를 받고 answer를 만드네..
 CallMediaPipeline.prototype.generateSdpAnswer = function(id, sdpOffer, callback) {
     this.webRtcEndpoint[id].processOffer(sdpOffer, callback);
     this.webRtcEndpoint[id].gatherCandidates(function(error) {
@@ -200,6 +268,15 @@ CallMediaPipeline.prototype.release = function() {
     if (this.pipeline) this.pipeline.release();
     this.pipeline = null;
 }
+
+
+
+
+
+
+
+
+
 
 /*
  * Server startup
@@ -285,6 +362,10 @@ function getKurentoClient(callback) {
     });
 }
 
+
+
+
+
 function stop(sessionId) {
     if (!pipelines[sessionId]) {
         return;
@@ -309,6 +390,14 @@ function stop(sessionId) {
 
     clearCandidatesQueue(sessionId);
 }
+
+
+
+
+
+
+
+
 
 function incomingCallResponse(calleeId, from, callResponse, calleeSdp, ws) {
 

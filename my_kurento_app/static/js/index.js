@@ -179,13 +179,7 @@ function start() {
 		});
 	
 	
-	}
-
-
-
-		
-		
-		)
+	})
 	
 	// it is making webrtcpeerconnection in kurento-utils-way.
 	// it looks like it makes peerconnection,sets streams, and then add it into peerconnection.

@@ -19,7 +19,8 @@
 
 var ws = new WebSocket('wss://' + location.host + '/one2one');
 var director = {
-	studentsConnection : {}
+	studentsConnection : {},
+	camsConnection : {}
 };
 
 
@@ -87,12 +88,23 @@ ws.onmessage = function(message) {
 			console.log(parsedMessage.message)
 			startCall(parsedMessage.studentName,parsedMessage.roomName)
 			break
+		case "camShouldConnect":
+			console.log(parsedMessage.message)
+			camStartCall(parsedMessage.camName,parsedMessage.roomName)
+			break
 		case "iceCandidate":
 			console.log(parsedMessage.message)
 			director.studentsConnection[parsedMessage.studentName].peer.addIceCandidate(parsedMessage.candidate)
 			break
+		case "camIceCandidate":
+			console.log(parsedMessage.message)
+			director.camsConnection[parsedMessage.camName].peer.addIceCandidate(parsedMessage.candidate)
+			break
 		case 'serverToDirectorSdpAnswer':
 			director.studentsConnection[parsedMessage.studentName].peer.processAnswer(parsedMessage.sdpAnswer)
+			break;
+		case 'camServerToDirectorSdpAnswer':
+			director.camsConnection[parsedMessage.camName].peer.processAnswer(parsedMessage.sdpAnswer)
 			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
@@ -115,13 +127,14 @@ function startCall(studentName,roomName){
 			my_student_element.setAttribute("id",studentName);
 			my_label = document.createTextNode( studentName);
 			my_student_element.appendChild(my_label)
+			document.getElementById('videoLists').appendChild(my_student_element)
 		}
 		my_element = document.createElement('video');
 		my_element.setAttribute("id",studentName+"screen!");
 		my_element.setAttribute("width","240px");
 		my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
-		document.getElementById('videoLists').appendChild(my_student_element)
+		
 		my_student_element.appendChild(my_element)
 		//현재옵션:
 		//스트림 = 화면
@@ -173,7 +186,80 @@ function startCall(studentName,roomName){
 	//TODO
 }
 
+
+
+function camStartCall(camName,roomName){
+
+	console.log('webrtcpeer 생성을 시작합니다')
+	//화면캡처
+		my_student_element = null;
+		if (document.getElementById(camName)){
+			my_student_element = document.getElementById(camName)
+		}
+		else{
+			my_student_element = document.createElement('div');
+			my_student_element.setAttribute("id",camName);
+			my_label = document.createTextNode( camName);
+			my_student_element.appendChild(my_label)
+			document.getElementById('videoLists').appendChild(my_student_element)
+		}
+		my_element = document.createElement('video');
+		my_element.setAttribute("id",camName+"cam!");
+		my_element.setAttribute("width","240px");
+		my_element.setAttribute("height","180px");
+		my_element.setAttribute('autoplay', true);
+		
+		my_student_element.appendChild(my_element)
+		//현재옵션:
+		//스트림 = 화면
+		//로컬스트림 출력 세팅
+		options = {
+			remoteVideo: document.getElementById(camName+"cam!"),
+			onicecandidate:function (candidate) {
+				console.log("hi");
+				console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
+				//이 onicecandidate는 식별될 필요가있음
+				//이친구가 식별할건 아니고, 아마 server.js가 해야될텐데...
+				var message = {
+				   id : 'camDirectorOnIceCandidate',
+				   directorName:director.name,
+				   camName: camName,
+				   candidate : candidate
+				}
+				sendMessage(message);
+			}
+			
+		  }
 	
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function(error) {
+			if(error) return onError(error);
+			// i'll work with my peerconnection
+	
+			
+	
+			//create my offer
+			console.log("director측 offerSdp 생성하겠습니다.")
+			this.generateOffer((error,offerSdp)=>{
+				var message = {
+					id : 'camDirectorOffer',
+					directorName:director.name,
+					camName:camName,
+					roomName:director.room,
+					sdpOffer : offerSdp
+				}
+				sendMessage(message);
+			});
+			director.camsConnection[camName] = {}
+			director.camsConnection[camName].peer = this
+			console.log("reached directorStartCall end")
+		});
+	
+	
+
+
+	//TODO
+}
+
 
 function stop(){
 	//TODO
