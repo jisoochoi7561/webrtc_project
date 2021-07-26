@@ -425,9 +425,6 @@ wss.on('connection', function(ws) {
                 sessions[sessionId] = director
                 console.log("감독관 추가 완료")
                 
-                // 방에 이미 들어와있는 사람들과 소통해야 한다.
-                //todo todo todo
-                //todo todo todo
                 students = room.students
                 cams = room.cams  
                 for (let key in students) {
@@ -598,6 +595,10 @@ wss.on('connection', function(ws) {
         case "stop":
             stop(sessionId);
             break;
+
+            case "adminStop":
+                stop(sessionId);
+                break;
         
         default:
             ws.send(JSON.stringify({
@@ -1018,6 +1019,27 @@ function stop(sessionId) {
         }
         
     
+    }
+
+
+    else if (sessions[sessionId].constructor.name == "Director"){
+        var director = sessions[sessionId];
+        var roomName = director.roomName
+        delete sessions[sessionId];
+        delete rooms[roomName].directors[director.name]
+        for (key in director.endpointPerStudent){
+            if (director.endpointPerStudent[key].webRtcEndpoint){
+                director.endpointPerStudent[key].webRtcEndpoint.release()
+                delete director.endpointPerStudent[key]
+            }
+        }
+
+        for (key in director.endpointPerCam){
+            if (director.endpointPerCam[key].webRtcEndpoint){
+                director.endpointPerCam[key].webRtcEndpoint.release()
+                delete director.endpointPerCam[key]
+            }
+        }
     }
 
 }

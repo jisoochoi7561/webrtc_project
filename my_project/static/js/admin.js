@@ -270,7 +270,18 @@ function camStartCall(camName,roomName){
 
 
 function stop(){
-	
+	for (key in director.studentsConnection){
+		director.studentsConnection[key].peer.dispose()
+		delete director.studentsConnection[key]
+	}
+	for (key in director.camsConnection){
+		director.camsConnection[key].peer.dispose()
+		delete director.camsConnection[key]
+	}
+	var message = {
+		id : 'adminStop'
+	}
+	sendMessage(message);
 }
 
 
