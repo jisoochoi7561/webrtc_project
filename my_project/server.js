@@ -333,7 +333,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                             if (error) {
                                 console.log("createHubPort 에러 발생")
                             }
-                            outputHubport.connect(studentWebRtcEndpoint)
+                            outputHubport.connect(camWebRtcEndpoint)
                            
                         });
                         callback(null);
