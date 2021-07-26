@@ -209,10 +209,17 @@ $(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
 });
 
 
-function stop(){
-	//TODO
+function stop() {
+	console.log("작동을 정지하겠습니다.")
+	if (webRtcPeer) {
+		webRtcPeer.dispose();
+		webRtcPeer = null;
+	}
+	var message = {
+		id : 'stop'
+	}
+	sendMessage(message);
 }
-
 
 
 

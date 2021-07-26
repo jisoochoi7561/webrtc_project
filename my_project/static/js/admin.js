@@ -106,6 +106,9 @@ ws.onmessage = function(message) {
 		case 'camServerToDirectorSdpAnswer':
 			director.camsConnection[parsedMessage.camName].peer.processAnswer(parsedMessage.sdpAnswer)
 			break;
+		case "studentStopped":
+			studentStop(parsedMessage.studentName)
+			break
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -268,7 +271,14 @@ function stop(){
 
 
 
-
+function studentStop(studentName){
+	if (director.studentsConnection[studentName]){
+		delete director.studentsConnection[studentName]
+	}	
+	if( document.getElementById(studentName+"screen!")){
+		document.getElementById(studentName+"screen!").remove();
+	}
+}
 
 
 

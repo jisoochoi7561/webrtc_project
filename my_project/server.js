@@ -362,8 +362,7 @@ wss.on('connection', function(ws) {
 
     ws.on('close', function() {
         console.log('Connection ' + sessionId + ' closed');
-        // stop(sessionId);
-        // userRegistry.unregister(sessionId);
+        stop(sessionId);
     });
 
     ws.on('message', function(_message) {
@@ -547,7 +546,10 @@ wss.on('connection', function(ws) {
                 console.log("cam의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
                 camCall(sessionId, message.roomName,ws);
                 break;
-
+        case "stop":
+            stop(sessionId);
+            break;
+        
         default:
             ws.send(JSON.stringify({
                 id : 'error',
@@ -906,6 +908,42 @@ function camDirectorOnIceCandidate(sessionId,directorName,camName,candidate){
         director.endpointPerCam[camName].candidatesQueue.push(candidate);
     }
 }
+
+
+function stop(sessionId) {
+    if (!sessions[sessionId]) {
+        return;
+    }
+    if (sessions[sessionId].constructor.name == "Student"){
+        var student = sessions[sessionId];
+        var roomName = student.roomName
+        delete sessions[sessionId];
+        delete rooms[student.roomName].students[student.name]
+        if(student.pipeline){
+            student.pipeline.release();
+            for (let key in rooms[roomName].directors){
+                if (rooms[roomName].directors[key].endpointPerStudent[student.name] ){
+                    delete rooms[roomName].directors[key].endpointPerStudent[student.name] 
+                }
+                
+                message = {
+                    id:"studentStopped",
+                    studentName: student.name,
+                    roomName:student.roomName,
+                    message:student.name + " 학생에게 stop요청받음" 
+                }
+                rooms[roomName].directors[key].sendMessage(message)
+                console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
+            }
+        }
+        
+    
+    }
+    
+
+}
+
+
 
 
 app.use(express.static(path.join(__dirname, 'static')));
