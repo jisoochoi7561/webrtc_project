@@ -109,6 +109,9 @@ ws.onmessage = function(message) {
 		case "studentStopped":
 			studentStop(parsedMessage.studentName)
 			break
+		case "camStopped":
+			camStop(parsedMessage.camName)
+			break
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -277,6 +280,15 @@ function studentStop(studentName){
 	}	
 	if( document.getElementById(studentName+"screen!")){
 		document.getElementById(studentName+"screen!").remove();
+	}
+}
+
+function camStop(camName){
+	if (director.camsConnection[camName]){
+		delete director.camsConnection[camName]
+	}	
+	if( document.getElementById(camName+"cam!")){
+		document.getElementById(camName+"cam!").remove();
 	}
 }
 

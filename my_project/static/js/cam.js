@@ -126,12 +126,18 @@ function startCall(){
 			onicecandidate:onIceCandidate,
 
 		  }
+		  
 	
 		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
 			if(error) return console.log(error);
 			// i'll work with my peerconnection
 			my_conn = this.peerConnection;
-	
+			stream = this.getLocalStream();
+			stream.getVideoTracks()[0].addEventListener('ended', () => 
+			stop()
+);
+			console.log(typeof(stream))
+
 			// make onIceCandidate
 	
 			// my_conn.onicecandidate = ((e)=>{
@@ -220,6 +226,5 @@ function stop() {
 	}
 	sendMessage(message);
 }
-
 
 

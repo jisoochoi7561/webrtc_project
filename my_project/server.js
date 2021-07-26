@@ -941,6 +941,33 @@ function stop(sessionId) {
     }
     
 
+
+    else if (sessions[sessionId].constructor.name == "Cam"){
+        var cam = sessions[sessionId];
+        var roomName = cam.roomName
+        delete sessions[sessionId];
+        delete rooms[cam.roomName].cams[cam.name]
+        if(cam.pipeline){
+            cam.pipeline.release();
+            for (let key in rooms[roomName].directors){
+                if (rooms[roomName].directors[key].endpointPerCam[cam.name] ){
+                    delete rooms[roomName].directors[key].endpointPerCam[cam.name] 
+                }
+                
+                message = {
+                    id:"camStopped",
+                    camName: cam.name,
+                    roomName:cam.roomName,
+                    message:cam.name + " cam에게 stop요청받음" 
+                }
+                rooms[roomName].directors[key].sendMessage(message)
+                console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
+            }
+        }
+        
+    
+    }
+
 }
 
 
