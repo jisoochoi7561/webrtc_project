@@ -62,6 +62,8 @@ function register() {
 	director.name = directorName
 	director.room = roomName
 	director.studentsConnection = {}
+	director.camsConnection = {}
+
 	
 	var message = {
 		id : 'directorJoinRoom',
@@ -268,7 +270,7 @@ function camStartCall(camName,roomName){
 
 
 function stop(){
-	//TODO
+	
 }
 
 

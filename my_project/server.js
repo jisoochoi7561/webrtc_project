@@ -410,6 +410,7 @@ wss.on('connection', function(ws) {
                     rooms[message.roomName] = room
                     console.log(room.name + "방 생성 완료")
                 }
+
                 if (room.directors[message.directorName]){
                     console.log("이미 존재하는 감독관이름입니다.")
                     ws.send(JSON.stringify({
@@ -423,7 +424,39 @@ wss.on('connection', function(ws) {
                 room.directors[message.directorName] = director
                 sessions[sessionId] = director
                 console.log("감독관 추가 완료")
-            break;
+                
+                // 방에 이미 들어와있는 사람들과 소통해야 한다.
+                //todo todo todo
+                //todo todo todo
+                students = room.students
+                cams = room.cams  
+                for (let key in students) {
+                    student = students[key]
+                    director.endpointPerStudent[student.name] = {}
+                    message = {
+                        id:"shouldConnect",
+                        studentName: student.name,
+                        roomName:room.name,
+                        message:"학생 "+ student.name + "이 연결요청을 하고 있습니다." 
+                    }
+                    director.sendMessage(message)
+                    console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+                    
+                }
+                for (let key in cams) {
+                    cam = cams[key]
+                    director.endpointPerCam[cam.name] = {}
+                            message = {
+                                id:"camShouldConnect",
+                                camName: cam.name,
+                                roomName:room.name,
+                                message:"cam "+ cam.name + "이 연결요청을 하고 있습니다." 
+                            }
+                            director.sendMessage(message)
+                            console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+                }
+          
+                break;
 
 
 
