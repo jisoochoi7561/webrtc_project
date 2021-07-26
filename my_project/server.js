@@ -159,17 +159,20 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
+            self.sendMessage({id:"shouldStop"});
             return console.log("쿠렌토클라이언트 생성중 오류")
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
+                self.sendMessage({id:"shouldStop"});
                 return console.log("파이프라인 생성중 오류")
             }
             //쿠렌토측에 webrtcendpoint를 만든다.
             console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, studentWebRtcEndpoint) {
                 if (error) {
+                    self.sendMessage({id:"shouldStop"});
                     pipeline.release();
                     return console.log("엔드포인트 생성중 오류")
                 }
@@ -197,13 +200,16 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 //디스패처를 만든다.
                 pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
+                        self.sendMessage({id:"shouldStop"});
+                        pipeline.release();
                         return console.log("디스패처 생성 실패...")
-                        // pipeline.release();
                     }
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
                     dispatcher.createHubPort(function(error,hubport) {
                         if (error) {
+                            self.sendMessage({id:"shouldStop"});
+                            pipeline.release();
                             return console.log("createHubPort 에러 발생")
                         }
                         dispatcher.setSource(hubport)
@@ -232,6 +238,8 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         console.log("임시로 자기자신에게 연결합니다")
                         dispatcher.createHubPort(function(error,outputHubport) {
                             if (error) {
+                                self.sendMessage({id:"shouldStop"});
+                                pipeline.release();
                                 return console.log("createHubPort 에러 발생")
                             }
                             outputHubport.connect(studentWebRtcEndpoint)
@@ -258,17 +266,20 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
+            self.sendMessage({id:"shouldStop"});
             return console.log("쿠렌토클라이언트 생성중 오류")
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
+                self.sendMessage({id:"shouldStop"});
                 return console.log("파이프라인 생성중 오류")
             }
             //쿠렌토측에 webrtcendpoint를 만든다.
             console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, camWebRtcEndpoint) {
                 if (error) {
+                    self.sendMessage({id:"shouldStop"});
                     pipeline.release();
                     return console.log("엔드포인트 생성중 오류")
                 }
@@ -296,13 +307,16 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 //디스패처를 만든다.
                 pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
+                        self.sendMessage({id:"shouldStop"});
+                        pipeline.release();
                         return console.log("디스패처 생성 실패...")
-                        // pipeline.release();
                     }
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
                     dispatcher.createHubPort(function(error,hubport) {
                         if (error) {
+                            self.sendMessage({id:"shouldStop"});
+                            pipeline.release();
                             return console.log("createHubPort 에러 발생")
                         }
                         dispatcher.setSource(hubport)
@@ -330,6 +344,8 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         console.log("임시로 자기자신에게 연결합니다") 
                         dispatcher.createHubPort(function(error,outputHubport) {
                             if (error) {
+                                self.sendMessage({id:"shouldStop"});
+                                pipeline.release();
                                 return console.log("createHubPort 에러 발생")
                             }
                             outputHubport.connect(camWebRtcEndpoint)
@@ -586,13 +602,15 @@ function studentCall(sessionId,roomName,ws){
             console.log("createPipeline이후 콜백 실행하겠습니다.")
             var pipeline = sessions[sessionId].pipeline
             var studentWebRtcEndpoint = sessions[sessionId].webRtcEndpoint
-            if (error) {
+            if (error) {                    
+                student.sendMessage({id:"shouldStop"});
                 console.log("students.createPipeline에서 오류")
                 return ws.send(error);
             }
 
             studentWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
                 if (error) {
+                    student.sendMessage({id:"shouldStop"});
                     console.log("student kurentoside 프로세스 offer도중 에러")
                     return ws.send(error);
                 }
@@ -641,6 +659,7 @@ function camCall(sessionId,roomName,ws){
 
             camWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
                 if (error) {
+                    cam.sendMessage({id:"shouldStop"});
                     console.log("cam kurentoside 프로세스 offer도중 에러")
                     return ws.send(error);
                 }

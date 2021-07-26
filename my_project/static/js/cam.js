@@ -97,6 +97,9 @@ ws.onmessage = function(message) {
 		case 'serverToCamSdpAnswer':
 			webRtcPeer.processAnswer(parsedMessage.sdpAnswer)
 			break;
+		case 'shouldStop':
+			stop();
+			break;	
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}

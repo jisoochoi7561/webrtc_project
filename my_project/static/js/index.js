@@ -98,6 +98,9 @@ ws.onmessage = function(message) {
 		case 'serverToStudentSdpAnswer':
 			webRtcPeer.processAnswer(parsedMessage.sdpAnswer)
 			break;
+		case 'shouldStop':
+			stop();
+			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
