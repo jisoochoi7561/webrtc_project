@@ -159,19 +159,19 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
-            console.log("쿠렌토클라이언트 생성중 오류")
+            return console.log("쿠렌토클라이언트 생성중 오류")
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
-                console.log("파이프라인 생성중 오류")
+                return console.log("파이프라인 생성중 오류")
             }
             //쿠렌토측에 webrtcendpoint를 만든다.
             console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, studentWebRtcEndpoint) {
                 if (error) {
                     pipeline.release();
-                    console.log("엔드포인트 생성중 오류")
+                    return console.log("엔드포인트 생성중 오류")
                 }
                 //저장해둔 candidate가 있으면 추가한다
                 console.log("저장해둔 candidates가 있으면 추가합니다. ")
@@ -197,14 +197,14 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 //디스패처를 만든다.
                 pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
-                        console.log("디스패처 생성 실패...")
+                        return console.log("디스패처 생성 실패...")
                         // pipeline.release();
                     }
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
                     dispatcher.createHubPort(function(error,hubport) {
                         if (error) {
-                            console.log("createHubPort 에러 발생")
+                            return console.log("createHubPort 에러 발생")
                         }
                         dispatcher.setSource(hubport)
                         studentWebRtcEndpoint.connect(hubport)
@@ -232,7 +232,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         console.log("임시로 자기자신에게 연결합니다")
                         dispatcher.createHubPort(function(error,outputHubport) {
                             if (error) {
-                                console.log("createHubPort 에러 발생")
+                                return console.log("createHubPort 에러 발생")
                             }
                             outputHubport.connect(studentWebRtcEndpoint)
                            
@@ -258,19 +258,19 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
-            console.log("쿠렌토클라이언트 생성중 오류")
+            return console.log("쿠렌토클라이언트 생성중 오류")
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
-                console.log("파이프라인 생성중 오류")
+                return console.log("파이프라인 생성중 오류")
             }
             //쿠렌토측에 webrtcendpoint를 만든다.
             console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, camWebRtcEndpoint) {
                 if (error) {
                     pipeline.release();
-                    console.log("엔드포인트 생성중 오류")
+                    return console.log("엔드포인트 생성중 오류")
                 }
                 //저장해둔 candidate가 있으면 추가한다
                 console.log("저장해둔 candidates가 있으면 추가합니다. ")
@@ -296,14 +296,14 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 //디스패처를 만든다.
                 pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
-                        console.log("디스패처 생성 실패...")
+                        return console.log("디스패처 생성 실패...")
                         // pipeline.release();
                     }
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
                     dispatcher.createHubPort(function(error,hubport) {
                         if (error) {
-                            console.log("createHubPort 에러 발생")
+                            return console.log("createHubPort 에러 발생")
                         }
                         dispatcher.setSource(hubport)
                         camWebRtcEndpoint.connect(hubport)
@@ -330,7 +330,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         console.log("임시로 자기자신에게 연결합니다") 
                         dispatcher.createHubPort(function(error,outputHubport) {
                             if (error) {
-                                console.log("createHubPort 에러 발생")
+                                return console.log("createHubPort 에러 발생")
                             }
                             outputHubport.connect(camWebRtcEndpoint)
                            
@@ -688,7 +688,7 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
     pipeline.create('WebRtcEndpoint', function(error, directorWebRtcEndpoint) {
         if (error) {
             pipeline.release();
-            console.log("엔드포인트 생성중 오류")
+            return console.log("엔드포인트 생성중 오류")
         }
 
         director.endpointPerStudent[studentName].endpoint = directorWebRtcEndpoint
@@ -716,7 +716,7 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
         directorWebRtcEndpoint.processOffer(sdpoffer, function(error, callerSdpAnswer) {
             console.log(sdpoffer)
             if (error) {
-                console.log("director kurentoside 프로세스 offer도중 에러")
+                return console.log("director kurentoside 프로세스 offer도중 에러")
                 // return ws.send(error);
             }
             
@@ -739,7 +739,7 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
         rooms[roomName].students[studentName].dispatcher.createHubPort(function(error,outputHubport) {
             console.log("허브포트 생성완료")
             if (error) {
-                console.log("createHubPort 에러 발생")
+                return console.log("createHubPort 에러 발생")
             }
             outputHubport.connect(directorWebRtcEndpoint)
            
@@ -767,7 +767,7 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
     pipeline.create('WebRtcEndpoint', function(error, directorWebRtcEndpoint) {
         if (error) {
             pipeline.release();
-            console.log("엔드포인트 생성중 오류")
+            return console.log("엔드포인트 생성중 오류")
         }
 
         director.endpointPerCam[camName].endpoint = directorWebRtcEndpoint
@@ -795,7 +795,7 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
         directorWebRtcEndpoint.processOffer(sdpoffer, function(error, callerSdpAnswer) {
             console.log(sdpoffer)
             if (error) {
-                console.log("director kurentoside 프로세스 offer도중 에러")
+                return console.log("director kurentoside 프로세스 offer도중 에러")
                 // return ws.send(error);
             }
             
@@ -818,7 +818,7 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
         rooms[roomName].cams[camName].dispatcher.createHubPort(function(error,outputHubport) {
             console.log("허브포트 생성완료")
             if (error) {
-                console.log("createHubPort 에러 발생")
+                return console.log("createHubPort 에러 발생")
             }
             outputHubport.connect(directorWebRtcEndpoint)
            
