@@ -114,15 +114,29 @@ function startCall(studentName,roomName){
 
 	//화면캡처
 	navigator.mediaDevices.getDisplayMedia().then(stream =>{
-		my_stream = stream
-
+		my_stream = null;
+		my_student_element = null;
+		if (document.getElementById(studentName)){
+			my_student_element = document.getElementById(studentName)
+		}
+		else{
+			my_student_element = document.createElement('div');
+			my_student_element.setAttribute("id",studentName);
+		}
+		my_element = document.createElement('video');
+		my_element.setAttribute("id",studentName+"screen!");
+		my_element.setAttribute("width","240px");
+		my_element.setAttribute("height","180px");
+		my_element.setAttribute('autoplay', true);
+		document.getElementById('videoLists').appendChild(my_student_element)
+		my_student_element.appendChild(my_element)
 		//현재옵션:
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
 		options = {
 			videoStream: my_stream,
 			localVideo: document.getElementById('screenVideoFromStudent2'),
-			remoteVideo: document.getElementById('screenVideoFromStudent1'),
+			remoteVideo: document.getElementById(studentName+"screen!"),
 			onicecandidate:function (candidate) {
 				console.log("hi");
 				console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
@@ -139,7 +153,7 @@ function startCall(studentName,roomName){
 			
 		  }
 	
-		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function(error) {
 			if(error) return onError(error);
 			// i'll work with my peerconnection
 			my_conn = this.peerConnection;

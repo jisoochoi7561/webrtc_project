@@ -58,12 +58,12 @@ function tryCall() {
 
 	student.name = studentName
 	student.room = roomName
-	student.ws = ws
 	
 	var message = {
 		id : 'studentTryCall',
 		studentName : studentName,
-		roomName : roomName
+		roomName : roomName,
+		type:student.type
 	};
 	sendMessage(message);
 	console.info(student.name + "님이 " + student.room + " 에 접속시도합니다.")
