@@ -139,8 +139,8 @@ function startCall(studentName,roomName){
 		}
 		my_element = document.createElement('video');
 		my_element.setAttribute("id",studentName+"screen!");
-		my_element.setAttribute("width","240px");
-		my_element.setAttribute("height","180px");
+		// my_element.setAttribute("width","240px");
+		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
 		
 		my_student_element.appendChild(my_element)
@@ -213,8 +213,8 @@ function camStartCall(camName,roomName){
 		}
 		my_element = document.createElement('video');
 		my_element.setAttribute("id",camName+"cam!");
-		my_element.setAttribute("width","240px");
-		my_element.setAttribute("height","180px");
+		// my_element.setAttribute("width","240px");
+		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
 		
 		my_student_element.appendChild(my_element)

@@ -114,13 +114,13 @@ function startCall(){
 	console.log('화면전송을 시작합니다')
 	//화면캡처의 경우에는 audio는 필요하지 않음
 	var constraints = {
-		video: true,
+		video: {width: 854, height: 480},
 		audio: false
 	}
 
 
 	//화면캡처
-	navigator.mediaDevices.getDisplayMedia().then(stream =>{
+	navigator.mediaDevices.getDisplayMedia(constraints).then(stream =>{
 		my_stream = stream
 		stream.getVideoTracks()[0].addEventListener('ended', () => 
 			stop()

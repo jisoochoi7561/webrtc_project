@@ -113,11 +113,8 @@ function startCall(){
 	console.log('화면전송을 시작합니다')
 	//화면캡처의 경우에는 audio는 필요하지 않음
 	var constraints = {
-		video: {
-			width: 640,
-			framerate: 15
-		  },
-		audio: true
+		video: {width: 320, height: 240,framerate:15},
+		audio: false
 	}
 
 
@@ -127,7 +124,7 @@ function startCall(){
 			localVideo: document.getElementById('localstream'),
 			remoteVideo: document.getElementById('remotestream'),
 			onicecandidate:onIceCandidate,
-
+			mediaConstraints: constraints
 		  }
 		  
 	
