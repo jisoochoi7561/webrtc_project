@@ -321,6 +321,7 @@ function stop(){
 
 
 function studentStop(studentName){
+	console.log(studentName+"학생이 화면 공유를 끄셨습니다")
 	if (director.studentsConnection[studentName]){
 		delete director.studentsConnection[studentName]
 	}	
@@ -328,15 +329,24 @@ function studentStop(studentName){
 		console.log("remove screen!")
 		document.getElementById(studentName+"screen!").remove();
 	}
+	if( !document.getElementById(studentName+"cam!")){
+		console.log("div delete!")
+		document.getElementById(studentName).remove();
+	}
 }
 
 function camStop(camName){
+	console.log(camName+"학생이 캠 공유를 끄셨습니다")
 	if (director.camsConnection[camName]){
 		delete director.camsConnection[camName]
 	}	
 	if( document.getElementById(camName+"cam!")){
 		console.log("remove cam!")
 		document.getElementById(camName+"cam!").remove();
+	}
+	if( !document.getElementById(camName+"screen!")){
+		console.log("div delete!")
+		document.getElementById(camName).remove();
 	}
 }
 
