@@ -135,7 +135,9 @@ function startCall(studentName,roomName){
 			my_student_element = document.createElement('div');
 			my_student_element.setAttribute("id",studentName);
 			my_student_element.setAttribute("class","row");
-			my_label = document.createTextNode(studentName);
+			my_label = document.createElement('div');
+			my_label.setAttribute("class","alert alert-success")
+			my_label.innerHTML = studentName
 			my_student_element.appendChild(my_label)
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
@@ -221,8 +223,10 @@ function camStartCall(camName,roomName){
 		else{
 			my_student_element = document.createElement('div');
 			my_student_element.setAttribute("id",camName);
-			my_label = document.createTextNode( camName);
 			my_student_element.setAttribute("class","row");
+			my_label = document.createElement('div');
+			my_label.setAttribute("class","alert alert-success")
+			my_label.innerHTML = camName
 			my_student_element.appendChild(my_label)
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
