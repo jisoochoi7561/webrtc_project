@@ -160,7 +160,7 @@ function startCall(){
 		);
 		
 		stream.getVideoTracks()[0].applyConstraints({
-			width: 2560, height: 1440
+			width: 854, height: 480, frameRate:30
 		}).then(() => {
 			console.log("applyConstraints!!")
 		  })
