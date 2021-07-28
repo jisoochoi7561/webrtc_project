@@ -599,6 +599,23 @@ wss.on('connection', function(ws) {
             case "adminStop":
                 stop(sessionId);
                 break;
+
+
+            case "changeScreenResolution":
+                rooms[message.roomName].students[message.studentName].sendMessage(
+                {
+                    id:"changeResolution"
+                }
+                )
+                break
+
+            case "changeCamResolution":
+            rooms[message.roomName].cams[message.camName].sendMessage(
+            {
+                id:"changeResolution"
+            }
+            )
+            break
         
         default:
             ws.send(JSON.stringify({

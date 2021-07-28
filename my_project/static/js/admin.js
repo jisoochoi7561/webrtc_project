@@ -125,6 +125,7 @@ ws.onmessage = function(message) {
 function startCall(studentName,roomName){
 
 	console.log('webrtcpeer 생성을 시작합니다')
+	console.log(roomName)
 	//화면캡처
 		my_student_element = null;
 		if (document.getElementById(studentName)){
@@ -142,7 +143,14 @@ function startCall(studentName,roomName){
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
-		
+		reso_message = {
+			id: "changeScreenResolution",
+			studentName:studentName,
+			roomName:roomName
+		}
+		my_element.addEventListener('click', function() {
+			sendMessage(reso_message);
+		});
 		my_student_element.appendChild(my_element)
 		//현재옵션:
 		//스트림 = 화면
@@ -216,7 +224,14 @@ function camStartCall(camName,roomName){
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
-		
+		reso_message = {
+			id: "changeCamResolution",
+			camName:camName,
+			roomName:roomName
+		}
+		my_element.addEventListener('click', function() {
+			sendMessage(reso_message);
+		});
 		my_student_element.appendChild(my_element)
 		//현재옵션:
 		//스트림 = 화면

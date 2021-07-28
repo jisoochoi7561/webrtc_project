@@ -100,6 +100,41 @@ ws.onmessage = function(message) {
 		case 'shouldStop':
 			stop();
 			break;	
+
+			case 'changeResolution':
+			console.log("changeResol start")
+			console.log()
+			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width == 320){
+				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
+					width:1280,
+					height:720
+				}).then(() => {
+					console.log("applyConstraints!!")
+				  })
+				  .catch(e => {
+					console.log("applyConstraints FAILLLL!!")
+					console.log(e)
+					// The constraints could not be satisfied by the available devices.
+				  });
+				console.log("changeResol done")
+				break;
+			}
+			else{
+				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
+					width:320,
+					height:240
+				}).then(() => {
+					console.log("applyConstraints!!")
+				  })
+				  .catch(e => {
+					console.log("applyConstraints FAILLLL!!")
+					console.log(e)
+					// The constraints could not be satisfied by the available devices.
+				  });
+				console.log("changeResol done")
+				break;
+			}
+			
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -135,7 +170,25 @@ function startCall(){
 			stream = this.getLocalStream();
 			stream.getVideoTracks()[0].addEventListener('ended', () => 
 			stop()
+
+
+			
 );
+			// stream.getVideoTracks()[0].applyConstraints({
+			// 	width:1280,
+			// 	height:720
+			// }).then(() => {
+			// 	console.log("applyConstraints!!")
+			//   })
+			//   .catch(e => {
+			// 	console.log("applyConstraints FAILLLL!!")
+			// 	console.log(e)
+
+			// 	// The constraints could not be satisfied by the available devices.
+			//   });
+
+
+
 			console.log(typeof(stream))
 
 			// make onIceCandidate
