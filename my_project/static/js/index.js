@@ -103,19 +103,37 @@ ws.onmessage = function(message) {
 			break;
 		case 'changeResolution':
 			console.log("changeResol start")
-			webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
-				width:2560,
-				height:1440
-			}).then(() => {
-				console.log("applyConstraints!!")
-			  })
-			  .catch(e => {
-				console.log("applyConstraints FAILLLL!!")
-				console.log(e)
-				// The constraints could not be satisfied by the available devices.
-			  });
-			console.log("changeResol done")
-			break;
+			console.log()
+			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width == 854){
+				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
+					width:2560,
+					height:1440
+				}).then(() => {
+					console.log("applyConstraints!!")
+				  })
+				  .catch(e => {
+					console.log("applyConstraints FAILLLL!!")
+					console.log(e)
+					// The constraints could not be satisfied by the available devices.
+				  });
+				console.log("changeResol done")
+				break;
+			}
+			else{
+				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
+					width:854,
+					height:480
+				}).then(() => {
+					console.log("applyConstraints!!")
+				  })
+				  .catch(e => {
+					console.log("applyConstraints FAILLLL!!")
+					console.log(e)
+					// The constraints could not be satisfied by the available devices.
+				  });
+				console.log("changeResol done")
+				break;
+			}
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -135,15 +153,14 @@ function startCall(){
 
 
 	//화면캡처
-	navigator.mediaDevices.getDisplayMedia(constraints).then(stream =>{
+	navigator.mediaDevices.getDisplayMedia().then(stream =>{
 		my_stream = stream
 		stream.getVideoTracks()[0].addEventListener('ended', () => 
 			stop()
 		);
 		
 		stream.getVideoTracks()[0].applyConstraints({
-			video: {width: 2560, height: 1440, frameRate: { ideal: 20, max: 30 }},
-			audio: false
+			width: 2560, height: 1440
 		}).then(() => {
 			console.log("applyConstraints!!")
 		  })
