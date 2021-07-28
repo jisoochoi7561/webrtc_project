@@ -134,15 +134,18 @@ function startCall(studentName,roomName){
 		else{
 			my_student_element = document.createElement('div');
 			my_student_element.setAttribute("id",studentName);
+			my_student_element.setAttribute("class","row");
 			my_label = document.createTextNode(studentName);
 			my_student_element.appendChild(my_label)
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
 		my_element = document.createElement('video');
 		my_element.setAttribute("id",studentName+"screen!");
+		my_element.setA
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
+		my_element.setAttribute("style","display: inline")
 		let reso_message = {
 			id: "changeScreenResolution",
 			studentName:studentName,
@@ -219,10 +222,12 @@ function camStartCall(camName,roomName){
 			my_student_element = document.createElement('div');
 			my_student_element.setAttribute("id",camName);
 			my_label = document.createTextNode( camName);
+			my_student_element.setAttribute("class","row");
 			my_student_element.appendChild(my_label)
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
 		my_element = document.createElement('video');
+		my_element.setAttribute("style","display: inline")
 		my_element.setAttribute("id",camName+"cam!");
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
