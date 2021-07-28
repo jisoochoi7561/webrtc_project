@@ -106,8 +106,8 @@ ws.onmessage = function(message) {
 			console.log()
 			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width == 320){
 				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
-					width:1280,
-					height:720
+					width:640,
+					height:480
 				}).then(() => {
 					console.log("applyConstraints!!")
 				  })

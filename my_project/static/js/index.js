@@ -104,10 +104,10 @@ ws.onmessage = function(message) {
 		case 'changeResolution':
 			console.log("changeResol start")
 			console.log()
-			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width == 854){
+			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width == 320){
 				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
-					width:2560,
-					height:1440
+					width:1280,
+					height:720
 				}).then(() => {
 					console.log("applyConstraints!!")
 				  })
@@ -121,8 +121,8 @@ ws.onmessage = function(message) {
 			}
 			else{
 				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
-					width:854,
-					height:480
+					width:320,
+					height:240
 				}).then(() => {
 					console.log("applyConstraints!!")
 				  })
@@ -160,7 +160,7 @@ function startCall(){
 		);
 		
 		stream.getVideoTracks()[0].applyConstraints({
-			width: 854, height: 480, frameRate:30
+			width: 320, height: 240, frameRate:30
 		}).then(() => {
 			console.log("applyConstraints!!")
 		  })
