@@ -143,15 +143,18 @@ function startCall(studentName,roomName){
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
-		reso_message = {
+		let reso_message = {
 			id: "changeScreenResolution",
 			studentName:studentName,
 			roomName:roomName
 		}
+		
+		my_student_element.appendChild(my_element)
+
 		my_element.addEventListener('click', function() {
+			console.log(studentName);
 			sendMessage(reso_message);
 		});
-		my_student_element.appendChild(my_element)
 		//현재옵션:
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
@@ -224,15 +227,17 @@ function camStartCall(camName,roomName){
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
-		reso_message = {
+		let reso_message = {
 			id: "changeCamResolution",
 			camName:camName,
 			roomName:roomName
 		}
+		
+		my_student_element.appendChild(my_element)
+
 		my_element.addEventListener('click', function() {
 			sendMessage(reso_message);
 		});
-		my_student_element.appendChild(my_element)
 		//현재옵션:
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
