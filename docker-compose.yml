@@ -1,12 +1,6 @@
 version: "3.7"
 
 services:
-        nodejs:
-                container_name: nodejs
-                image: "my_express_app"
-                volumes:
-                        - ./node_app_local:/app 
-                network_mode: "host"
 
         kurento:
                 container_name: kurento
