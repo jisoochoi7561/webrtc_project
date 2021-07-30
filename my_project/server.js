@@ -761,7 +761,7 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
             return console.log("엔드포인트 생성중 오류")
         }
 
-        director.endpointPerStudent[studentName].endpoint = directorWebRtcEndpoint
+        director.endpointPerStudent[studentName].webRtcEndpoint = directorWebRtcEndpoint
         //저장해둔 candidate가 있으면 추가한다
         console.log("저장해둔 candidates가 있으면 추가합니다. ")
         if (director.endpointPerStudent[studentName].candidatesQueue) {
@@ -840,7 +840,7 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
             return console.log("엔드포인트 생성중 오류")
         }
 
-        director.endpointPerCam[camName].endpoint = directorWebRtcEndpoint
+        director.endpointPerCam[camName].webRtcEndpoint = directorWebRtcEndpoint
         //저장해둔 candidate가 있으면 추가한다
         console.log("저장해둔 candidates가 있으면 추가합니다. ")
         if (director.endpointPerCam[camName].candidatesQueue) {
