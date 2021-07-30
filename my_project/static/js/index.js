@@ -88,7 +88,6 @@ ws.onmessage = function(message) {
 			}else{
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
 				$('#call').attr('disabled', false);
-				startCall();
 			}
 			break
 		case "sessionError":
