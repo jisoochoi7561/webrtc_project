@@ -31,11 +31,17 @@ window.onload = function() {
 	document.getElementById('camCall').addEventListener('click', function() {
 		tryCall();
 	});
+	//사파리용 공유버튼 추가!
+	document.getElementById('call').addEventListener('click', function() {
+		startCall();
+	});
 
 	//종료버튼을 누르면 시험을 종료한다.
 	document.getElementById('camStop').addEventListener('click', function() {
 		stop();
 	});
+
+	$('#call').attr('disabled', true);
 }
 
 window.onbeforeunload = function() {
@@ -81,8 +87,8 @@ ws.onmessage = function(message) {
 			if (parsedMessage.value == "false"){
 				console.log("존재하지 않는 방입니다.확인해주세요.")
 			}else{
-				console.log("방이 확인 되었습니다. 연결을 시작합니다.")
-				startCall();
+				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
+				$('#call').attr('disabled', false);
 			}
 			break
 		case "sessionError":
@@ -222,7 +228,7 @@ function startCall(){
 		});
 	
 	
-
+		$('#call').attr('disabled', true);
 
 	//TODO
 }
