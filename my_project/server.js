@@ -1064,4 +1064,4 @@ function stop(sessionId) {
 
 
 
-app.use(express.static(path.join(__dirname, 'static')));
+//app.use(express.static(path.join(__dirname, 'static')));
