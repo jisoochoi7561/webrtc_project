@@ -17,7 +17,7 @@
 
 
 
-var ws = new WebSocket('wss://' + 'jisoochoi.shop' + '/one2one');
+var ws = new WebSocket('wss://' + location.host + '/websocket');
 var director = {
 	studentsConnection : {},
 	camsConnection : {}

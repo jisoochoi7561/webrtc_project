@@ -23,7 +23,7 @@ var url = require('url');
 var kurento = require('kurento-client');
 var fs    = require('fs');
 var https = require('https');
-//var http = require('http');
+var http = require('http');
 
 
 
@@ -32,16 +32,16 @@ var https = require('https');
 
 var argv = minimist(process.argv.slice(2), {
   default: {
-      as_uri: "https://localhost:443",
+      as_uri: "http://localhost:8080",
       ws_uri: "ws://localhost:8888/kurento"
   }
 });
 
-var options =
-{
-  cert:  fs.readFileSync('/etc/letsencrypt/live/jisoochoi.shop/fullchain.pem'),
-  key: fs.readFileSync('/etc/letsencrypt/live/jisoochoi.shop/privkey.pem')
-};
+//var options =
+//{
+//  cert:  fs.readFileSync('/etc/letsencrypt/live/jisoochoi.shop/fullchain.pem'),
+//  key: fs.readFileSync('/etc/letsencrypt/live/jisoochoi.shop/privkey.pem')
+//};
 
 var app = express();
 var idCounter = 0;
@@ -70,15 +70,15 @@ var sessions = {}
 
 var asUrl = url.parse(argv.as_uri);
 var port = asUrl.port;
-var server = https.createServer(options,app).listen(port, function() {
+var server = http.createServer(app).listen(port, function() {
     console.log('노드 앱 서버가 열렸습니다.');
     console.log(url.format(asUrl) + ' 을 브라우저로 여세요');
     console.log('관리자라면 '+url.format(asUrl) + '/admin.html 을 브라우저로 여세요');
 });
 
 var wss = new ws.Server({
-    server : server,
-    path : '/one2one'
+	server:server,
+	path:'/websocket'
 });
 
 
