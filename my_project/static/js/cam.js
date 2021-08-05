@@ -161,7 +161,7 @@ function startCall(){
 
 	my_configuration = {
 		iceServers : [
-			{"urls":"turn:168.188.129.2007:8080","username":"kurento","credential":"kurento"}]
+			{"urls":"turn:168.188.129.207:8080","username":"kurento","credential":"kurento"}]
 	}
 	//현재옵션:
 		options = {
