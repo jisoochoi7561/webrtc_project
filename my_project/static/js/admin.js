@@ -148,6 +148,8 @@ function startCall(studentName,roomName){
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
+		my_element.setAttribute('muted', true);
+		my_element.setAttribute('playsinline', true);
 		my_element.setAttribute("style","display: inline")
 		let reso_message = {
 			id: "changeScreenResolution",
@@ -238,6 +240,8 @@ function camStartCall(camName,roomName){
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);
+		my_element.setAttribute('muted', true);
+		my_element.setAttribute('playsinline', true);
 		let reso_message = {
 			id: "changeCamResolution",
 			camName:camName,
