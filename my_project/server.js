@@ -32,7 +32,7 @@ var http = require('http');
 
 var argv = minimist(process.argv.slice(2), {
   default: {
-      as_uri: "http://localhost:8080",
+      as_uri: "http://localhost:8443",
       ws_uri: "ws://localhost:8888/kurento"
   }
 });

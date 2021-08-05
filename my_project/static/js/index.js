@@ -180,10 +180,8 @@ function startCall(){
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
 		my_configuration = {
-			iceServers = [
+			iceServers : [
 				{"urls":"turn:168.188.129.2007:8080","username":"kurento","credential":"kurento"}]
-
-
 		}
 		options = {
 			videoStream: my_stream,
