@@ -6,3 +6,7 @@ services:
                 container_name: kurento
                 image: "kurento/kurento-media-server:latest"
                 network_mode: "host"
+                volumes:
+                  - type: bind
+                    source: ./etc-kurento
+                    target: /etc/kurento
