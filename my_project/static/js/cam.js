@@ -41,7 +41,7 @@ window.onload = function() {
 		stop();
 	});
 
-	$('#call').attr('disabled', true);
+	document.getElementById('call').style.display = 'none';
 }
 
 window.onbeforeunload = function() {
@@ -88,7 +88,7 @@ ws.onmessage = function(message) {
 				console.log("존재하지 않는 방입니다.확인해주세요.")
 			}else{
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
-				$('#call').attr('disabled', false);
+				document.getElementById('call').style.display = 'inline-block';
 			}
 			break
 		case "sessionError":
@@ -228,8 +228,7 @@ function startCall(){
 		});
 	
 	
-		$('#call').attr('disabled', true);
-
+		document.getElementById('call').style.display = 'none';
 	//TODO
 }
 
