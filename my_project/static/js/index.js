@@ -181,7 +181,7 @@ function startCall(){
 		//로컬스트림 출력 세팅
 		my_configuration = {
 			iceServers : [
-				{"urls":"turn:168.188.129.207:8080","username":"kurento","credential":"kurento"}]
+				{"urls":"turn:35.175.127.77","username":"kurento","credential":"kurento"}]
 		}
 		options = {
 			videoStream: my_stream,
