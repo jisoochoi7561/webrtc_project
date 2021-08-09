@@ -1,5 +1,5 @@
 {
-  "name": "kurento-one2one-call",
+  "name": "jisooWebRTC",
   "version": "6.16.1-dev",
   "private": true,
   "scripts": {

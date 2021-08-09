@@ -22,7 +22,6 @@ var minimist = require('minimist');
 var url = require('url');
 var kurento = require('kurento-client');
 var fs    = require('fs');
-var https = require('https');
 var http = require('http');
 
 
