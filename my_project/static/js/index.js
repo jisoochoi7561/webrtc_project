@@ -263,6 +263,14 @@ function sendMessage(message) {
 	ws.send(jsonMessage);
 }
 
+/**
+ * Lightbox utility (to display media pipeline image in a modal dialog)
+ */
+$(document).delegate('*[data-toggle="lightbox"]', 'click', function(event) {
+	event.preventDefault();
+	$(this).ekkoLightbox();
+});
+
 
 function stop() {
 	console.log("작동을 정지하겠습니다.")
