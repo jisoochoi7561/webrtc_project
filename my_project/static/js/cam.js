@@ -40,7 +40,6 @@ window.onload = function() {
 		stop();
 	});
 
-	document.getElementById('call').style.display = 'none';
 }
 
 window.onbeforeunload = function() {
@@ -49,6 +48,9 @@ window.onbeforeunload = function() {
 
 // 자기자신의 정보를 이 페이지에 세팅해두고, 서버에 식별용으로 알려준다.
 function tryCall() {
+	if(cam){
+		stop();
+	}
 	var camName = document.getElementById('camName').value;
 	if (camName == '') {
 		window.alert("학생 이름이 비어있습니다.. 반드시 써주셔야 합니다.");
@@ -87,7 +89,6 @@ ws.onmessage = function(message) {
 				console.log("존재하지 않는 방입니다.확인해주세요.")
 			}else{
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
-				document.getElementById('call').style.display = 'inline-block';
 			}
 			break
 		case "sessionError":
@@ -149,7 +150,10 @@ ws.onmessage = function(message) {
 
 
 function startCall(){
-
+	if(webRtcPeer){
+		console.log("이미 전송중입니다.")
+		return;
+	}
 	console.log('화면전송을 시작합니다')
 	//화면캡처의 경우에는 audio는 필요하지 않음
 	var constraints = {
@@ -227,7 +231,6 @@ function startCall(){
 		});
 	
 	
-		document.getElementById('call').style.display = 'none';
 	//TODO
 }
 
@@ -238,6 +241,7 @@ function onIceCandidate(candidate) {
 	console.log('이 CAM 의 candidate: ' + JSON.stringify(candidate));
 	//이 onicecandidate는 식별될 필요가있음
 	//이친구가 식별할건 아니고, 아마 server.js가 해야될텐데...
+	
 	var message = {
 	   id : 'camOnIceCandidate',
 	   camName: cam.name,
@@ -267,9 +271,13 @@ function sendMessage(message) {
 
 function stop() {
 	console.log("작동을 정지하겠습니다.")
+	
 	if (webRtcPeer) {
 		webRtcPeer.dispose();
 		webRtcPeer = null;
+	}
+	if (cam){
+		cam = {};
 	}
 	var message = {
 		id : 'stop'
