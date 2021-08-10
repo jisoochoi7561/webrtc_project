@@ -17,6 +17,14 @@
   <script src="bower_components/kurento-utils/js/kurento-utils.js"></script>
 
   <script src="js/index.js"></script>
+
+
+  <script src="https://unpkg.com/react@17/umd/react.development.js" crossorigin></script>
+  <script src="https://unpkg.com/react-dom@17/umd/react-dom.development.js" crossorigin></script>
+
+  <!-- 만든 React 컴포넌트를 실행. -->
+  <script src="like_button.js"></script>
+
   <title>CNU classroom</title>
 </head>
 
@@ -61,7 +69,7 @@
           <div class="col-md-3">
               <input id="roomName" name="roomName" class="form-control" type="text"/> 
           </div>
-          
+
           <div class="col-md-3 text-right">
             <a id="studentCall" href="#" class="btn btn-success">
               <span class="glyphicon glyphicon-play"></span> 입장</a>
@@ -87,7 +95,7 @@
 
 
       <div class = "col-md-6">
-        이곳에는 채팅창이 들어올 예정임니당
+        <div id="like_button_container"></div>
           
 
 
