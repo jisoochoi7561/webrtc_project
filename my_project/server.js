@@ -458,14 +458,14 @@ wss.on('connection', function(ws) {
 
 
             case 'studentTryCall':
-                if (sessions[sessionId]){
-                    console.log("한 세션에서 두개의 student 로그인시도. 차단합니다.")
-                    ws.send(JSON.stringify({
-                        id : 'sessionError',
-                        message : '한 세션에서 두개의 student 로그인시도. 차단합니다. 재접속을 권장합니다.' + message
-                    }));
-                    break;
-                }
+                // if (sessions[sessionId]){
+                //     console.log("한 세션에서 두개의 student 로그인시도. 차단합니다.")
+                //     ws.send(JSON.stringify({
+                //         id : 'sessionError',
+                //         message : '한 세션에서 두개의 student 로그인시도. 차단합니다. 재접속을 권장합니다.' + message
+                //     }));
+                //     break;
+                // }
                 roomName = message.roomName
                 if (!rooms[roomName]){
                     console.log("학생이 존재하지 않는 방에 접근중입니다.")
