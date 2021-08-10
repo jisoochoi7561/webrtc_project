@@ -1,5 +1,6 @@
 <!DOCTYPE html>
 <html>
+
   <head>
     <meta charset="utf-8">
     <meta http-equiv="cache-control" content="no-cache">
@@ -19,85 +20,85 @@
     <title>cnu classroom Director</title>
   </head>
  
- 
- 
- 
- 
-  <body>
-    <header>
-      <div class="navbar">
-        <div class="container">
-          <div class="navbar-header">
-            <button type="button" class="navbar-toggle" data-toggle="collapse" data-target=".navbar-collapse"></button>
-            <a class="navbar-brand" href=".">충남대 시험감독 관리자페이지</a>
-          </div>
-          <div class="collapse navbar-collapse"
-            id="bs-example-navbar-collapse-1">
-            <ul class="nav navbar-nav navbar-right">
-              <li>
-                <a href="https://github.com/jisoochoi7561/webrtc_project">
-                  <span class="glyphicon glyphicon-file"></span> Source Code</a>
-              </li>
-            </ul>
-          </div>
-        </div>
-      </div>
-    </header>
 
-    <div class="container">
-      <div class="page-header">
-        <h1>welcome to admin page</h1>
-        <p>
-          <ol>
-            <li>
-              감독관 이름과 방이름을 입력하고 "방입장"버튼을 누르신 후
-            </li>
-            <li>
-              학생들에게 방이름을 알려주세요.
-            </li>
-            <li>
-              시험종료버튼을 누르면 방이 닫힙니다.
-            </li>
-          </ol>
-           <br/>
-          <br/>
-          
-        </p>
-      </div>
-      <div class="row">
-        <div class="col-md-5">
+
+
+
+
+<body>
+
+  <header>
+
+<nav class="navbar navbar-dark bg-primary">
+  <div class="container-fluid">
+    <a class="navbar-brand" href="#">CNU classroom</a>
+        <div class="nav-item dropdown">
+          <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
+            <span class="navbar-toggler-icon"></span>
+          </a>
+          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
+            <li><a class="dropdown-item" href="https://github.com/jisoochoi7561/webrtc_project">소스코드 보러가기</a></li>
+            <li><a class="dropdown-item" href="mailto:jisoochoi7561@gmail.com">개발자에게 메일보내기</a></li>
+          </ul>
+        </div>
+  </div>
+</nav>
+
+
+
+
+
+
+
+    <div class="container-fluid">
+      <div class = "row">
+      <div class="col-md-6">
+        <div class = "row">
           <label class="control-label" for="directorName">감독관 이름</label>
-          <div class="row">
-            <div class="col-md-6">
-              <input id="directorName" name="directorName" class="form-control" type="text"/>
-            </div>
+          <div class="col-md-3">
+            <input id="directorName" name="directorName" class="form-control" type="text"/>
           </div>
-          <br/>
-          <br/> 
           <label class="control-label" for="roomName">방이름</label>
-          <div class="row">
-            <div class="col-md-6">
-              <input id="roomName" name="roomName" class="form-control" type="text">
-            </div>
-            <div class="col-md-6 text-right">
-              <a id="directorJoin" href="#" class="btn btn-success">
-                <span class="glyphicon glyphicon-play"></span>방입장</a>
-              <a id="directorTerminate" href="#" class="btn btn-danger">
-                <span class="glyphicon glyphicon-stop"></span> 종료</a>
-            </div>
+          <div class="col-md-3">
+              <input id="roomName" name="roomName" class="form-control" type="text"/> 
           </div>
-          <br/>
+          
+          <div class="col-md-3 text-right">
+            <a id="directorJoin" href="#" class="btn btn-success">
+              <span class="glyphicon glyphicon-play"></span>방입장</a>
+            <a id="directorTerminate" href="#" class="btn btn-danger">
+              <span class="glyphicon glyphicon-stop"></span>종료</a>
+          </div>
+        </div>
 
+
+        <div class="row">
+          <div id="videoLists" class="row">
+          </div>
         </div>
-       
+
+        
       </div>
-      <div class="row">
-        <div id="videoLists" class="row">
-        </div>
+
+
+
+
+      <div class = "col-md-6">
+        이곳에는 채팅창이 들어올 예정임니당
+          
+
+
+
       </div>
+
+
+      
     </div>
-  </body>
+
+    </div>
 
 
 
-  </html>
+</body>
+
+</html>
