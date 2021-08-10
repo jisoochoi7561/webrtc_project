@@ -20,7 +20,7 @@
 var ws = new WebSocket('wss://' + location.host + '/websocket');
 var student = {};
 var webRtcPeer ; 
-
+var chatBox;
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
@@ -37,6 +37,7 @@ window.onload = function() {
 	document.getElementById('studentStop').addEventListener('click', function() {
 		stop();
 	});
+	chatBox = document.getElementById('chatBox')
 	
 }
 
@@ -79,6 +80,7 @@ function tryCall() {
 ws.onmessage = function(message) {
 	var parsedMessage = JSON.parse(message.data);
 	console.info('Received message: ' + message.data);
+	chatBox.innerHTML += "hello two <br>";
 	switch (parsedMessage.id) {
 		case "sameNameError":
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )

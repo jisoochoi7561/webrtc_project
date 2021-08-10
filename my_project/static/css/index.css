@@ -25,5 +25,7 @@ body {
 
 }
 
-
+.rounded-circle{
+	border-radius:5px;
+}
 
