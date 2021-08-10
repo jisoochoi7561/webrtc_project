@@ -178,16 +178,11 @@ function startCall(){
 		//현재옵션:
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
-		my_configuration = {
-			iceServers : [
-				{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
-		}
 		options = {
 			videoStream: my_stream,
 			localVideo: document.getElementById('localstream'),
 			remoteVideo: document.getElementById('remotestream'),
-			onicecandidate:onIceCandidate,
-			configuration:my_configuration
+			onicecandidate:onIceCandidate
 		  }
 	
 		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {

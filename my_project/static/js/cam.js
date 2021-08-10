@@ -158,17 +158,13 @@ function startCall(){
 	}
 
 
-	my_configuration = {
-		iceServers : [
-			{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
-	}
+
 	//현재옵션:
 		options = {
 			localVideo: document.getElementById('localstream'),
 			remoteVideo: document.getElementById('remotestream'),
 			onicecandidate:onIceCandidate,
-			mediaConstraints:constraints,
-			configuration:my_configuration
+			mediaConstraints:constraints
 		  }
 		  
 	
