@@ -143,7 +143,6 @@ function startCall(studentName,roomName){
 		}
 		my_element = document.createElement('video');
 		my_element.setAttribute("id",studentName+"screen!");
-		my_element.setA
 		// my_element.setAttribute("width","240px");
 		// my_element.setAttribute("height","180px");
 		my_element.setAttribute('autoplay', true);

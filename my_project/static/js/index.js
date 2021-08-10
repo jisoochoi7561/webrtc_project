@@ -38,9 +38,6 @@ window.onload = function() {
 		stop();
 	});
 	
-
-	//$('call').prop('disabled',true);
-	document.getElementById('call').style.display = 'none';
 }
 
 window.onbeforeunload = function() {
@@ -49,6 +46,9 @@ window.onbeforeunload = function() {
 
 // 자기자신의 정보를 이 페이지에 세팅해두고, 서버에 식별용으로 알려준다.
 function tryCall() {
+	if(student){
+		stop();
+	}
 	var studentName = document.getElementById('studentName').value;
 	if (studentName == '') {
 		window.alert("학생 이름이 비어있습니다.. 반드시 써주셔야 합니다.");
@@ -148,6 +148,10 @@ ws.onmessage = function(message) {
 
 
 function startCall(){
+	if(webRtcPeer){
+		console.log("이미 전송중입니다.")
+		return;
+	}
 	
 	console.log('화면전송을 시작합니다')
 	//화면캡처의 경우에는 audio는 필요하지 않음
@@ -222,8 +226,7 @@ function startCall(){
 	
 	
 	})
-	document.getElementById('call').style.display = 'none';
-	//TODO
+
 }
 
 
@@ -265,6 +268,9 @@ function stop() {
 	if (webRtcPeer) {
 		webRtcPeer.dispose();
 		webRtcPeer = null;
+	}
+	if (student) {
+		student = {};
 	}
 	var message = {
 		id : 'stop'
