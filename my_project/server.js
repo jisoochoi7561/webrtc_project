@@ -796,7 +796,7 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
     //todo
 
     var pipeline =rooms[roomName].students[studentName].pipeline
-    if(!pipeline){
+    if(!rooms[roomName].students[studentName].dispatcher){
         return
     }
 //파이프라인을 가져왔으므로, 받아논 offer를 실행해서 연결을 형성한다.
@@ -877,7 +877,9 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
     //todo
 
     var pipeline =rooms[roomName].cams[camName].pipeline
-
+    if(!rooms[roomName].cams[camName].dispatcher){
+        return
+    }
 //파이프라인을 가져왔으므로, 받아논 offer를 실행해서 연결을 형성한다.
     console.log("파이프라인 획득했습니다. 연결시도합니다. 실행하겠습니다.")
     console.log("파이프라인"+pipeline)
