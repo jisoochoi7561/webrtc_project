@@ -630,6 +630,7 @@ wss.on('connection', function(ws) {
                         }
                     }
                     else if (message.to == "all"){
+                        console.log("Bb")
                         directors = rooms[message.room].directors
                         for (let key in directors) {
                             director = directors[key]
@@ -657,7 +658,6 @@ wss.on('connection', function(ws) {
                 }else{
                     console.log("룸없어요 에러")
                 }
-                console.log("hi");
                 break;
 
                 
