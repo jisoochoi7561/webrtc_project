@@ -429,27 +429,40 @@ wss.on('connection', function(ws) {
                 for (let key in students) {
                     student = students[key]
                     director.endpointPerStudent[student.name] = {}
-                    message = {
-                        id:"shouldConnect",
-                        studentName: student.name,
-                        roomName:room.name,
-                        message:"학생 "+ student.name + "이 연결요청을 하고 있습니다." 
+                    if(student.dispatcher){
+                        message = {
+                            id:"shouldConnect",
+                            studentName: student.name,
+                            roomName:room.name,
+                            message:"학생 "+ student.name + "이 연결요청을 하고 있습니다." 
+                        }
+                        director.sendMessage(message)
+                        console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+                        
                     }
-                    director.sendMessage(message)
-                    console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+                    else{
+                        console.log("접속은 했으나 아직 공유를 안한 학생은 넘어갑니다.")
+                    }
                     
                 }
                 for (let key in cams) {
                     cam = cams[key]
                     director.endpointPerCam[cam.name] = {}
-                            message = {
-                                id:"camShouldConnect",
-                                camName: cam.name,
-                                roomName:room.name,
-                                message:"cam "+ cam.name + "이 연결요청을 하고 있습니다." 
-                            }
-                            director.sendMessage(message)
-                            console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+
+                    if(cam.dispatcher){
+                        message = {
+                            id:"camShouldConnect",
+                            camName: cam.name,
+                            roomName:room.name,
+                            message:"cam "+ cam.name + "이 연결요청을 하고 있습니다." 
+                        }
+                        director.sendMessage(message)
+                        console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
+                    }
+                    else{
+                        console.log("접속은 했으나 아직 공유를 안한 학생은 넘어갑니다.")
+                    }
+                           
                 }
           
                 break;
