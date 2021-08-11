@@ -113,6 +113,7 @@ ws.onmessage = function(message) {
 			}else{
 				student.name = tempname
 				student.room = temproom
+				systemAddMessageToChatbox("연결되었습니다. 이제 감독관에게 채팅할 수 있습니다.")
 				systemAddMessageToChatbox("공유시작버튼을 눌러 화면공유를 시작해주세요.")
 			}
 			break

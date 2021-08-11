@@ -53,6 +53,10 @@ window.onload = function() {
             sendChatMessage()
         }
     });
+
+	systemAddMessageToChatbox("충남대학교 시험감독 프로그램에 오신 것을 환영합니다. 감독관 이름과 방이름을 입력한 후 다른 학생들과 감독관들에게 방이름을 알려주세요.")
+	systemAddMessageToChatbox("영상을 클릭하면 확대/축소가 가능합니다. 한번에 3개이상의 확대는 자제해주세요.")
+	systemAddMessageToChatbox("방에 입장한 후엔 채팅기능을 이용하실 수 있으며, 화면의 이름을 클릭하면 바로 귓속말을 보낼 수 있습니다.")
 }
 
 window.onbeforeunload = function() {
@@ -331,13 +335,29 @@ function camStartCall(camName,roomName){
 function stop(){
 	systemAddMessageToChatbox('접속을 종료합니다.')
 	for (key in director.studentsConnection){
-		director.studentsConnection[key].peer.dispose()
-		document.getElementById(key+"screen!").remove();
+		if (director.studentsConnection[key].peer){
+			director.studentsConnection[key].peer.dispose()
+		}
+		if (document.getElementById(key+"screen!")){
+			document.getElementById(key+"screen!").remove();
+		}
+		if( !document.getElementById(studentName+"cam!")){
+			console.log("div delete!")
+			document.getElementById(studentName).remove();
+		}
 		delete director.studentsConnection[key]
 	}
 	for (key in director.camsConnection){
-		director.camsConnection[key].peer.dispose()
-		document.getElementById(key+"cam!").remove();
+		if(director.camsConnection[key].peer){
+			director.camsConnection[key].peer.dispose()
+		}
+		if (document.getElementById(key+"cam!")){
+			document.getElementById(key+"cam!").remove();
+		}
+		if( !document.getElementById(camName+"screen!")){
+			console.log("div delete!")
+			document.getElementById(camName).remove();
+		}
 		delete director.camsConnection[key]
 	}
 	var message = {
