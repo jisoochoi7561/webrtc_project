@@ -635,7 +635,7 @@ wss.on('connection', function(ws) {
                         directors = rooms[message.room].directors
                         for (let key in directors) {
                             director = directors[key]
-                            if (ws!= student.ws){
+                            if (ws!= director.ws){
                                 director.sendMessage(message)
                                 console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
                             }
@@ -647,7 +647,7 @@ wss.on('connection', function(ws) {
                         directors = rooms[message.room].directors
                         for (let key in directors) {
                             director = directors[key]
-                            if(ws!= student.ws){
+                            if(ws!= director.ws){
                                 director.sendMessage(message)
                                 console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
                             }
