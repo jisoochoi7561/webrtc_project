@@ -313,7 +313,7 @@ message = {
 	to:to
 }
 sendMessage(message)
-addMessageToChatbox(message.from,message.text,"black")
+addMessageToChatbox(message.from,message.text,"blue")
 // sendMessage(message);
 //비운다.
 chatText.value=""
@@ -321,6 +321,7 @@ chatText.value=""
 
 
 function addMessageToChatbox(name,message,color = "black"){
+	if(message==""){return}
 	console.log("리시빙~")
 	var now = new Date();
 	chatBox.innerHTML = `${chatBox.innerHTML} <span style='color:${color}'> ${name}: ${message} - ${now.getHours()}시 ${now.getMinutes()}분 <br></span>`
