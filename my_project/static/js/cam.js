@@ -74,7 +74,7 @@ function tryCall() {
 	tempcam=camName
 	temproom=roomName
 	sendMessage(message);
-	console.info(cam.name + " cam 님이 " + cam.room + " 에 접속시도합니다.")
+	console.info(tempcam + " cam 님이 " + temproom + " 에 접속시도합니다.")
 }
 
 

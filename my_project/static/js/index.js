@@ -348,5 +348,4 @@ function addMessageToChatbox(name,message,color = "black"){
 
 function systemAddMessageToChatbox(message){
 	addMessageToChatbox("프로그램",message,"green")
-
 }

@@ -95,11 +95,13 @@ ws.onmessage = function(message) {
 	console.info('Received message: ' + message.data);
 	switch (parsedMessage.id) {
 		case "sameNameError":
+			systemAddMessageToChatbox('이미 존재하는 이름입니다. 다른이름을 선택해 주세요')
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
 			delete director.name
 			delete director.room
 			break
 		case "sessionError":
+			systemAddMessageToChatbox('새로고침해 재접속한 후 다시 진행 부탁드립니다.')
 			console.log(parsedMessage.message)
 			break
 		case "shouldConnect":
@@ -142,7 +144,7 @@ ws.onmessage = function(message) {
 
 
 function startCall(studentName,roomName){
-
+	systemAddMessageToChatbox(studentName+'이 화면공유를 시도합니다.')
 	console.log('webrtcpeer 생성을 시작합니다')
 	console.log(roomName)
 	//화면캡처
@@ -236,7 +238,7 @@ function startCall(studentName,roomName){
 
 
 function camStartCall(camName,roomName){
-
+	systemAddMessageToChatbox(camName+'이 카메라 공유를 시도합니다.')
 	console.log('webrtcpeer 생성을 시작합니다')
 	//화면캡처
 		my_student_element = null;
@@ -326,6 +328,7 @@ function camStartCall(camName,roomName){
 
 
 function stop(){
+	systemAddMessageToChatbox('접속을 종료합니다.')
 	for (key in director.studentsConnection){
 		director.studentsConnection[key].peer.dispose()
 		document.getElementById(key+"screen!").remove();
@@ -346,6 +349,7 @@ function stop(){
 
 
 function studentStop(studentName){
+	systemAddMessageToChatbox(studentName+'이 화면공유를 종료합니다.')
 	console.log(studentName+"학생이 화면 공유를 끄셨습니다")
 	if (director.studentsConnection[studentName]){
 		delete director.studentsConnection[studentName]
@@ -361,6 +365,7 @@ function studentStop(studentName){
 }
 
 function camStop(camName){
+	systemAddMessageToChatbox(studentName+'이 카메라 공유를 종료합니다.')
 	console.log(camName+"학생이 캠 공유를 끄셨습니다")
 	if (director.camsConnection[camName]){
 		delete director.camsConnection[camName]
@@ -395,6 +400,7 @@ function sendMessage(message) {
 function sendChatMessage(to="all"){
 	console.log("sending 채팅 message")
 	if(!director.name){
+		systemAddMessageToChatbox('유저가 제대로 등록되지 않았습니다.채팅이 불가능합니다.')
 		console.log("등록되지 않은 학생은 사용불가")
 		return
 	}
