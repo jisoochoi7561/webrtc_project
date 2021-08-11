@@ -81,6 +81,8 @@ ws.onmessage = function(message) {
 	switch (parsedMessage.id) {
 		case "sameNameError":
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
+			delete director.name
+			delete director.room
 			break
 		case "sessionError":
 			console.log(parsedMessage.message)
@@ -369,4 +371,29 @@ function sendMessage(message) {
 	console.log('Director 가 앱서버에 메시지 보내는중: ' + jsonMessage);
 	ws.send(jsonMessage);
 }
+
+
+
+function sendChatMessage(){
+	console.log("sending 채팅 message")
+//웹소켓으로 메시지를 보낸다.
+message = {
+	id : 'directorSendChat',
+	from: director.name,
+	room: director.room,
+	text:chatText.value
+}
+// addMessageToChatbox(message.from,message.text,"red")
+sendMessage(message);
+//비운다.
+chatText.value=""
+}
+
+
+function addMessageToChatbox(name,message,color = "black"){
+	console.log("리시빙~")
+	var now = new Date();
+	chatBox.innerHTML = `${chatBox.innerHTML} <span style='color:${color}'> ${name}: ${message} - ${now.getHours()}시 ${now.getMinutes()}분 <br></span>`
+	// chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
+	}
 

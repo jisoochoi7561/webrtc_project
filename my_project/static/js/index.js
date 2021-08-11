@@ -98,10 +98,14 @@ ws.onmessage = function(message) {
 	switch (parsedMessage.id) {
 		case "sameNameError":
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
+			delete student.name
+			delete student.room
 			break
 		case "roomExistence":
 			if (parsedMessage.value == "false"){
 				console.log("존재하지 않는 방입니다.확인해주세요.")
+				delete student.name
+				delete student.room
 			}else{
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
 				document.getElementById('call').style.display = 'inline-block';
@@ -296,20 +300,25 @@ function stop() {
 
 
 function sendChatMessage(){
+	console.log("sending 채팅 message")
 //웹소켓으로 메시지를 보낸다.
 message = {
 	id : 'studentSendChat',
-	studentName: student.name,
-	roomName: student.room,
+	from: student.name,
+	room: student.room,
 	text:chatText.value
 }
-receiveChatMessage(message.studentName,message.text)
-//배률를 비운다.
+addMessageToChatbox(message.from,message.text,"red")
+// sendMessage(message);
+//비운다.
 chatText.value=""
 }
 
 
-function receiveChatMessage(name,message){
-	chatBox.value =chatBox.value+ name + message
+function addMessageToChatbox(name,message,color = "black"){
+	console.log("리시빙~")
+	var now = new Date();
+	chatBox.innerHTML = `${chatBox.innerHTML} <span style='color:${color}'> ${name}: ${message} - ${now.getHours()}시 ${now.getMinutes()}분 <br></span>`
+	// chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
 	}
 

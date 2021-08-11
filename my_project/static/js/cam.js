@@ -83,10 +83,14 @@ ws.onmessage = function(message) {
 	switch (parsedMessage.id) {
 		case "sameNameError":
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
+			delete cam.name
+			delete cam.room
 			break
 		case "roomExistence":
 			if (parsedMessage.value == "false"){
 				console.log("존재하지 않는 방입니다.확인해주세요.")
+				delete cam.name
+				delete cam.room
 			}else{
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
 			}
