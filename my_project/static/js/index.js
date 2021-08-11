@@ -303,9 +303,13 @@ message = {
 	roomName: student.room,
 	text:chatText.value
 }
-sendMessage(message)
+receiveChatMessage(message.studentName,message.text)
 //배률를 비운다.
 chatText.value=""
 }
 
+
+function receiveChatMessage(name,message){
+	chatBox.value =chatBox.value+ name + message
+	}
 
