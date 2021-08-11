@@ -20,7 +20,8 @@
 var ws = new WebSocket('wss://' + location.host + '/websocket');
 var cam = {};
 var webRtcPeer ; 
-
+var tempcam;
+var temproom;
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
@@ -70,6 +71,8 @@ function tryCall() {
 		camName : camName,
 		roomName : roomName,
 	};
+	tempcam=camName
+	temproom=roomName
 	sendMessage(message);
 	console.info(cam.name + " cam 님이 " + cam.room + " 에 접속시도합니다.")
 }
@@ -91,8 +94,8 @@ ws.onmessage = function(message) {
 				delete cam.name
 				delete cam.room
 			}else{
-				cam.name = camName
-	cam.room = roomName
+				cam.name = tempcam
+				cam.room = temproom
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
 			}
 			break

@@ -22,7 +22,8 @@ var student = {};
 var webRtcPeer ; 
 var chatText;
 var chatBox;
-
+var tempname;
+var temproom;
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
 	// setRegisterState(NOT_REGISTERED);
@@ -84,6 +85,8 @@ function tryCall() {
 		roomName : roomName,
 		type:student.type
 	};
+	tempname = studentName
+	temproom = roomName
 	sendMessage(message);
 	console.info(student.name + "님이 " + student.room + " 에 접속시도합니다.")
 	systemAddMessageToChatbox("유저 정보를 확인중입니다.")
@@ -108,8 +111,8 @@ ws.onmessage = function(message) {
 				delete student.name
 				delete student.room
 			}else{
-				student.name = studentName
-				student.room = roomName
+				student.name = tempname
+				student.room = temproom
 				systemAddMessageToChatbox("공유시작버튼을 눌러 화면공유를 시작해주세요.")
 			}
 			break
