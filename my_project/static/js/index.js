@@ -50,7 +50,7 @@ window.onload = function() {
         }
     });
 
-	
+	systemAddMessageToChatbox("충남대학교 시험감독 프로그램에 오신 것을 환영합니다. 학생여러분은 학번과 방이름을 입력 후 입장버튼을 눌러 접속해주세요")
 
 	
 }
@@ -66,7 +66,7 @@ function tryCall() {
 	}
 	var studentName = document.getElementById('studentName').value;
 	if (studentName == '') {
-		window.alert("학생 이름이 비어있습니다.. 반드시 써주셔야 합니다.");
+		window.alert("학생 이름이 비어있습니다. 반드시 써주셔야 합니다.");
 		return;
 	}
 
@@ -86,6 +86,7 @@ function tryCall() {
 	};
 	sendMessage(message);
 	console.info(student.name + "님이 " + student.room + " 에 접속시도합니다.")
+	systemAddMessageToChatbox("유저 정보를 확인중입니다.")
 }
 
 
@@ -96,22 +97,25 @@ ws.onmessage = function(message) {
 	switch (parsedMessage.id) {
 		case "sameNameError":
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
+			systemAddMessageToChatbox('이미 존재하는 이름입니다. 다른이름을 선택해 주세요')
 			delete student.name
 			delete student.room
 			break
 		case "roomExistence":
 			if (parsedMessage.value == "false"){
 				console.log("존재하지 않는 방입니다.확인해주세요.")
+				systemAddMessageToChatbox("존재하지 않는 방입니다.확인해주세요.")
 				delete student.name
 				delete student.room
 			}else{
 				student.name = studentName
 				student.room = roomName
-				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
+				systemAddMessageToChatbox("공유시작버튼을 눌러 화면공유를 시작해주세요.")
 			}
 			break
 		case "sessionError":
 			console.log(parsedMessage.message)
+			systemAddMessageToChatbox("에러발생.재접속 하거나 관리자에게 문의 요망.")
 			break
 
 		case 'iceCandidate':
@@ -128,7 +132,7 @@ ws.onmessage = function(message) {
 		case 'changeResolution':
 			console.log("changeResol start")
 			console.log()
-			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width == 320){
+			if (webRtcPeer.getLocalStream().getVideoTracks()[0].getConstraints().width <= 320){
 				webRtcPeer.getLocalStream().getVideoTracks()[0].applyConstraints({
 					width:1280,
 					height:720
@@ -181,6 +185,7 @@ function startCall(){
 	}
 	
 	console.log('화면전송을 시작합니다')
+	systemAddMessageToChatbox("화면전송을 시작합니다.")
 	//화면캡처의 경우에는 audio는 필요하지 않음
 	var constraints = {
 		video: {width: 854, height: 480, frameRate: { ideal: 20, max: 30 }},
@@ -312,7 +317,7 @@ function sendChatMessage(to="directors"){
 		console.log("등록되지 않은 학생은 사용불가")
 		return
 	}
-//웹소켓으로 메시지를 보낸다.
+//웹소켓으로 메시지를 보낸다.ㅏㄹ
 message = {
 	id : 'sendChat',
 	from: student.name,
