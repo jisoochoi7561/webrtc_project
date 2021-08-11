@@ -364,6 +364,10 @@ function stop(){
 		id : 'adminStop'
 	}
 	sendMessage(message);
+	director = {
+		studentsConnection : {},
+		camsConnection : {}
+	};
 }
 
 
