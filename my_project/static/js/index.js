@@ -20,12 +20,14 @@
 var ws = new WebSocket('wss://' + location.host + '/websocket');
 var student = {};
 var webRtcPeer ; 
+var chatText;
 var chatBox;
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
 	// setRegisterState(NOT_REGISTERED);
-
+	chatText = document.getElementById('chatText')
+	chatBox = document.getElementById('chatBox')
 	//방입장버튼을 누르면, 등록한다.
 	document.getElementById('studentCall').addEventListener('click', function() {
 		tryCall();
@@ -37,7 +39,19 @@ window.onload = function() {
 	document.getElementById('studentStop').addEventListener('click', function() {
 		stop();
 	});
-	chatBox = document.getElementById('chatBox')
+	document.getElementById('sendChat').addEventListener('click', function() {
+		sendChatMessage()
+	});
+	
+	chatText.addEventListener('keyup', function(event) {
+        if (event.code === 'Enter')
+        {
+            sendChatMessage()
+        }
+    });
+
+	
+
 	
 }
 
@@ -280,5 +294,18 @@ function stop() {
 	sendMessage(message);
 }
 
+
+function sendChatMessage(){
+//웹소켓으로 메시지를 보낸다.
+message = {
+	id : 'studentSendChat',
+	studentName: student.name,
+	roomName: student.room,
+	text:chatText.value
+}
+sendMessage(message)
+//배률를 비운다.
+chatText.value=""
+}
 
 
