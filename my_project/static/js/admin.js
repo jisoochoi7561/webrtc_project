@@ -115,6 +115,8 @@ ws.onmessage = function(message) {
 		case "camStopped":
 			camStop(parsedMessage.camName)
 			break
+		case "studentSendChat":
+			addMessageToChatbox(parsedMessage.from,parsedMessage.text)
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
