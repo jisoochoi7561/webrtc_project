@@ -308,7 +308,7 @@ message = {
 	room: student.room,
 	text:chatText.value
 }
-addMessageToChatbox(message.from,message.text,"red")
+sendMessage(message)
 // sendMessage(message);
 //비운다.
 chatText.value=""
