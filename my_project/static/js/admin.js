@@ -390,7 +390,7 @@ function studentStop(studentName){
 }
 
 function camStop(camName){
-	systemAddMessageToChatbox(studentName+'이 카메라 공유를 종료합니다.')
+	systemAddMessageToChatbox(camName+'이 카메라 공유를 종료합니다.')
 	console.log(camName+"학생이 캠 공유를 끄셨습니다")
 	if (director.camsConnection[camName]){
 		delete director.camsConnection[camName]
