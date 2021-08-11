@@ -299,16 +299,18 @@ function stop() {
 }
 
 
-function sendChatMessage(){
+function sendChatMessage(to="directors"){
 	console.log("sending 채팅 message")
 //웹소켓으로 메시지를 보낸다.
 message = {
-	id : 'studentSendChat',
+	id : 'sendChat',
 	from: student.name,
 	room: student.room,
-	text:chatText.value
+	text:chatText.value,
+	to:to
 }
 sendMessage(message)
+addMessageToChatbox(message.from,message.text,"blue")
 // sendMessage(message);
 //비운다.
 chatText.value=""
@@ -322,3 +324,7 @@ function addMessageToChatbox(name,message,color = "black"){
 	// chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
 	}
 
+function systemAddMessageToChatbox(message){
+	addMessageToChatbox("프로그램",message,"green")
+
+}

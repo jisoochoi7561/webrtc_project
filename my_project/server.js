@@ -627,6 +627,27 @@ wss.on('connection', function(ws) {
                     
                 }
                 break;
+
+                case "directorSendChat":
+                    if (rooms[message.room]){
+
+                        if (message.to = "all"){
+                            directors = rooms[message.room].directors
+                        for (let key in directors) {
+                            director = directors[key]
+                            director.sendMessage(message)
+                            console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+                        }
+
+                        }
+                        else{
+
+                        }
+
+                        
+                        
+                    }
+                    break;
                 
         
         default:

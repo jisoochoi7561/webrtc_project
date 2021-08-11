@@ -115,7 +115,7 @@ ws.onmessage = function(message) {
 		case "camStopped":
 			camStop(parsedMessage.camName)
 			break
-		case "studentSendChat":
+		case "sendChat":
 			addMessageToChatbox(parsedMessage.from,parsedMessage.text)
 			break;
 	default:
@@ -377,17 +377,19 @@ function sendMessage(message) {
 
 
 
-function sendChatMessage(){
+function sendChatMessage(to="all"){
 	console.log("sending 채팅 message")
 //웹소켓으로 메시지를 보낸다.
 message = {
-	id : 'directorSendChat',
+	id : 'sendChat',
 	from: director.name,
 	room: director.room,
-	text:chatText.value
+	text:chatText.value,
+	to:to
 }
 // addMessageToChatbox(message.from,message.text,"red")
 sendMessage(message);
+addMessageToChatbox(message.from,message.text,"blue")
 //비운다.
 chatText.value=""
 }
@@ -400,3 +402,7 @@ function addMessageToChatbox(name,message,color = "black"){
 	// chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
 	}
 
+	function systemAddMessageToChatbox(message){
+		addMessageToChatbox("프로그램",message,"green")
+	
+	}
