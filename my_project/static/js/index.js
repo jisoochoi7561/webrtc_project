@@ -313,7 +313,7 @@ message = {
 	to:to
 }
 sendMessage(message)
-addMessageToChatbox(message.from,message.text,"blue")
+addMessageToChatbox(message.from,message.text,"black")
 // sendMessage(message);
 //비운다.
 chatText.value=""

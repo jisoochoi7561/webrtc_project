@@ -622,22 +622,31 @@ wss.on('connection', function(ws) {
                         directors = rooms[message.room].directors
                         for (let key in directors) {
                             director = directors[key]
-                            director.sendMessage(message)
-                            console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+                            if (key!=message.from){
+                                director.sendMessage(message)
+                                console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+                            }
+                            
                         }
                     }
                     else if (message.to == "all"){
                         directors = rooms[message.room].directors
                         for (let key in directors) {
                             director = directors[key]
-                            director.sendMessage(message)
-                            console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+                            if(key!= message.from){
+                                director.sendMessage(message)
+                                console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+                            }
+                            
                         }
                         students = rooms[message.room].students
                         for (let key in students) {
                             student = students[key]
-                            student.sendMessage(message)
+                            if(key!= message.from){
+                                student.sendMessage(message)
                             console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
+                            }
+                            
                         }
                     }
                     
