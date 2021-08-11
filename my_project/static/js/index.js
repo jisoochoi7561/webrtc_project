@@ -179,10 +179,12 @@ ws.onmessage = function(message) {
 
 function startCall(){
 	if(webRtcPeer){
+		systemAddMessageToChatbox('이미 전송중입니다.')
 		console.log("이미 전송중입니다.")
 		return;
 	}
 	if(!student.name){
+		systemAddMessageToChatbox('유저가 제대로 입장되지 않았습니다.')
 		console.log("학생 미등록")
 		return;
 	}

@@ -85,6 +85,7 @@ function register() {
 		roomName : roomName
 	};
 	sendMessage(message);
+	systemAddMessageToChatbox("관리자" + director.name + "님이 " + director.room + " 에 접속합니다.")
 	console.info("관리자" + director.name + "님이 " + director.room + " 에 접속시도합니다.")
 }
 
