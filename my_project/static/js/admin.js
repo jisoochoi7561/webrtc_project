@@ -22,12 +22,16 @@ var director = {
 	studentsConnection : {},
 	camsConnection : {}
 };
-
+var chatText;
+var chatBox;
 
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
 	// setRegisterState(NOT_REGISTERED);
+
+	chatText = document.getElementById('chatText')
+	chatBox = document.getElementById('chatBox')
 
 	//방입장버튼을 누르면, 등록한다.
 	document.getElementById('directorJoin').addEventListener('click', function() {
@@ -38,6 +42,17 @@ window.onload = function() {
 	document.getElementById('directorTerminate').addEventListener('click', function() {
 		stop();
 	});
+
+	document.getElementById('sendChat').addEventListener('click', function() {
+		sendChatMessage()
+	});
+	
+	chatText.addEventListener('keyup', function(event) {
+        if (event.code === 'Enter')
+        {
+            sendChatMessage()
+        }
+    });
 }
 
 window.onbeforeunload = function() {
