@@ -158,6 +158,10 @@ ws.onmessage = function(message) {
 				console.log("changeResol done")
 				break;
 			}
+
+		case "sendChat":
+			addMessageToChatbox(parsedMessage.from,parsedMessage.text)
+			break;	
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
