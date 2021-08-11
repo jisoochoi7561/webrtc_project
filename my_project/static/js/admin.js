@@ -85,7 +85,7 @@ function register() {
 		roomName : roomName
 	};
 	sendMessage(message);
-	console.info("관리자" + director.name + "님이 " + director.room + " 에 접속하셨습니다.")
+	console.info("관리자" + director.name + "님이 " + director.room + " 에 접속시도합니다.")
 }
 
 
@@ -394,6 +394,10 @@ function sendMessage(message) {
 
 function sendChatMessage(to="all"){
 	console.log("sending 채팅 message")
+	if(!director.name){
+		console.log("등록되지 않은 학생은 사용불가")
+		return
+	}
 //웹소켓으로 메시지를 보낸다.
 message = {
 	id : 'sendChat',

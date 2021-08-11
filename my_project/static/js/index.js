@@ -76,8 +76,7 @@ function tryCall() {
 		return;
 	}
 
-	student.name = studentName
-	student.room = roomName
+	
 	
 	var message = {
 		id : 'studentTryCall',
@@ -106,8 +105,9 @@ ws.onmessage = function(message) {
 				delete student.name
 				delete student.room
 			}else{
+				student.name = studentName
+				student.room = roomName
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
-				document.getElementById('call').style.display = 'inline-block';
 			}
 			break
 		case "sessionError":
@@ -173,6 +173,10 @@ ws.onmessage = function(message) {
 function startCall(){
 	if(webRtcPeer){
 		console.log("이미 전송중입니다.")
+		return;
+	}
+	if(!student.name){
+		console.log("학생 미등록")
 		return;
 	}
 	
@@ -304,6 +308,10 @@ function stop() {
 
 function sendChatMessage(to="directors"){
 	console.log("sending 채팅 message")
+	if(!student.name){
+		console.log("등록되지 않은 학생은 사용불가")
+		return
+	}
 //웹소켓으로 메시지를 보낸다.
 message = {
 	id : 'sendChat',

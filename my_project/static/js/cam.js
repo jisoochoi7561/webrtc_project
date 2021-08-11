@@ -63,8 +63,7 @@ function tryCall() {
 		return;
 	}
 
-	cam.name = camName
-	cam.room = roomName
+	
 	
 	var message = {
 		id : 'camTryCall',
@@ -92,6 +91,8 @@ ws.onmessage = function(message) {
 				delete cam.name
 				delete cam.room
 			}else{
+				cam.name = camName
+	cam.room = roomName
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
 			}
 			break
@@ -156,6 +157,10 @@ ws.onmessage = function(message) {
 function startCall(){
 	if(webRtcPeer){
 		console.log("이미 전송중입니다.")
+		return;
+	}
+	if(!cam.name){
+		console.log("학생 미등록")
 		return;
 	}
 	console.log('화면전송을 시작합니다')
