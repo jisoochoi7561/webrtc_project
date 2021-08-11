@@ -88,7 +88,7 @@ function tryCall() {
 	tempname = studentName
 	temproom = roomName
 	sendMessage(message);
-	console.info(student.name + "님이 " + student.room + " 에 접속시도합니다.")
+	console.info(tempname + "님이 " + temproom + " 에 접속시도합니다.")
 	systemAddMessageToChatbox("유저 정보를 확인중입니다.")
 }
 
