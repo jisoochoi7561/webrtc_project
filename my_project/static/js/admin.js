@@ -341,9 +341,9 @@ function stop(){
 		if (document.getElementById(key+"screen!")){
 			document.getElementById(key+"screen!").remove();
 		}
-		if( !document.getElementById(studentName+"cam!")){
+		if( !document.getElementById(key+"cam!")){
 			console.log("div delete!")
-			document.getElementById(studentName).remove();
+			document.getElementById(key).remove();
 		}
 		delete director.studentsConnection[key]
 	}
@@ -354,9 +354,9 @@ function stop(){
 		if (document.getElementById(key+"cam!")){
 			document.getElementById(key+"cam!").remove();
 		}
-		if( !document.getElementById(camName+"screen!")){
+		if( !document.getElementById(key+"screen!")){
 			console.log("div delete!")
-			document.getElementById(camName).remove();
+			document.getElementById(key).remove();
 		}
 		delete director.camsConnection[key]
 	}
