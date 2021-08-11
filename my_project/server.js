@@ -618,7 +618,7 @@ wss.on('connection', function(ws) {
 
             case "studentSendChat":
                 if (rooms[message.room]){
-                    directors = rooms[message.roomName].directors
+                    directors = rooms[message.room].directors
                     for (let key in directors) {
                         director = directors[key]
                         director.sendMessage(message)
