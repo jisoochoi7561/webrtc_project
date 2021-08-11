@@ -117,6 +117,7 @@ ws.onmessage = function(message) {
 			break
 		case "studentSendChat":
 			addMessageToChatbox(parsedMessage.from,parsedMessage.text)
+			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
