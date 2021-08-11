@@ -296,6 +296,7 @@ function sendMessage(message) {
 
 
 function stop() {
+	systemAddMessageToChatbox("작동정지.")
 	console.log("작동을 정지하겠습니다.")
 	if (webRtcPeer) {
 		webRtcPeer.dispose();
@@ -314,6 +315,7 @@ function stop() {
 function sendChatMessage(to="directors"){
 	console.log("sending 채팅 message")
 	if(!student.name){
+		systemAddMessageToChatbox("제대로 접속이 안되있습니다.입장버튼을 다시 눌러주세요.")
 		console.log("등록되지 않은 학생은 사용불가")
 		return
 	}
