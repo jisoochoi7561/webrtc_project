@@ -154,7 +154,7 @@ Cam.prototype.sendMessage = function(message) {
 Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     console.log("파이프라인 생성 시도합니다")
     var self = this;
-
+    studentName =  sessions[callerId].name
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
@@ -244,6 +244,24 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         //     outputHubport.connect(studentWebRtcEndpoint)
                            
                         // });
+
+                        //저장소 설정
+                        dispatcher.createHubPort(function(error,recordport){
+                            file_uri= 'file:///tmp/recorder_' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
+                            var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri}},]
+                            pipeline.create(elements, function(error, elements){
+                                if (error) return console.log(error);
+
+                                var recorder = elements[0]
+                                recordport.connect(recorder)
+                                recorder.record(function(error) {
+                                    if (error) return onError(error);
+                              
+                                    console.log("record");
+                                  });
+                            })
+                        }) 
+                        
                         callback(null);
                     });
                 });
