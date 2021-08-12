@@ -234,16 +234,16 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                             console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
                         }
                         //임시로 자기자신에게 연결해두었음.
-                        console.log("임시로 자기자신에게 연결합니다")
-                        dispatcher.createHubPort(function(error,outputHubport) {
-                            if (error) {
-                                self.sendMessage({id:"shouldStop"});
-                                pipeline.release();
-                                return console.log("createHubPort 에러 발생")
-                            }
-                            outputHubport.connect(studentWebRtcEndpoint)
+                        // console.log("임시로 자기자신에게 연결합니다")
+                        // dispatcher.createHubPort(function(error,outputHubport) {
+                        //     if (error) {
+                        //         self.sendMessage({id:"shouldStop"});
+                        //         pipeline.release();
+                        //         return console.log("createHubPort 에러 발생")
+                        //     }
+                        //     outputHubport.connect(studentWebRtcEndpoint)
                            
-                        });
+                        // });
                         callback(null);
                     });
                 });
@@ -340,16 +340,16 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                             console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
                         }
                         //임시로 자기자신에게 연결해두었음.
-                        console.log("임시로 자기자신에게 연결합니다") 
-                        dispatcher.createHubPort(function(error,outputHubport) {
-                            if (error) {
-                                self.sendMessage({id:"shouldStop"});
-                                pipeline.release();
-                                return console.log("createHubPort 에러 발생")
-                            }
-                            outputHubport.connect(camWebRtcEndpoint)
+                        // console.log("임시로 자기자신에게 연결합니다") 
+                        // dispatcher.createHubPort(function(error,outputHubport) {
+                        //     if (error) {
+                        //         self.sendMessage({id:"shouldStop"});
+                        //         pipeline.release();
+                        //         return console.log("createHubPort 에러 발생")
+                        //     }
+                        //     outputHubport.connect(camWebRtcEndpoint)
                            
-                        });
+                        // });
                         callback(null);
                     });
                 });

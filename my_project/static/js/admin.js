@@ -55,7 +55,7 @@ window.onload = function() {
     });
 
 	systemAddMessageToChatbox("충남대학교 시험감독 프로그램에 오신 것을 환영합니다. 감독관 이름과 방이름을 입력한 후 다른 학생들과 감독관들에게 방이름을 알려주세요.")
-	systemAddMessageToChatbox("영상을 클릭하면 확대/축소가 가능합니다. 한번에 3개이상의 확대는 자제해주세요.")
+	systemAddMessageToChatbox("영상을 클릭하면 확대/축소가 가능합니다.")
 	systemAddMessageToChatbox("방에 입장한 후엔 채팅기능을 이용하실 수 있으며, 화면의 이름을 클릭하면 바로 귓속말을 보낼 수 있습니다.")
 }
 
