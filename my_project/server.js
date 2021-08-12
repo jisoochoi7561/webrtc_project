@@ -247,7 +247,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 
                         //저장소 설정
                         dispatcher.createHubPort(function(error,recordport){
-                            file_uri= 'file:///tmp/recorder_' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
+                            file_uri= 'file:///tmp/' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
                             var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
                             pipeline.create(elements, function(error, elements){
                                 if (error) return console.log(error);
@@ -280,7 +280,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     console.log("파이프라인 생성 시도합니다")
     var self = this;
-
+    camName =  sessions[callerId].name
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
@@ -369,6 +369,23 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         //     outputHubport.connect(camWebRtcEndpoint)
                            
                         // });
+                        dispatcher.createHubPort(function(error,recordport){
+                            file_uri= 'file:///tmp/' +roomName +"_"+ camName + "_"+"cam_"+new Date().toString()+'.webm'
+                            var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
+                            pipeline.create(elements, function(error, elements){
+                                if (error) return console.log(error);
+
+                                var recorder = elements[0]
+                                self.recorder = recorder
+                                recordport.connect(recorder)
+                                recorder.record(function(error) {
+                                    if (error) return onError(error);
+
+                                    console.log("record");
+                                  });
+                            })
+                        }) 
+
                         callback(null);
                     });
                 });
@@ -1104,6 +1121,11 @@ function stop(sessionId) {
         delete sessions[sessionId];
         delete rooms[cam.roomName].cams[cam.name]
         if(cam.pipeline){
+            if(cam.recorder){
+                cam.recorder.stop();
+                delete cam.recorder
+            }
+
             cam.pipeline.release();
             for (let key in rooms[roomName].directors){
                 if (rooms[roomName].directors[key].endpointPerCam[cam.name] ){
