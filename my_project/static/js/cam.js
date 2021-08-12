@@ -40,7 +40,7 @@ window.onload = function() {
 	document.getElementById('camStop').addEventListener('click', function() {
 		stop();
 	});
-
+	systemAddMessageToChatbox("충남대학교 시험감독 캠 페이지 입니다. 화면공유시 사용한 이름과 같은 이름을 사용해 주세요.")
 }
 
 window.onbeforeunload = function() {
@@ -75,6 +75,8 @@ function tryCall() {
 	temproom=roomName
 	sendMessage(message);
 	console.info(tempcam + " cam 님이 " + temproom + " 에 접속시도합니다.")
+	systemAddMessageToChatbox("유저 정보를 확인중입니다.")
+
 }
 
 
@@ -84,6 +86,7 @@ ws.onmessage = function(message) {
 	console.info('Received message: ' + message.data);
 	switch (parsedMessage.id) {
 		case "sameNameError":
+			systemAddMessageToChatbox('이미 존재하는 이름입니다. 다른이름을 선택해 주세요')
 			console.log('이미 존재하는 이름입니다. 다른이름을 선택해 주세요' )
 			delete cam.name
 			delete cam.room
@@ -91,16 +94,19 @@ ws.onmessage = function(message) {
 		case "roomExistence":
 			if (parsedMessage.value == "false"){
 				console.log("존재하지 않는 방입니다.확인해주세요.")
+				systemAddMessageToChatbox("존재하지 않는 방입니다.확인해주세요.")
 				delete cam.name
 				delete cam.room
 			}else{
 				cam.name = tempcam
 				cam.room = temproom
 				console.log("방이 확인 되었습니다. 공유를 시작해주세요")
+				systemAddMessageToChatbox("공유시작버튼을 눌러 캠 화면을 공유해주세요.")
 			}
 			break
 		case "sessionError":
 			console.log(parsedMessage.message)
+			systemAddMessageToChatbox("에러발생.재접속 하거나 관리자에게 문의 요망.")
 			break
 
 		case 'iceCandidate':
@@ -160,13 +166,16 @@ ws.onmessage = function(message) {
 function startCall(){
 	if(webRtcPeer){
 		console.log("이미 전송중입니다.")
+		systemAddMessageToChatbox('이미 전송중입니다.')
 		return;
 	}
 	if(!cam.name){
+		systemAddMessageToChatbox('유저가 제대로 입장되지 않았습니다.')
 		console.log("학생 미등록")
 		return;
 	}
 	console.log('화면전송을 시작합니다')
+	systemAddMessageToChatbox("화면전송을 시작합니다.")
 	//화면캡처의 경우에는 audio는 필요하지 않음
 	var constraints = {
 		video: {width: 320, height: 240,framerate:15},
@@ -282,6 +291,7 @@ function sendMessage(message) {
 
 
 function stop() {
+	systemAddMessageToChatbox("작동정지.")
 	console.log("작동을 정지하겠습니다.")
 	
 	if (webRtcPeer) {
@@ -298,3 +308,15 @@ function stop() {
 }
 
 
+
+function addMessageToChatbox(name,message,color = "black"){
+	if(message==""){return}
+	console.log("리시빙~")
+	var now = new Date();
+	chatBox.innerHTML = `${chatBox.innerHTML} <span style='color:${color}'> ${name}: ${message} - ${now.getHours()}시 ${now.getMinutes()}분 <br></span>`
+	// chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
+	}
+
+function systemAddMessageToChatbox(message){
+	addMessageToChatbox("프로그램",message,"green")
+}
