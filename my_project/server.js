@@ -248,11 +248,12 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         //저장소 설정
                         dispatcher.createHubPort(function(error,recordport){
                             file_uri= 'file:///tmp/recorder_' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
-                            var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri}},]
+                            var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
                             pipeline.create(elements, function(error, elements){
                                 if (error) return console.log(error);
 
                                 var recorder = elements[0]
+                                self.recorder = recorder
                                 recordport.connect(recorder)
                                 recorder.record(function(error) {
                                     if (error) return onError(error);
@@ -1070,6 +1071,11 @@ function stop(sessionId) {
         delete sessions[sessionId];
         delete rooms[student.roomName].students[student.name]
         if(student.pipeline){
+            if(student.recorder){
+                student.recorder.stop();
+                delete student.recorder
+            }
+            
             student.pipeline.release();
             for (let key in rooms[roomName].directors){
                 if (rooms[roomName].directors[key].endpointPerStudent[student.name] ){

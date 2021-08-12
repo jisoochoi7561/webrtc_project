@@ -10,3 +10,7 @@ services:
                   - type: bind
                     source: ./etc-kurento
                     target: /etc/kurento
+                  - type: bind
+                    source: ./tmp
+                    target: /tmp
+
