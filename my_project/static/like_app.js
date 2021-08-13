@@ -1,4 +1,4 @@
-import "./like_button";"./like_button.js";
+import "./like_button";
 
 var domContainer = document.querySelector('#like_button_container');
 ReactDOM.render(React.createElement(LikeButton, null), domContainer);
