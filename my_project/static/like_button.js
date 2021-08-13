@@ -41,3 +41,5 @@ var LikeButton = function (_React$Component) {
 
   return LikeButton;
 }(React.Component);
+
+export default LikeButton;
