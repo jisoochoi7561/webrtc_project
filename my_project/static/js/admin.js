@@ -451,7 +451,7 @@ message = {
 // addMessageToChatbox(message.from,message.text,"red")
 sendMessage(message);
 if (to == "specific"){
-	addMessageToChatbox(to+"에게 귓속말",message.text,"grey")
+	addMessageToChatbox(toto+"에게 귓속말",message.text,"grey")
 }else{
 	addMessageToChatbox(message.from,message.text,"blue")
 }
