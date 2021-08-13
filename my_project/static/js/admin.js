@@ -32,7 +32,7 @@ window.onload = function() {
 
 	chatText = document.getElementById('chatText')
 	chatBox = document.getElementById('chatBox')
-	group = document.getElementById("ddlViewBy");
+	group = document.getElementById("toSelect");
 
 	//방입장버튼을 누르면, 등록한다.
 	document.getElementById('directorJoin').addEventListener('click', function() {
