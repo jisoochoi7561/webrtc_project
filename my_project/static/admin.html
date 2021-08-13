@@ -82,18 +82,20 @@
 
       <div class = "col-md-6">
         <div style="border-radius:10%;height:60vh;width:60vh;border:2px solid rgb(226, 79, 103);padding:2%;">
-        <div style="height:40vh;width:55vh;overflow:auto;padding:2%;white-space: pre-line" id="chatBox" name="chatBox">
+        <div style="height:45vh;width:55vh;overflow:auto;padding:2%;white-space: pre-line" id="chatBox" name="chatBox">
 
 
        
 
         </div>
-     
+        <div class="d-flex">
         <select class="form-select" aria-label="Default select example" style="height:3vh;width:15vh">
           <option selected value="all">모두</option>
           <option value="directors">감독관들</option>
           <option value="specific">학생(귓속말)</option>
         </select>
+        <input class="form-control mr-1" type="text" id="toSpecific" name="toSpecific" style="height:3vh;width:35vh;overflow:auto;padding:2%;white-space: pre-line; display: none;">
+        </div>
         <div class="d-flex">
           <input class="form-control mr-1" type="text" id="chatText" name="chatText" style="height:5vh;width:50vh;overflow:auto;padding:2%;white-space: pre-line;">
           <a id="sendChat" name="sendChat" href="#" class="btn btn-primary">

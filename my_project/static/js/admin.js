@@ -458,3 +458,11 @@ function addMessageToChatbox(name,message,color = "black"){
 	function systemAddMessageToChatbox(message){
 		addMessageToChatbox("프로그램",message,"green")	
 	}
+
+	function specificSelected(that) {
+		if (that.value == "specific") {
+			document.getElementById("toSpecific").style.display = "inline-block";
+		} else {
+			document.getElementById("toSpecific").style.display = "none";
+		}
+	}
