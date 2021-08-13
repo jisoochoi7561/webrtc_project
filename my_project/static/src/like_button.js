@@ -1,6 +1,6 @@
 'use strict';
 
-class LikeButton extends React.Component {
+export class LikeButton extends React.Component {
   constructor(props) {
     super(props);
     this.state = { liked: false };
@@ -19,4 +19,3 @@ class LikeButton extends React.Component {
   }
 }
 
-export default LikeButton
