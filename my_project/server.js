@@ -546,7 +546,7 @@ wss.on('connection', function(ws) {
                         message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅했습니다. 연결합니다.' 
                     }));
                     /////방에 새로운 학생 입장.
-                    sendRoomToAll(room)
+                    sendRoomToAll(rooms[roomName])
                 }
                 break;
 
