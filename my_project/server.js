@@ -1173,19 +1173,22 @@ function stop(sessionId) {
 }
 
 function sendRoomToAll(room){
+    message = {
+        id: 'roominfo',
+        room: room
+    }
 
         directors = room.directors
         for (let key in directors) {
             director = directors[key]
-                director.sendMessage(room)
-                console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+            director.sendMessage(message)
+            console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
             
         }
         students = room.students
         for (let key in students) {
             student = students[key]
-
-                student.sendMessage(room)
+            student.sendMessage(message)
             console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
 
             

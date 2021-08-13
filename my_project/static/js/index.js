@@ -170,6 +170,8 @@ ws.onmessage = function(message) {
 		case "sendChat":
 			addMessageToChatbox(parsedMessage.from,parsedMessage.text)
 			break;	
+		case 'roominfo':
+			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}

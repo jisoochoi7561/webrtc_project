@@ -140,6 +140,8 @@ ws.onmessage = function(message) {
 		case "sendChat":
 			addMessageToChatbox(parsedMessage.from,parsedMessage.text)
 			break;
+		case 'roominfo':
+			break;
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
@@ -454,6 +456,5 @@ function addMessageToChatbox(name,message,color = "black"){
 	}
 
 	function systemAddMessageToChatbox(message){
-		addMessageToChatbox("프로그램",message,"green")
-	
+		addMessageToChatbox("프로그램",message,"green")	
 	}
