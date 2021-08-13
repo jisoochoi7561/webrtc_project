@@ -24,7 +24,7 @@ var director = {
 };
 var chatText;
 var chatBox;
-
+var group;
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
@@ -32,6 +32,7 @@ window.onload = function() {
 
 	chatText = document.getElementById('chatText')
 	chatBox = document.getElementById('chatBox')
+	group = document.getElementById("ddlViewBy");
 
 	//방입장버튼을 누르면, 등록한다.
 	document.getElementById('directorJoin').addEventListener('click', function() {
@@ -424,7 +425,7 @@ function sendMessage(message) {
 
 
 
-function sendChatMessage(to="all"){
+function sendChatMessage(){
 	console.log("sending 채팅 message")
 	if(!director.name){
 		systemAddMessageToChatbox('유저가 제대로 등록되지 않았습니다.채팅이 불가능합니다.')
@@ -432,16 +433,28 @@ function sendChatMessage(to="all"){
 		return
 	}
 //웹소켓으로 메시지를 보낸다.
+to = group.value;
+toto  =""
+if (to == "specific"){
+	toto = document.getElementById("toSpecific").value
+}
+else{
+	toto=to
+}
 message = {
 	id : 'sendChat',
 	from: director.name,
 	room: director.room,
 	text:chatText.value,
-	to:to
+	to:toto
 }
 // addMessageToChatbox(message.from,message.text,"red")
 sendMessage(message);
-addMessageToChatbox(message.from,message.text,"blue")
+if (to == "specific"){
+	addMessageToChatbox(to+"에게 귓속말",message.text,"grey")
+}else{
+	addMessageToChatbox(message.from,message.text,"blue")
+}
 //비운다.
 chatText.value=""
 }
@@ -455,14 +468,15 @@ function addMessageToChatbox(name,message,color = "black"){
 	// chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
 	}
 
-	function systemAddMessageToChatbox(message){
-		addMessageToChatbox("프로그램",message,"green")	
-	}
+function systemAddMessageToChatbox(message){
+	addMessageToChatbox("프로그램",message,"green")	
+}
 
-	function specificSelected(that) {
-		if (that.value == "specific") {
-			document.getElementById("toSpecific").style.display = "inline-block";
-		} else {
-			document.getElementById("toSpecific").style.display = "none";
-		}
+function specificSelected(that) {
+	if (that.value == "specific") {
+		document.getElementById("toSpecific").style.display = "inline-block";
+	} else {
+		document.getElementById("toSpecific").style.display = "none";
 	}
+}
+

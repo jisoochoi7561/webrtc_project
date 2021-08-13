@@ -703,7 +703,15 @@ wss.on('connection', function(ws) {
                         }
                     }
                     else{
-                        console.log("????")
+                        students = rooms[message.room].students
+                        for (let key in students) {
+                            student = students[key]
+                            if(key = message.to){
+                                student.sendMessage(message)
+                            console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
+                            }
+                            
+                        }
                     }
                     
                     
