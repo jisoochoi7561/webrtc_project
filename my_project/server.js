@@ -459,7 +459,11 @@ wss.on('connection', function(ws) {
                 room.directors[message.directorName] = director
                 sessions[sessionId] = director
                 console.log("감독관 추가 완료")
-                
+                //감독관 추가 완료
+
+                //방정보 송출
+                sendRoomToAll(room)
+
                 students = room.students
                 cams = room.cams  
                 for (let key in students) {
@@ -473,7 +477,6 @@ wss.on('connection', function(ws) {
                             message:"학생 "+ student.name + "이 연결요청을 하고 있습니다." 
                         }
                         director.sendMessage(message)
-                        console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
                         
                     }
                     else{
@@ -493,7 +496,6 @@ wss.on('connection', function(ws) {
                             message:"cam "+ cam.name + "이 연결요청을 하고 있습니다." 
                         }
                         director.sendMessage(message)
-                        console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
                     }
                     else{
                         console.log("접속은 했으나 아직 공유를 안한 학생은 넘어갑니다.")
@@ -543,6 +545,8 @@ wss.on('connection', function(ws) {
                         value: 'true',
                         message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅했습니다. 연결합니다.' 
                     }));
+                    /////방에 새로운 학생 입장.
+                    sendRoomToAll(room)
                 }
                 break;
 
@@ -679,7 +683,6 @@ wss.on('connection', function(ws) {
                         }
                     }
                     else if (message.to == "all"){
-                        console.log("Bb")
                         directors = rooms[message.room].directors
                         for (let key in directors) {
                             director = directors[key]
@@ -1169,6 +1172,26 @@ function stop(sessionId) {
 
 }
 
+function sendRoomToAll(room){
+
+        directors = room.directors
+        for (let key in directors) {
+            director = directors[key]
+                director.sendMessage(room)
+                console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
+            
+        }
+        students = room.students
+        for (let key in students) {
+            student = students[key]
+
+                student.sendMessage(room)
+            console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
+
+            
+        }
+    
+}
 
 
 
