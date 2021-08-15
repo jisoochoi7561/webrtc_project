@@ -543,7 +543,7 @@ wss.on('connection', function(ws) {
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'true',
-                        message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅했습니다. 연결합니다.' 
+                        message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅했습니다. 연결하세요.' 
                     }));
                     /////방에 새로운 학생 입장.
                     sendRoomToAll(rooms[roomName])
@@ -626,8 +626,9 @@ wss.on('connection', function(ws) {
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'true',
-                        message : roomName + '존재하는 방이고 새로운 cam 입니다. 유저정보를 세팅했습니다. 연결합니다.' 
+                        message : roomName + '존재하는 방이고 새로운 cam 입니다. 유저정보를 세팅했습니다. 연결하세요' 
                     }));
+                    sendRoomToAll(rooms[roomName])
                 }
                 break;
             
@@ -1120,6 +1121,7 @@ function stop(sessionId) {
                 console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
             }
         }
+        sendRoomToAll(rooms[roomName])
         
     
     }
@@ -1153,7 +1155,7 @@ function stop(sessionId) {
                 console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
             }
         }
-        
+        sendRoomToAll(rooms[roomName])
     
     }
 
@@ -1176,8 +1178,9 @@ function stop(sessionId) {
                 delete director.endpointPerCam[key]
             }
         }
+        sendRoomToAll(rooms[roomName])
     }
-
+    
 }
 
 function sendRoomToAll(room){
@@ -1198,8 +1201,6 @@ function sendRoomToAll(room){
             student = students[key]
             student.sendMessage(message)
             console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
-
-            
         }
     
 }
