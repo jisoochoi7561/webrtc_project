@@ -169,6 +169,9 @@ function startCall(studentName,roomName){
 			my_label.setAttribute("class","alert alert-success");
 			my_label.innerHTML = studentName
 			my_student_element.appendChild(my_label)
+			my_label.addEventListener('click', function() {
+				console.log(my_label.innerHTML)
+			});
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
 		my_element = document.createElement('video');
