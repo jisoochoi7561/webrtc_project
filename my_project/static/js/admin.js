@@ -165,7 +165,7 @@ function startCall(studentName,roomName){
 			my_student_element.setAttribute("id",studentName);
 			my_student_element.setAttribute("style","display:inline-block");
 			my_student_element.setAttribute("class","col");
-			my_label = document.createElement('div');
+			let my_label = document.createElement('div');
 			my_label.setAttribute("class","alert alert-success");
 			my_label.innerHTML = studentName
 			my_student_element.appendChild(my_label)
@@ -263,7 +263,7 @@ function camStartCall(camName,roomName){
 			my_student_element.setAttribute("id",camName);
 			my_student_element.setAttribute("class","col");
 			my_student_element.setAttribute("style","display:inline-block");
-			my_label = document.createElement('div');
+			let my_label = document.createElement('div');
 			my_label.innerHTML = camName
 			my_label.setAttribute("class","alert alert-success");
 			my_student_element.appendChild(my_label)
