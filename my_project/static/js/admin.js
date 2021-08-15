@@ -170,7 +170,8 @@ function startCall(studentName,roomName){
 			my_label.innerHTML = studentName
 			my_student_element.appendChild(my_label)
 			my_label.addEventListener('click', function() {
-				console.log(my_label.innerHTML)
+				document.getElementById("toSelect").selectedIndex = 2;
+				document.getElementById("toSpecific").innerHTML = my_label.innerHTML
 			});
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
@@ -265,6 +266,10 @@ function camStartCall(camName,roomName){
 			my_label.innerHTML = camName
 			my_label.setAttribute("class","alert alert-success");
 			my_student_element.appendChild(my_label)
+			my_label.addEventListener('click', function() {
+				document.getElementById("toSelect").selectedIndex = 2;
+				document.getElementById("toSpecific").innerHTML = my_label.innerHTML
+			});
 			document.getElementById('videoLists').appendChild(my_student_element)
 		}
 		my_element = document.createElement('video');
