@@ -32,7 +32,7 @@ body {
 
 
 .for-admin{
-	height:80vh; background-color: #306BAC;
+	height:80vh; 
 	cursor: pointer;
 	display: -webkit-flex;
 	display: flex;
@@ -40,10 +40,10 @@ body {
   align-items: center;
 }
 .for-admin:hover {
-   background-color: #00A6FB;
+   background-color: #306BAC;
 }
 .for-student{
-	height:80vh; background-color:#6F9CEB;
+	height:80vh; 
 	cursor: pointer;
 	display: -webkit-flex;
 	display: flex;
@@ -53,10 +53,10 @@ body {
 }
 
 .for-student:hover {
-	background-color: #00A6FB;
+	background-color: #6F9CEB;
 }
 .for-cam{
-	height:80vh; background-color: #98B9F2;
+	height:80vh;
 	cursor: pointer;
 	display: -webkit-flex;
 	display: flex;
@@ -64,5 +64,5 @@ body {
   align-items: center;
 }
 .for-cam:hover {
-		background-color: #00A6FB;
+		background-color: #98B9F2;
 }
