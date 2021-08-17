@@ -200,10 +200,14 @@ function startCall(studentName,roomName){
 		//현재옵션:
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
-
+		my_configuration = {
+			iceServers : [
+				{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
+		}
 	
 		options = {
 			remoteVideo: document.getElementById(studentName+"screen!"),
+			configuration:my_configuration,
 			onicecandidate:function (candidate) {
 				console.log("hi");
 				console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
@@ -297,9 +301,13 @@ function camStartCall(camName,roomName){
 		//현재옵션:
 		//스트림 = 화면
 		//로컬스트림 출력 세팅
-		
+		my_configuration = {
+			iceServers : [
+				{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
+		}
 		options = {
 			remoteVideo: document.getElementById(camName+"cam!"),
+			configuration:my_configuration,
 			onicecandidate:function (candidate) {
 				console.log("hi");
 				console.log('이 컴퓨터의 candidate: ' + JSON.stringify(candidate));
