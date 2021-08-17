@@ -12,11 +12,7 @@
   <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
   <link rel="stylesheet" href="css/index.css">
 
-  <script src="bower_components/webrtc-adapter/release/adapter.js"></script>
-  <script src="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
-  <script src="bower_components/kurento-utils/js/kurento-utils.js"></script>
 
-  <script src="js/student.js"></script>
   <title>CNU classroom</title>
 </head>
 
@@ -26,11 +22,9 @@
 
 <body>
 
-  <header>
-
 <nav class="navbar navbar-dark bg-primary">
   <div class="container-fluid">
-    <a class="navbar-brand" href="#">CNU classroom</a>
+    <a class="navbar-brand" href="./index.html">CNU classroom</a>
         <div class="nav-item dropdown">
           <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
             <span class="navbar-toggler-icon"></span>
@@ -43,14 +37,19 @@
   </div>
 </nav>
 
+<div class = "container-fluid linkToPages" style="height:100%;">
+  <div class = "row">
+<div class="col-md-4 text-right for-admin" onclick="location.href='admin.html'">
+admin
+</div>
 
-<div class="col-md-3 text-right">
-  <a id="studentCall" href="admin.html" class="btn btn-success">
-    <span class="glyphicon glyphicon-play"></span> 관리자</a>
-  <a id="call" href="student.html" class="btn btn-primary">
-    <span class="glyphicon glyphicon-play"></span>학생</a>
-  <a id="studentStop" href="cam.html" class="btn btn-danger">
-    <span class="glyphicon glyphicon-stop"></span> 캠</a>
+<div class="col-md-4 text-right for-student" onclick="location.href='student.html'" >
+student
+</div>
+<div class="col-md-4 text-right for-cam" onclick="location.href='cam.html'"  >
+cam
+</div>
+</div>
 </div>
 
 

@@ -87,7 +87,8 @@ function register() {
 	var message = {
 		id : 'directorJoinRoom',
 		directorName : directorName,
-		roomName : roomName
+		roomName : roomName,
+		password:document.getElementById('admin_password').value
 	};
 	sendMessage(message);
 	systemAddMessageToChatbox("관리자" + director.name + "님이 " + director.room + " 에 접속합니다.")
@@ -144,6 +145,11 @@ ws.onmessage = function(message) {
 		case 'roominfo':
 			// document.getElementById("roomBox").innerHTML = message.data
 			break;
+		case 'passwordError':
+			systemAddMessageToChatbox('잘못된 패스워드입니다.다시 확인해 주세요.')
+			console.log(parsedMessage.message)
+			break
+
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}

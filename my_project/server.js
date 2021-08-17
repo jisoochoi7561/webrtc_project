@@ -431,10 +431,21 @@ wss.on('connection', function(ws) {
                     console.log("한 세션에서 두개의 director로그인시도. 차단합니다.")
                     ws.send(JSON.stringify({
                         id : 'sessionError',
-                        message : '한 세션에서 두개의 director로그인시도. 차단합니다. 재접속을 권장합니다.' + message
+                        message : '한 세션에서 두개의 director로그인시도. 차단합니다. 재접속을 권장합니다.' 
                     }));
                     break;
                 }
+
+                if (message.password != "cnu1234"){
+                    console.log("잘못된패스워드")
+                    ws.send(JSON.stringify({
+                        id : 'passwordError',
+                        message : '패스워드 오류' 
+                    }));
+                    break;
+                }
+
+
                 if (rooms[message.roomName]){
                     room = rooms[message.roomName]
                     console.log(rooms[message.roomName].name + "방 입장 완료")

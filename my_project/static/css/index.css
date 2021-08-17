@@ -29,3 +29,25 @@ body {
 	border-radius:5px;
 }
 
+.linkToPages {
+	cursor: pointer;
+}
+.for-admin{
+	height:100vh; background-color: #7692FF;
+}
+.for-admin:hover {
+   background-color: red;
+}
+.for-student{
+	height:100vh; background-color:#ABD2FA
+}
+
+.for-student:hover {
+	background-color: red;
+}
+.for-cam{
+	height:100vh; background-color: #3D518C;
+}
+.for-cam:hover {
+		background-color: red;
+}
