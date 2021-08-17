@@ -28,10 +28,14 @@ body {
 .rounded-circle{
 	border-radius:5px;
 }
+h1 {
+	-webkit-text-stroke-width: 3px;
+	-webkit-text-stroke-color: black;
+}
 
 
 .for-admin{
-	height:80vh; background-color: rgb(48, 107, 172);
+	height:80vh; background-color: #306BAC;
 	cursor: pointer;
 	display: flex;
   justify-content: center;
