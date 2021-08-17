@@ -28,10 +28,7 @@ body {
 .rounded-circle{
 	border-radius:5px;
 }
-h1 {
-	-webkit-text-stroke-width: 1px;
-	-webkit-text-stroke-color: black;
-}
+
 
 
 .for-admin{
