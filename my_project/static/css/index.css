@@ -29,25 +29,35 @@ body {
 	border-radius:5px;
 }
 
-.linkToPages {
-	cursor: pointer;
-}
+
 .for-admin{
-	height:100vh; background-color: #7692FF;
+	height:80vh; background-color: #306BAC;
+	cursor: pointer;
+	display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .for-admin:hover {
-   background-color: red;
+   background-color: #00A6FB;
 }
 .for-student{
-	height:100vh; background-color:#ABD2FA
+	height:80vh; background-color:#6F9CEB;
+	cursor: pointer;
+	display: flex;
+  justify-content: center;
+  align-items: center;
 }
 
 .for-student:hover {
-	background-color: red;
+	background-color: #00A6FB;
 }
 .for-cam{
-	height:100vh; background-color: #3D518C;
+	height:80vh; background-color: #98B9F2;
+	cursor: pointer;
+	display: flex;
+  justify-content: center;
+  align-items: center;
 }
 .for-cam:hover {
-		background-color: red;
+		background-color: #00A6FB;
 }
