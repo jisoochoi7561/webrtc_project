@@ -462,7 +462,7 @@ wss.on('connection', function(ws) {
                 //감독관 추가 완료
 
                 //방정보 송출
-                sendRoomToAll(room)
+                // sendRoomToAll(room)
 
                 students = room.students
                 cams = room.cams  
@@ -546,7 +546,7 @@ wss.on('connection', function(ws) {
                         message : roomName + '존재하는 방이고 새로운 student 입니다. 유저정보를 세팅했습니다. 연결하세요.' 
                     }));
                     /////방에 새로운 학생 입장.
-                    sendRoomToAll(rooms[roomName])
+                    // sendRoomToAll(rooms[roomName])
                 }
                 break;
 
@@ -628,7 +628,7 @@ wss.on('connection', function(ws) {
                         value: 'true',
                         message : roomName + '존재하는 방이고 새로운 cam 입니다. 유저정보를 세팅했습니다. 연결하세요' 
                     }));
-                    sendRoomToAll(rooms[roomName])
+                    // sendRoomToAll(rooms[roomName])
                 }
                 break;
             
@@ -1121,7 +1121,7 @@ function stop(sessionId) {
                 console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
             }
         }
-        sendRoomToAll(rooms[roomName])
+        // sendRoomToAll(rooms[roomName])
         
     
     }
@@ -1155,7 +1155,7 @@ function stop(sessionId) {
                 console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
             }
         }
-        sendRoomToAll(rooms[roomName])
+        // sendRoomToAll(rooms[roomName])
     
     }
 
@@ -1178,7 +1178,7 @@ function stop(sessionId) {
                 delete director.endpointPerCam[key]
             }
         }
-        sendRoomToAll(rooms[roomName])
+        // sendRoomToAll(rooms[roomName])
     }
     
 }
