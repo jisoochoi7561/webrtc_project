@@ -29,7 +29,7 @@ body {
 	border-radius:5px;
 }
 h1 {
-	-webkit-text-stroke-width: 3px;
+	-webkit-text-stroke-width: 1px;
 	-webkit-text-stroke-color: black;
 }
 
