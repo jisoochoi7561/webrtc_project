@@ -34,6 +34,7 @@ body {
 .for-admin{
 	height:80vh; background-color: #306BAC;
 	cursor: pointer;
+	display: -webkit-flex;
 	display: flex;
   justify-content: center;
   align-items: center;
@@ -44,7 +45,9 @@ body {
 .for-student{
 	height:80vh; background-color:#6F9CEB;
 	cursor: pointer;
+	display: -webkit-flex;
 	display: flex;
+	
   justify-content: center;
   align-items: center;
 }
@@ -55,6 +58,7 @@ body {
 .for-cam{
 	height:80vh; background-color: #98B9F2;
 	cursor: pointer;
+	display: -webkit-flex;
 	display: flex;
   justify-content: center;
   align-items: center;
