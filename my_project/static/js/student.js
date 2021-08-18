@@ -230,12 +230,11 @@ function startCall(){
 		options = {
 			videoStream: my_stream,
 			localVideo: document.getElementById('localstream'),
-			remoteVideo: document.getElementById('remotestream'),
 			onicecandidate:onIceCandidate,
 			configuration:my_configuration
 		  }
 	
-		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendOnly(options, function(error) {
 			if(error) return onError(error);
 			// i'll work with my peerconnection
 			my_conn = this.peerConnection;

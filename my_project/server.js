@@ -246,22 +246,22 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         // });
 
                         //저장소 설정
-                        dispatcher.createHubPort(function(error,recordport){
-                            file_uri= 'file:///tmp/' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
-                            var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
-                            pipeline.create(elements, function(error, elements){
-                                if (error) return console.log(error);
+                        // dispatcher.createHubPort(function(error,recordport){
+                        //     file_uri= 'file:///tmp/' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
+                        //     var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
+                        //     pipeline.create(elements, function(error, elements){
+                        //         if (error) return console.log(error);
 
-                                var recorder = elements[0]
-                                self.recorder = recorder
-                                recordport.connect(recorder)
-                                recorder.record(function(error) {
-                                    if (error) return onError(error);
+                        //         var recorder = elements[0]
+                        //         self.recorder = recorder
+                        //         recordport.connect(recorder)
+                        //         recorder.record(function(error) {
+                        //             if (error) return onError(error);
                               
-                                    console.log("record");
-                                  });
-                            })
-                        }) 
+                        //             console.log("record");
+                        //           });
+                        //     })
+                        // }) 
                         
                         callback(null);
                     });
@@ -369,22 +369,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         //     outputHubport.connect(camWebRtcEndpoint)
                            
                         // });
-                        dispatcher.createHubPort(function(error,recordport){
-                            file_uri= 'file:///tmp/' +roomName +"_"+ camName + "_"+"cam_"+new Date().toString()+'.webm'
-                            var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
-                            pipeline.create(elements, function(error, elements){
-                                if (error) return console.log(error);
-
-                                var recorder = elements[0]
-                                self.recorder = recorder
-                                recordport.connect(recorder)
-                                recorder.record(function(error) {
-                                    if (error) return onError(error);
-
-                                    console.log("record");
-                                  });
-                            })
-                        }) 
+                     
 
                         callback(null);
                     });
@@ -404,21 +389,17 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 
 wss.on('connection', function(ws) {
     var sessionId = nextUniqueId();
-    console.log('Connection received with sessionId ' + sessionId);
 
     ws.on('error', function(error) {
-        console.log('Connection ' + sessionId + ' error');
         stop(sessionId);
     });
 
     ws.on('close', function() {
-        console.log('Connection ' + sessionId + ' closed');
         stop(sessionId);
     });
 
     ws.on('message', function(_message) {
         var message = JSON.parse(_message);
-        console.log('Connection ' + sessionId + ' received message ', message);
         let director;
         let room;
         let roomName;
@@ -428,7 +409,6 @@ wss.on('connection', function(ws) {
        
             case 'directorJoinRoom':
                 if (sessions[sessionId]){
-                    console.log("한 세션에서 두개의 director로그인시도. 차단합니다.")
                     ws.send(JSON.stringify({
                         id : 'sessionError',
                         message : '한 세션에서 두개의 director로그인시도. 차단합니다. 재접속을 권장합니다.' 
@@ -448,17 +428,14 @@ wss.on('connection', function(ws) {
 
                 if (rooms[message.roomName]){
                     room = rooms[message.roomName]
-                    console.log(rooms[message.roomName].name + "방 입장 완료")
                 }
                 else{
                     room = new Room()
                     room.name =message.roomName
                     rooms[message.roomName] = room
-                    console.log(room.name + "방 생성 완료")
                 }
 
                 if (room.directors[message.directorName]){
-                    console.log("이미 존재하는 감독관이름입니다.")
                     ws.send(JSON.stringify({
                         id : 'sameNameError',
                         message : '이미 존재하는 감독관이름입니다. 다른이름을 선택해 주세요' 
@@ -469,7 +446,6 @@ wss.on('connection', function(ws) {
                 }
                 room.directors[message.directorName] = director
                 sessions[sessionId] = director
-                console.log("감독관 추가 완료")
                 //감독관 추가 완료
 
                 //방정보 송출
@@ -530,7 +506,6 @@ wss.on('connection', function(ws) {
                 // }
                 roomName = message.roomName
                 if (!rooms[roomName]){
-                    console.log("학생이 존재하지 않는 방에 접근중입니다.")
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'false',
@@ -539,7 +514,6 @@ wss.on('connection', function(ws) {
                 }
                 else{
                     if (rooms[roomName].students[message.studentName]){
-                        console.log("이미 존재하는 학생이름입니다.")
                         ws.send(JSON.stringify({
                             id : 'sameNameError',
                             message : '이미 존재하는 학생이름입니다. 다른이름을 선택해 주세요' 
@@ -550,7 +524,6 @@ wss.on('connection', function(ws) {
                     }
                     rooms[roomName].students[message.studentName] = student
                     sessions[sessionId] = student
-                    console.log("학생 추가 완료")
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'true',
@@ -564,9 +537,7 @@ wss.on('connection', function(ws) {
 
 
             case 'studentRequestCallOffer':
-                console.log("학생에게서 call offer를 받았습니다. ")
                 sessions[sessionId].sdpoffer = message.sdpOffer
-                console.log("학생의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
                 studentCall(sessionId, message.roomName,ws);
                 break;
             
@@ -575,21 +546,15 @@ wss.on('connection', function(ws) {
                 break;
                 
             case 'directorOffer':
-                console.log("감독관에게서 offer를 받았습니다. ")
-                console.log(message.studentName)
                 
                 sessions[sessionId].endpointPerStudent[message.studentName].sdpoffer = message.sdpOffer
-                console.log("감독관의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
                 directorCall(sessionId,message.directorName,message.studentName,message.roomName,message.sdpOffer)
                //todo
                 break;
 
             case 'camDirectorOffer':
-                console.log("감독관에게서 offer를 받았습니다. ")
-                console.log(message.camName)
                 
                 sessions[sessionId].endpointPerCam[message.camName].sdpoffer = message.sdpOffer
-                console.log("감독관의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
                 camDirectorCall(sessionId,message.directorName,message.camName,message.roomName,message.sdpOffer)
                //todo
                 break;
@@ -613,7 +578,6 @@ wss.on('connection', function(ws) {
                 // }
                 roomName = message.roomName
                 if (!rooms[roomName]){
-                    console.log("학생이 존재하지 않는 방에 접근중입니다.")
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'false',
@@ -622,7 +586,6 @@ wss.on('connection', function(ws) {
                 }
                 else{
                     if (rooms[roomName].cams[message.camName]){
-                        console.log("이미 존재하는 학생이름입니다.")
                         ws.send(JSON.stringify({
                             id : 'sameNameError',
                             message : '이미 존재하는 캠이름입니다. 다른이름을 선택해 주세요' 
@@ -633,7 +596,6 @@ wss.on('connection', function(ws) {
                     }
                     rooms[roomName].cams[message.camName] = cam
                     sessions[sessionId] = cam
-                    console.log("cam 추가 완료")
                     ws.send(JSON.stringify({
                         id : 'roomExistence',
                         value: 'true',
@@ -651,9 +613,7 @@ wss.on('connection', function(ws) {
 
 
             case 'camRequestCallOffer':
-                console.log("cam에게서 call offer를 받았습니다. ")
                 sessions[sessionId].sdpoffer = message.sdpOffer
-                console.log("cam의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
                 camCall(sessionId, message.roomName,ws);
                 break;
         case "stop":
@@ -689,7 +649,6 @@ wss.on('connection', function(ws) {
                             director = directors[key]
                             if (ws!= director.ws){
                                 director.sendMessage(message)
-                                console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
                             }
                             
                         }
@@ -700,7 +659,6 @@ wss.on('connection', function(ws) {
                             director = directors[key]
                             if(ws!= director.ws){
                                 director.sendMessage(message)
-                                console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
                             }
                             
                         }
@@ -709,7 +667,6 @@ wss.on('connection', function(ws) {
                             student = students[key]
                             if(ws!= student.ws){
                                 student.sendMessage(message)
-                            console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
                             }
                             
                         }
@@ -720,7 +677,6 @@ wss.on('connection', function(ws) {
                             student = students[key]
                             if(key == message.to){
                                 student.sendMessage(message)
-                            console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
                             }
                             
                         }
@@ -757,29 +713,23 @@ wss.on('connection', function(ws) {
 //TODO
 function studentCall(sessionId,roomName,ws){
     // 새통화
-    console.log("기존 학생의 candidate queue 삭제");
     clearCandidatesQueue(sessionId);
     // 입장요청을 한 학생
-    console.log("학생 식별완료");
     var student = sessions[sessionId]
 
-    console.log("파이프라인 만들기를 시도합니다.");
     //todo
     student.createPipeline(sessionId, roomName, ws, function(error) {
         //파이프라인을 만들었으므로, 받아논 offer를 실행해서 연결을 형성한다.
-            console.log("createPipeline이후 콜백 실행하겠습니다.")
             var pipeline = sessions[sessionId].pipeline
             var studentWebRtcEndpoint = sessions[sessionId].webRtcEndpoint
             if (error) {                    
                 student.sendMessage({id:"shouldStop"});
-                console.log("students.createPipeline에서 오류")
                 return ws.send(error);
             }
 
             studentWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
                 if (error) {
                     student.sendMessage({id:"shouldStop"});
-                    console.log("student kurentoside 프로세스 offer도중 에러")
                     return ws.send(error);
                 }
                 
@@ -793,7 +743,6 @@ function studentCall(sessionId,roomName,ws){
 
             studentWebRtcEndpoint.gatherCandidates(function(error) {
                 if (error) {
-                    console.log("studentWebRtcEndpoint.gatherCandidates 도중 에러")
                     return ws.send(error);
                 }
             });
@@ -807,28 +756,23 @@ function studentCall(sessionId,roomName,ws){
 
 function camCall(sessionId,roomName,ws){
     // 새통화
-    console.log("기존 cam의 candidate queue 삭제");
     clearCandidatesQueue(sessionId);
     // 입장요청을 한 학생
-    console.log("학생 식별완료");
     var cam = sessions[sessionId]
 
     console.log("cam 파이프라인 만들기를 시도합니다.");
     //todo
     cam.createPipeline(sessionId, roomName, ws, function(error) {
         //파이프라인을 만들었으므로, 받아논 offer를 실행해서 연결을 형성한다.
-            console.log("cam createPipeline이후 콜백 실행하겠습니다.")
             var pipeline = sessions[sessionId].pipeline
             var camWebRtcEndpoint = sessions[sessionId].webRtcEndpoint
             if (error) {
-                console.log("cam.createPipeline에서 오류")
                 return ws.send(error);
             }
 
             camWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
                 if (error) {
                     cam.sendMessage({id:"shouldStop"});
-                    console.log("cam kurentoside 프로세스 offer도중 에러")
                     return ws.send(error);
                 }
                 
@@ -842,7 +786,6 @@ function camCall(sessionId,roomName,ws){
 
             camWebRtcEndpoint.gatherCandidates(function(error) {
                 if (error) {
-                    console.log("camWebRtcEndpoint.gatherCandidates 도중 에러")
                     return ws.send(error);
                 }
             });
@@ -858,13 +801,10 @@ function camCall(sessionId,roomName,ws){
 
 function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
     // 새통화
-    console.log("기존 감독관의 candidate queue 삭제");
     clearCandidatesQueueDirector(sessionId,studentName);
     // 입장요청을 한 학생
-    console.log("감독관 식별 완료");
     var director = sessions[sessionId]
 
-    console.log("파이프라인 가져오기를 시도합니다.");
     //todo
 
     var pipeline =rooms[roomName].students[studentName].pipeline
@@ -872,26 +812,21 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
         return
     }
 //파이프라인을 가져왔으므로, 받아논 offer를 실행해서 연결을 형성한다.
-    console.log("파이프라인 획득했습니다. 연결시도합니다. 실행하겠습니다.")
-    console.log("파이프라인"+pipeline)
     pipeline.create('WebRtcEndpoint', function(error, directorWebRtcEndpoint) {
         if (error) {
             pipeline.release();
-            return console.log("엔드포인트 생성중 오류")
+            return 1
         }
 
         director.endpointPerStudent[studentName].webRtcEndpoint = directorWebRtcEndpoint
         //저장해둔 candidate가 있으면 추가한다
-        console.log("저장해둔 candidates가 있으면 추가합니다. ")
         if (director.endpointPerStudent[studentName].candidatesQueue) {
-            console.log("저장된 candidates를 추가합니다. ")
             while(director.endpointPerStudent[studentName].candidatesQueue.length) {
                 var candidate = director.endpointPerStudent[studentName].candidatesQueue.shift();
                 directorWebRtcEndpoint.addIceCandidate(candidate);
             }
         }
         //onicecandidate함수를 설정한다
-        console.log("쿠렌토측 endpoint의 onicecandiate설정하겠습니다. ")
         directorWebRtcEndpoint.on('OnIceCandidate', function(event) {
             var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
             director.ws.send(JSON.stringify({
@@ -901,11 +836,10 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
             }));
         });
         
-        console.log("offer와 answer 교환하겠습니다.")
         directorWebRtcEndpoint.processOffer(sdpoffer, function(error, callerSdpAnswer) {
             console.log(sdpoffer)
             if (error) {
-                return console.log("director kurentoside 프로세스 offer도중 에러")
+                return 1
                 // return ws.send(error);
             }
             
@@ -919,16 +853,15 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
         });
         directorWebRtcEndpoint.gatherCandidates(function(error) {
             if (error) {
-                console.log("directorWebRtcEndpoint.gatherCandidates 도중 에러")
+                return 1
                 // return ws.send(error);
             }
         });
 
         console.log("감독관측 연결 형성되었습니다. 허브포트를 만들고, 감독관측 webrtcendpoint와 연결해보겠씁니다.")
         rooms[roomName].students[studentName].dispatcher.createHubPort(function(error,outputHubport) {
-            console.log("허브포트 생성완료")
             if (error) {
-                return console.log("createHubPort 에러 발생")
+                return 1
             }
             outputHubport.connect(directorWebRtcEndpoint)
            
@@ -939,40 +872,33 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
 
 function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
     // 새통화
-    console.log("기존 감독관의 candidate queue 삭제");
     camClearCandidatesQueueDirector(sessionId,camName);
     // 입장요청을 한 학생
-    console.log("감독관 식별 완료");
     var director = sessions[sessionId]
 
-    console.log("파이프라인 가져오기를 시도합니다.");
     //todo
 
     var pipeline =rooms[roomName].cams[camName].pipeline
     if(!rooms[roomName].cams[camName].dispatcher){
-        return
+        return 1
     }
 //파이프라인을 가져왔으므로, 받아논 offer를 실행해서 연결을 형성한다.
-    console.log("파이프라인 획득했습니다. 연결시도합니다. 실행하겠습니다.")
-    console.log("파이프라인"+pipeline)
+
     pipeline.create('WebRtcEndpoint', function(error, directorWebRtcEndpoint) {
         if (error) {
             pipeline.release();
-            return console.log("엔드포인트 생성중 오류")
+            return 1
         }
 
         director.endpointPerCam[camName].webRtcEndpoint = directorWebRtcEndpoint
         //저장해둔 candidate가 있으면 추가한다
-        console.log("저장해둔 candidates가 있으면 추가합니다. ")
         if (director.endpointPerCam[camName].candidatesQueue) {
-            console.log("저장된 candidates를 추가합니다. ")
             while(director.endpointPerCam[camName].candidatesQueue.length) {
                 var candidate = director.endpointPerCam[camName].candidatesQueue.shift();
                 directorWebRtcEndpoint.addIceCandidate(candidate);
             }
         }
         //onicecandidate함수를 설정한다
-        console.log("쿠렌토측 endpoint의 onicecandiate설정하겠습니다. ")
         directorWebRtcEndpoint.on('OnIceCandidate', function(event) {
             var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
             director.ws.send(JSON.stringify({
@@ -986,7 +912,7 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
         directorWebRtcEndpoint.processOffer(sdpoffer, function(error, callerSdpAnswer) {
             console.log(sdpoffer)
             if (error) {
-                return console.log("director kurentoside 프로세스 offer도중 에러")
+                return 1
                 // return ws.send(error);
             }
             
@@ -1000,16 +926,14 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
         });
         directorWebRtcEndpoint.gatherCandidates(function(error) {
             if (error) {
-                console.log("directorWebRtcEndpoint.gatherCandidates 도중 에러")
+                return 1
                 // return ws.send(error);
             }
         });
 
-        console.log("감독관측 연결 형성되었습니다. 허브포트를 만들고, 감독관측 webrtcendpoint와 연결해보겠씁니다.")
         rooms[roomName].cams[camName].dispatcher.createHubPort(function(error,outputHubport) {
-            console.log("허브포트 생성완료")
             if (error) {
-                return console.log("createHubPort 에러 발생")
+                return 1
             }
             outputHubport.connect(directorWebRtcEndpoint)
            
@@ -1046,13 +970,10 @@ function studentOnIceCandidate(sessionId,candidate){
     var candidate = kurento.getComplexType('IceCandidate')(candidate);
     var student = sessions[sessionId]
     if (student.webRtcEndpoint) {
-        console.log("학생에게 addIceCandidate하겠습니다.")
         var webRtcEndpoint = student.webRtcEndpoint
         webRtcEndpoint.addIceCandidate(candidate);
     }else {
-        console.log("아직 해당유저의 webrtcEndpoint가 없으므로 큐에 저장하겠습니다.")
         if (!sessions[sessionId].candidatesQueue) {
-            console.log("해당유저의 빈 candidatesQueue생성합니다.")
             sessions[sessionId].candidatesQueue = [];
         }
         sessions[sessionId].candidatesQueue.push(candidate);
@@ -1067,13 +988,10 @@ function directorOnIceCandidate(sessionId,directorName,studentName,candidate){
     var candidate = kurento.getComplexType('IceCandidate')(candidate);
     var director = sessions[sessionId]
     if (director.endpointPerStudent[studentName].webRtcEndpoint) {
-        console.log("direcotr에게 addIceCandidate하겠습니다.")
         var webRtcEndpoint = director.endpointPerStudent[studentName].webRtcEndpoint
         webRtcEndpoint.addIceCandidate(candidate);
     }else {
-        console.log("아직 해당유저의 webrtcEndpoint가 없으므로 큐에 저장하겠습니다.")
         if (!director.endpointPerStudent[studentName].candidatesQueue) {
-            console.log("해당유저의 빈 candidatesQueue생성합니다.")
             director.endpointPerStudent[studentName].candidatesQueue = [];
         }
         director.endpointPerStudent[studentName].candidatesQueue.push(candidate);
@@ -1087,13 +1005,10 @@ function camDirectorOnIceCandidate(sessionId,directorName,camName,candidate){
     var candidate = kurento.getComplexType('IceCandidate')(candidate);
     var director = sessions[sessionId]
     if (director.endpointPerCam[camName].webRtcEndpoint) {
-        console.log("direcotr에게 addIceCandidate하겠습니다.")
         var webRtcEndpoint = director.endpointPerCam[camName].webRtcEndpoint
         webRtcEndpoint.addIceCandidate(candidate);
     }else {
-        console.log("아직 해당유저의 webrtcEndpoint가 없으므로 큐에 저장하겠습니다.")
         if (!director.endpointPerCam[camName].candidatesQueue) {
-            console.log("해당유저의 빈 candidatesQueue생성합니다.")
             director.endpointPerCam[camName].candidatesQueue = [];
         }
         director.endpointPerCam[camName].candidatesQueue.push(candidate);
@@ -1129,7 +1044,6 @@ function stop(sessionId) {
                     message:student.name + " 학생에게 stop요청받음" 
                 }
                 rooms[roomName].directors[key].sendMessage(message)
-                console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
             }
         }
         // sendRoomToAll(rooms[roomName])
@@ -1163,7 +1077,6 @@ function stop(sessionId) {
                     message:cam.name + " cam에게 stop요청받음" 
                 }
                 rooms[roomName].directors[key].sendMessage(message)
-                console.log("현재 존재하는 감독관: " + key + "들에게 스탑요청을 보내겠습니다.")
             }
         }
         // sendRoomToAll(rooms[roomName])
@@ -1204,14 +1117,12 @@ function sendRoomToAll(room){
         for (let key in directors) {
             director = directors[key]
             director.sendMessage(message)
-            console.log("현재 존재하는 감독관: " + key + "들에게 채팅을 보내겠습니다.")
             
         }
         students = room.students
         for (let key in students) {
             student = students[key]
             student.sendMessage(message)
-            console.log("현재 존재하는 학생: " + key + "들에게 채팅을 보내겠습니다.")
         }
     
 }
