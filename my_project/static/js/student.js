@@ -234,7 +234,7 @@ function startCall(){
 			configuration:my_configuration
 		  }
 	
-		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendOnly(options, function(error) {
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
 			if(error) return onError(error);
 			// i'll work with my peerconnection
 			my_conn = this.peerConnection;

@@ -152,40 +152,35 @@ Cam.prototype.sendMessage = function(message) {
 //그리고 방에 있는 모든 시험관들에게 연결을 형성하고 허브에 연결하라고 해야한다.이걸 콜백부분에...
 //여기있는 콜백은,파이프라인을 만든 이후에 할 함수.
 Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
-    console.log("파이프라인 생성 시도합니다")
     var self = this;
     studentName =  sessions[callerId].name
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
             self.sendMessage({id:"shouldStop"});
-            return console.log("쿠렌토클라이언트 생성중 오류")
+            return 1
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
                 self.sendMessage({id:"shouldStop"});
-                return console.log("파이프라인 생성중 오류")
+                return 1
             }
             //쿠렌토측에 webrtcendpoint를 만든다.
-            console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, studentWebRtcEndpoint) {
                 if (error) {
                     self.sendMessage({id:"shouldStop"});
                     pipeline.release();
-                    return console.log("엔드포인트 생성중 오류")
+                    return 1
                 }
                 //저장해둔 candidate가 있으면 추가한다
-                console.log("저장해둔 candidates가 있으면 추가합니다. ")
                 if (sessions[callerId].candidatesQueue) {
-                    console.log("저장된 candidates를 추가합니다. ")
                     while(sessions[callerId].candidatesQueue.length) {
                         var candidate = sessions[callerId].candidatesQueue.shift();
                         studentWebRtcEndpoint.addIceCandidate(candidate);
                     }
                 }
                 //onicecandidate함수를 설정한다
-                console.log("쿠렌토측 endpoint의 onicecandiate설정하겠습니다. ")
                 studentWebRtcEndpoint.on('OnIceCandidate', function(event) {
                     var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
                     self.ws.send(JSON.stringify({
@@ -194,14 +189,13 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                     }));
                 });
                 
-                console.log("디스패처만 만들면 됩니다..")
 
                 //디스패처를 만든다.
                 pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
                         self.sendMessage({id:"shouldStop"});
                         pipeline.release();
-                        return console.log("디스패처 생성 실패...")
+                        return 1
                     }
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
@@ -209,17 +203,15 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         if (error) {
                             self.sendMessage({id:"shouldStop"});
                             pipeline.release();
-                            return console.log("createHubPort 에러 발생")
+                            return 1
                         }
                         dispatcher.setSource(hubport)
                         studentWebRtcEndpoint.connect(hubport)
-                        hubport.connect(studentWebRtcEndpoint)
                         //학생객체에 저장.
                         self.dispatcher = dispatcher;
                         self.pipeline = pipeline
                         self.webRtcEndpoint = studentWebRtcEndpoint;
                         //감독관들에게 연결 형성 요구 메시지 날린다
-                        console.log("현재 접속 시도하는 방 : " + roomName)
                         for (let key in rooms[roomName].directors){
                             rooms[roomName].directors[key].endpointPerStudent[sessions[callerId].name] = {}
                            
@@ -230,8 +222,6 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                                 message:"학생 "+ sessions[callerId].name + "이 연결요청을 하고 있습니다." 
                             }
                             rooms[roomName].directors[key].sendMessage(message)
-                            console.log(rooms[roomName].directors[key])
-                            console.log("현재 존재하는 감독관: " + key + "들에게 연결요청을 보내겠습니다.")
                         }
                         //임시로 자기자신에게 연결해두었음.
                         // console.log("임시로 자기자신에게 연결합니다")
@@ -278,40 +268,39 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 //그리고 방에 있는 모든 시험관들에게 연결을 형성하고 허브에 연결하라고 해야한다.이걸 콜백부분에...
 //여기있는 콜백은,파이프라인을 만든 이후에 할 함수.
 Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
-    console.log("파이프라인 생성 시도합니다")
     var self = this;
     camName =  sessions[callerId].name
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
         if (error) {
             self.sendMessage({id:"shouldStop"});
-            return console.log("쿠렌토클라이언트 생성중 오류")
+            return 1
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
             if (error) {
                 self.sendMessage({id:"shouldStop"});
-                return console.log("파이프라인 생성중 오류")
+                return 1
             }
             //쿠렌토측에 webrtcendpoint를 만든다.
-            console.log("WebRtcEndpoint생성하겠습니다 ")
+          
             pipeline.create('WebRtcEndpoint', function(error, camWebRtcEndpoint) {
                 if (error) {
                     self.sendMessage({id:"shouldStop"});
                     pipeline.release();
-                    return console.log("엔드포인트 생성중 오류")
+                    return 1
                 }
                 //저장해둔 candidate가 있으면 추가한다
-                console.log("저장해둔 candidates가 있으면 추가합니다. ")
+    
                 if (sessions[callerId].candidatesQueue) {
-                    console.log("저장된 candidates를 추가합니다. ")
+          
                     while(sessions[callerId].candidatesQueue.length) {
                         var candidate = sessions[callerId].candidatesQueue.shift();
                         camWebRtcEndpoint.addIceCandidate(candidate);
                     }
                 }
                 //onicecandidate함수를 설정한다
-                console.log("쿠렌토측 endpoint의 onicecandiate설정하겠습니다. ")
+           
                 camWebRtcEndpoint.on('OnIceCandidate', function(event) {
                     var candidate = kurento.getComplexType('IceCandidate')(event.candidate);
                     self.ws.send(JSON.stringify({
@@ -320,14 +309,14 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                     }));
                 });
                 
-                console.log("디스패처만 만들면 됩니다..")
+   
 
                 //디스패처를 만든다.
                 pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
                     if (error) {
                         self.sendMessage({id:"shouldStop"});
                         pipeline.release();
-                        return console.log("디스패처 생성 실패...")
+                        return 1
                     }
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
@@ -335,11 +324,10 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                         if (error) {
                             self.sendMessage({id:"shouldStop"});
                             pipeline.release();
-                            return console.log("createHubPort 에러 발생")
+                            return 1
                         }
                         dispatcher.setSource(hubport)
                         camWebRtcEndpoint.connect(hubport)
-                        hubport.connect(camWebRtcEndpoint)
                         //학생객체에 저장.
                         self.dispatcher = dispatcher;
                         self.pipeline = pipeline
