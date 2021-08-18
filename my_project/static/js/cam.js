@@ -193,6 +193,7 @@ function startCall(){
 			localVideo: document.getElementById('localstream'),
 			remoteVideo: document.getElementById('remotestream'),
 			onicecandidate:onIceCandidate,
+			mediaConstraints:constraints,
 			configuration:my_configuration
 		  }
 		  
@@ -208,7 +209,16 @@ function startCall(){
 
 			
 );
-		
+		stream.getVideoTracks()[0].applyConstraints({
+			width: 320, height: 240, frameRate:15
+		}).then(() => {
+			console.log("applyConstraints!!")
+		})
+		.catch(e => {
+			console.log("applyConstraints FAILLLL!!")
+			console.log(e)
+			// The constraints could not be satisfied by the available devices.
+		});
 			// stream.getVideoTracks()[0].applyConstraints({
 			// 	width:1280,
 			// 	height:720
