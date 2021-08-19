@@ -181,90 +181,102 @@ function startCall(){
 		video: {facingMode: { exact: "environment" },width: 320, height: 240,frameRate:15},
 		audio: false
 	}
-	my_configuration = {
+	
+
+	navigator.mediaDevices.getUserMedia(constraints)
+	.then(function(stream) {
+	  my_stream = stream
+	  my_configuration = {
 		iceServers : [
 			{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
 	}
+	  options = {
+		localVideo: document.getElementById('localstream'),
+		remoteVideo: document.getElementById('remotestream'),
+		onicecandidate:onIceCandidate,
+		videoStream: my_stream,
+		configuration:my_configuration
+	  }
 
 
+	  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+		if(error) return console.log(error);
+		// i'll work with my peerconnection
+		my_conn = this.peerConnection;
+		stream = this.getLocalStream();
+		stream.getVideoTracks()[0].addEventListener('ended', () => 
+		stop()
+
+
+		
+);
+	stream.getVideoTracks()[0].applyConstraints({
+		width: 320, height: 240, frameRate:15
+	}).then(() => {
+		console.log("applyConstraints!!")
+	})
+	.catch(e => {
+		console.log("applyConstraints FAILLLL!!")
+		console.log(e)
+		// The constraints could not be satisfied by the available devices.
+	});
+		// stream.getVideoTracks()[0].applyConstraints({
+		// 	width:1280,
+		// 	height:720
+		// }).then(() => {
+		// 	console.log("applyConstraints!!")
+		//   })
+		//   .catch(e => {
+		// 	console.log("applyConstraints FAILLLL!!")
+		// 	console.log(e)
+
+		// 	// The constraints could not be satisfied by the available devices.
+		//   });
+
+
+
+		systemAddMessageToChatbox(typeof(stream))
+
+		// make onIceCandidate
+
+		// my_conn.onicecandidate = ((e)=>{
+		// 	if (e.candidate == null){return}
+			
+		// 	console.log('Local candidate' + JSON.stringify(candidate));
+		// 	var message = {
+		// 		id : 'onIceCandidate',
+		// 		candidate : candidate
+		// 	 };
+		// 	 sendMessage(message);
+		// },(error)=>{console.log(error)})
+
+		//create my offer
+		console.log("offerSdp 생성하겠습니다.")
+		my_conn.createOffer((offerSdp)=>{
+			my_conn.setLocalDescription(offerSdp);
+			console.info('Invoking SDP offer callback function ' + location.host);
+			var message = {
+				id : 'camRequestCallOffer',
+				camName:cam.name,
+				roomName:cam.room,
+				sdpOffer : offerSdp.sdp
+			}
+			sendMessage(message);
+		},
+		(e)=>{console.log(e)
+		})
+	});
+
+	})
+	.catch(function(err) {
+	  return console.log(err)
+	});
 
 	//현재옵션:
-		options = {
-			localVideo: document.getElementById('localstream'),
-			remoteVideo: document.getElementById('remotestream'),
-			onicecandidate:onIceCandidate,
-			mediaConstraints:constraints,
-			configuration:my_configuration
-		  }
+		
 		  
 	
-		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-			if(error) return console.log(error);
-			// i'll work with my peerconnection
-			my_conn = this.peerConnection;
-			stream = this.getLocalStream();
-			stream.getVideoTracks()[0].addEventListener('ended', () => 
-			stop()
-
-
-			
-);
-		stream.getVideoTracks()[0].applyConstraints({
-			width: 320, height: 240, frameRate:15
-		}).then(() => {
-			console.log("applyConstraints!!")
-		})
-		.catch(e => {
-			console.log("applyConstraints FAILLLL!!")
-			console.log(e)
-			// The constraints could not be satisfied by the available devices.
-		});
-			// stream.getVideoTracks()[0].applyConstraints({
-			// 	width:1280,
-			// 	height:720
-			// }).then(() => {
-			// 	console.log("applyConstraints!!")
-			//   })
-			//   .catch(e => {
-			// 	console.log("applyConstraints FAILLLL!!")
-			// 	console.log(e)
-
-			// 	// The constraints could not be satisfied by the available devices.
-			//   });
-
-
-
-			console.log(typeof(stream))
-
-			// make onIceCandidate
-	
-			// my_conn.onicecandidate = ((e)=>{
-			// 	if (e.candidate == null){return}
-				
-			// 	console.log('Local candidate' + JSON.stringify(candidate));
-			// 	var message = {
-			// 		id : 'onIceCandidate',
-			// 		candidate : candidate
-			// 	 };
-			// 	 sendMessage(message);
-			// },(error)=>{console.log(error)})
-	
-			//create my offer
-			console.log("offerSdp 생성하겠습니다.")
-			my_conn.createOffer((offerSdp)=>{
-				my_conn.setLocalDescription(offerSdp);
-				console.info('Invoking SDP offer callback function ' + location.host);
-				var message = {
-					id : 'camRequestCallOffer',
-					camName:cam.name,
-					roomName:cam.room,
-					sdpOffer : offerSdp.sdp
-				}
-				sendMessage(message);
-			},
-			(e)=>{console.log(e)
-			})
-		});
+		  
 	
 	
 	//TODO
