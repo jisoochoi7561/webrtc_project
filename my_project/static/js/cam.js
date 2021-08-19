@@ -22,6 +22,7 @@ var cam = {};
 var webRtcPeer ; 
 var tempcam;
 var temproom;
+var front;
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function() {
@@ -40,6 +41,9 @@ window.onload = function() {
 	document.getElementById('camStop').addEventListener('click', function() {
 		stop();
 	});
+
+	front = false;
+	document.getElementById('flip-button').onclick = function() { front = !front; };
 	systemAddMessageToChatbox("충남대학교 시험감독 캠 페이지 입니다. 화면공유시 사용한 이름과 같은 이름을 사용해 주세요.")
 }
 
@@ -177,8 +181,9 @@ function startCall(){
 	console.log('화면전송을 시작합니다')
 	systemAddMessageToChatbox("화면전송을 시작합니다.")
 	//화면캡처의 경우에는 audio는 필요하지 않음
+	
 	var constraints = {
-		video: {facingMode: { exact: "environment" },width: 320, height: 240,frameRate:15},
+		video: {facingMode: (front? "user" : "environment"),width: 320, height: 240, frameRate: { ideal: 10, max: 15 }},
 		audio: false
 	}
 	

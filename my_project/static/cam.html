@@ -68,16 +68,16 @@
                 <span class="glyphicon glyphicon-play"></span>공유시작</a>
             <a id="camStop" href="#" class="btn btn-danger">
               <span class="glyphicon glyphicon-stop"></span> 나가기</a>
+              <a id="flip-button" href="#" class="btn btn-success">
+                <span class="glyphicon glyphicon-play"></span> 캠 바꾸기</a>
 
           </div>
         </div>
 
 
         <div class="row">
-          <div>내 화면</div>
-          <div><video id="localstream" class = "border border-primary" autoplay  muted playsinline poster="img/webrtc.png" width="320" height="240" ></video></div>
-          <div>송출되고 있는 화면</div>
-          <div><video id="remotestream" class = "border border-primary" autoplay muted playsinline poster="img/webrtc.png" width="320" height="240" ></video></div>
+          <div style="border-radius:10%;height:60vh;width:60vh;border:2px solid rgb(226, 79, 103);padding:2%;">
+            <div style="height:50vh;width:55vh;overflow:auto;padding:2%;white-space: pre-line" id="chatBox" name="chatBox">
         </div>
 
         
@@ -86,8 +86,11 @@
 
       
       <div class = "col-md-6">
-        <div style="border-radius:10%;height:60vh;width:60vh;border:2px solid rgb(226, 79, 103);padding:2%;">
-        <div style="height:50vh;width:55vh;overflow:auto;padding:2%;white-space: pre-line" id="chatBox" name="chatBox">
+        <div>내 화면</div>
+          <div><video id="localstream" class = "border border-primary" autoplay  muted playsinline poster="img/webrtc.png" width="320" height="240" ></video></div>
+          <div>송출되고 있는 화면</div>
+          <div><video id="remotestream" class = "border border-primary" autoplay muted playsinline poster="img/webrtc.png" width="320" height="240" ></video></div>
+
       </div>
      
       
