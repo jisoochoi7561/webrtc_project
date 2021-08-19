@@ -402,7 +402,7 @@ function stop(){
 
 
 function studentStop(studentName){
-	systemAddMessageToChatbox(studentName+'이 화면공유를 종료합니다.')
+	systemAddMessageToChatbox(studentName+'님이 화면공유를 종료합니다.')
 	console.log(studentName+"학생이 화면 공유를 끄셨습니다")
 	if (director.studentsConnection[studentName]){
 		delete director.studentsConnection[studentName]
@@ -418,7 +418,7 @@ function studentStop(studentName){
 }
 
 function camStop(camName){
-	systemAddMessageToChatbox(camName+'이 카메라 공유를 종료합니다.')
+	systemAddMessageToChatbox(camName+'님이 카메라 공유를 종료합니다.')
 	console.log(camName+"학생이 캠 공유를 끄셨습니다")
 	if (director.camsConnection[camName]){
 		delete director.camsConnection[camName]
