@@ -1191,8 +1191,8 @@ function stop(sessionId) {
         }
         // sendRoomToAll(rooms[roomName])
     }
-    if (Object.keys(rooms[roomName].directors).length === 0){
-        console.log(rooms[roomName].directors)
+    if (Object.keys(rooms[roomName].directors).length === 0 && Object.keys(rooms[roomName].cams).length === 0 && Object.keys(rooms[roomName].students).length === 0){
+        console.log("방이 비었습니다.")
     }
     
     
