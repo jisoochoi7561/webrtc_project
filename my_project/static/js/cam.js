@@ -22,7 +22,6 @@ var cam = {};
 var webRtcPeer ; 
 var tempcam;
 var temproom;
-var front = true;
 var my_switch
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
@@ -181,11 +180,11 @@ function startCall(){
 	console.log('화면전송을 시작합니다')
 	systemAddMessageToChatbox("화면전송을 시작합니다.")
 	//화면캡처의 경우에는 audio는 필요하지 않음
-	if (my_switch.value=="on"){
-		systemAddMessageToChatbox(my_switch.value)
+	if (my_switch.checked=="on"){
+		systemAddMessageToChatbox(my_switch.checked)
 		front = false
 	}else{
-		systemAddMessageToChatbox(my_switch.value)
+		systemAddMessageToChatbox(my_switch.checked)
 		front = true
 	}
 	var constraints = {
