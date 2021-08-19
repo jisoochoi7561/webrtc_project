@@ -159,7 +159,7 @@ ws.onmessage = function(message) {
 
 
 function startCall(studentName,roomName){
-	systemAddMessageToChatbox(studentName+'이 화면공유를 시도합니다.')
+	systemAddMessageToChatbox(studentName+'님이 화면공유를 시도합니다.')
 	console.log('webrtcpeer 생성을 시작합니다')
 	console.log(roomName)
 	//화면캡처
@@ -262,7 +262,7 @@ function startCall(studentName,roomName){
 
 
 function camStartCall(camName,roomName){
-	systemAddMessageToChatbox(camName+'이 카메라 공유를 시도합니다.')
+	systemAddMessageToChatbox(camName+'님이 카메라 공유를 시도합니다.')
 	console.log('webrtcpeer 생성을 시작합니다')
 	//화면캡처
 		my_student_element = null;
