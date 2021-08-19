@@ -1191,7 +1191,7 @@ function stop(sessionId) {
         }
         // sendRoomToAll(rooms[roomName])
     }
-    if (rooms[roomName].directors != {}){
+    if (Object.keys(rooms[roomName].directors).length === 0){
         console.log(rooms[roomName].directors)
     }
     
