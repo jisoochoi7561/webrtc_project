@@ -191,14 +191,13 @@ function startCall(){
 	//현재옵션:
 		options = {
 			localVideo: document.getElementById('localstream'),
-			remoteVideo: document.getElementById('remotestream'),
 			onicecandidate:onIceCandidate,
 			mediaConstraints:constraints,
 			configuration:my_configuration
 		  }
 		  
 	
-		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
+		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendonly(options, function(error) {
 			if(error) return console.log(error);
 			// i'll work with my peerconnection
 			my_conn = this.peerConnection;
