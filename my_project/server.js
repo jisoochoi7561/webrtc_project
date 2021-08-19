@@ -1191,7 +1191,7 @@ function stop(sessionId) {
         }
         // sendRoomToAll(rooms[roomName])
     }
-    console.log(roomName)
+    console.log(rooms[roomName].directors)
     
 }
 
