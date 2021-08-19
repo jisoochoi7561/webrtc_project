@@ -180,7 +180,7 @@ function startCall(){
 	console.log('화면전송을 시작합니다')
 	systemAddMessageToChatbox("화면전송을 시작합니다.")
 	//화면캡처의 경우에는 audio는 필요하지 않음
-	if (my_switch.checked=="on"){
+	if (my_switch.checked==true){
 		systemAddMessageToChatbox(my_switch.checked)
 		front = false
 	}else{
