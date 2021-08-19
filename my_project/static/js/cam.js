@@ -243,7 +243,6 @@ function startCall(){
 
 
 
-		systemAddMessageToChatbox(typeof(stream))
 
 		// make onIceCandidate
 
