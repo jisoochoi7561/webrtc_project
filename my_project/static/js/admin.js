@@ -208,7 +208,7 @@ function startCall(studentName,roomName){
 		//로컬스트림 출력 세팅
 		my_configuration = {
 			iceServers : [
-				{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
+				{"urls":"turn:turn.jisoochoi.shop","username":"kurento","credential":"kurento"}]
 		}
 	
 		options = {
@@ -309,7 +309,7 @@ function camStartCall(camName,roomName){
 		//로컬스트림 출력 세팅
 		my_configuration = {
 			iceServers : [
-				{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
+				{"urls":"turn:turn.jisoochoi.shop","username":"kurento","credential":"kurento"}]
 		}
 		options = {
 			remoteVideo: document.getElementById(camName+"cam!"),

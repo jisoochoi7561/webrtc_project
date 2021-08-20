@@ -196,7 +196,7 @@ function startCall(){
 	  my_stream = stream
 	  my_configuration = {
 		iceServers : [
-			{"urls":"turn:44.197.116.81","username":"kurento","credential":"kurento"}]
+			{"urls":"turn:turn.jisoochoi.shop","username":"kurento","credential":"kurento"}]
 	}
 	  options = {
 		localVideo: document.getElementById('localstream'),
