@@ -173,6 +173,11 @@ ws.onmessage = function(message) {
 		case 'roominfo':
 			// document.getElementById("roomBox").innerHTML = message.data
 			break;
+		case 'roomsKeys':
+			console.log(parsedMessage.message)
+		// document.getElementById("roomBox").innerHTML = message.data
+		break;	
+			
 	default:
 		console.error('Unrecognized message', parsedMessage);
 	}
