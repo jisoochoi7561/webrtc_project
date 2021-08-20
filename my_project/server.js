@@ -405,7 +405,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 wss.on('connection', function(ws) {
     var sessionId = nextUniqueId();
     console.log('Connection received with sessionId ' + sessionId);
-
+    console.log(rooms.keys())
     ws.on('error', function(error) {
         console.log('Connection ' + sessionId + ' error');
         stop(sessionId);
