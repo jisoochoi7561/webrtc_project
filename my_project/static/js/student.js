@@ -236,7 +236,7 @@ function startCall(){
 		  }
 	
 		  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerSendrecv(options, function(error) {
-			if(error) return onError(error);
+			if(error) return console.log(error);
 			// i'll work with my peerconnection
 			my_conn = this.peerConnection;
 	

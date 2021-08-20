@@ -256,7 +256,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                                 self.recorder = recorder
                                 recordport.connect(recorder)
                                 recorder.record(function(error) {
-                                    if (error) return onError(error);
+                                    if (error) return console.log(error);
                               
                                     console.log("record");
                                   });
@@ -379,7 +379,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                                 self.recorder = recorder
                                 recordport.connect(recorder)
                                 recorder.record(function(error) {
-                                    if (error) return onError(error);
+                                    if (error) return console.log(error);
 
                                     console.log("record");
                                   });
