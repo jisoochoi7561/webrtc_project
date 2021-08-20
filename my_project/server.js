@@ -405,7 +405,10 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 wss.on('connection', function(ws) {
     var sessionId = nextUniqueId();
     console.log('Connection received with sessionId ' + sessionId);
-    console.log(Object.keys(rooms))
+    ws.send(JSON.stringify({
+        id : 'roomsKeys',
+        message : Object.keys(rooms)
+    }));
     ws.on('error', function(error) {
         console.log('Connection ' + sessionId + ' error');
         stop(sessionId);
