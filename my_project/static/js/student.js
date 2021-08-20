@@ -174,7 +174,7 @@ ws.onmessage = function(message) {
 			// document.getElementById("roomBox").innerHTML = message.data
 			break;
 		case 'roomsKeys':
-			console.log(parsedMessage.message)
+			console.log(parsedMessage)
 		// document.getElementById("roomBox").innerHTML = message.data
 		break;	
 			
