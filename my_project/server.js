@@ -152,6 +152,7 @@ Cam.prototype.sendMessage = function(message) {
 //그리고 방에 있는 모든 시험관들에게 연결을 형성하고 허브에 연결하라고 해야한다.이걸 콜백부분에...
 //여기있는 콜백은,파이프라인을 만든 이후에 할 함수.
 Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
+    try{
     console.log("파이프라인 생성 시도합니다")
     var self = this;
     studentName =  sessions[callerId].name
@@ -270,7 +271,10 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     })
 })
 }
-
+catch(e){
+    throw e
+}
+}
 
 
 //학생이 파이프라인을 만들어서 자신에게 pipeline과 webrtcendpoint를 등록해둔다.
@@ -278,6 +282,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 //그리고 방에 있는 모든 시험관들에게 연결을 형성하고 허브에 연결하라고 해야한다.이걸 콜백부분에...
 //여기있는 콜백은,파이프라인을 만든 이후에 할 함수.
 Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
+    try{
     console.log("파이프라인 생성 시도합니다")
     var self = this;
     camName =  sessions[callerId].name
@@ -394,6 +399,11 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 })
 }
 
+catch(e){
+    throw e
+}
+
+}
 
 
 /*
@@ -866,6 +876,7 @@ wss.on('connection', function(ws) {
 
 //TODO
 function studentCall(sessionId,roomName,ws){
+    try{
     // 새통화
     console.log("기존 학생의 candidate queue 삭제");
     clearCandidatesQueue(sessionId);
@@ -910,12 +921,16 @@ function studentCall(sessionId,roomName,ws){
         });
     
 
-
+    }
+    catch(e){
+        throw e
+    }
 
 }
 
 
 function camCall(sessionId,roomName,ws){
+    try{
     // 새통화
     console.log("기존 cam의 candidate queue 삭제");
     clearCandidatesQueue(sessionId);
@@ -959,14 +974,17 @@ function camCall(sessionId,roomName,ws){
         });
     
 
-
-
+    }
+catch(e){
+    throw e
+}
 }
 
 
 
 
 function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
+    try{
     // 새통화
     console.log("기존 감독관의 candidate queue 삭제");
     clearCandidatesQueueDirector(sessionId,studentName);
@@ -1047,7 +1065,12 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
 });
 }
 
+catch(e){
+    throw e
+}
+}
 function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
+    try{
     // 새통화
     console.log("기존 감독관의 candidate queue 삭제");
     camClearCandidatesQueueDirector(sessionId,camName);
@@ -1127,7 +1150,8 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
         
 });
 }
-
+catch(e){throw e}
+}
 
 //세션아이디로, 그 사람의 저장해둔 candidates를 지운다.
 function clearCandidatesQueue(sessionId) {
@@ -1152,7 +1176,7 @@ function camClearCandidatesQueueDirector(sessionId,camName) {
 
 //sessionid 해당하는 유저의 webrtcendpoint가 있다면 addicecandidate.없다면 유저에게 cadidatesQueue를 만들어주고 거기에 저장해둠.
 function studentOnIceCandidate(sessionId,candidate){
-    
+    try{
     var candidate = kurento.getComplexType('IceCandidate')(candidate);
     var student = sessions[sessionId]
     if (student.webRtcEndpoint) {
@@ -1168,12 +1192,16 @@ function studentOnIceCandidate(sessionId,candidate){
         sessions[sessionId].candidatesQueue.push(candidate);
     }
 }
+catch(e){
+    throw e
+}
+}
 
 
 
 //sessionid 해당하는 유저의 webrtcendpoint가 있다면 addicecandidate.없다면 유저에게 cadidatesQueue를 만들어주고 거기에 저장해둠.
 function directorOnIceCandidate(sessionId,directorName,studentName,candidate){
-    
+    try{
     var candidate = kurento.getComplexType('IceCandidate')(candidate);
     var director = sessions[sessionId]
     if (director.endpointPerStudent[studentName].webRtcEndpoint) {
@@ -1189,11 +1217,11 @@ function directorOnIceCandidate(sessionId,directorName,studentName,candidate){
         director.endpointPerStudent[studentName].candidatesQueue.push(candidate);
     }
 }
-
-
+catch(e){throw e}
+}
 
 function camDirectorOnIceCandidate(sessionId,directorName,camName,candidate){
-    
+    try{
     var candidate = kurento.getComplexType('IceCandidate')(candidate);
     var director = sessions[sessionId]
     if (director.endpointPerCam[camName].webRtcEndpoint) {
@@ -1209,7 +1237,8 @@ function camDirectorOnIceCandidate(sessionId,directorName,camName,candidate){
         director.endpointPerCam[camName].candidatesQueue.push(candidate);
     }
 }
-
+catch(e){throw e}
+}
 
 function stop(sessionId) {
     if (!sessions[sessionId]) {
