@@ -430,6 +430,13 @@ wss.on('connection', function(ws) {
         switch (message.id) {
        
             case 'directorJoinRoom':
+
+
+
+
+            try{
+
+
                 if (sessions[sessionId]){
                     console.log("한 세션에서 두개의 director로그인시도. 차단합니다.")
                     ws.send(JSON.stringify({
@@ -517,12 +524,31 @@ wss.on('connection', function(ws) {
                            
                 }
           
+                
+
+            }
+            catch(error){
+                stop(sessionId)
+            }
+            finally{
                 break;
+            }
+
+
+
+
+
 
 
 
 
             case 'studentTryCall':
+
+
+
+
+
+            try{
                 // if (sessions[sessionId]){
                 //     console.log("한 세션에서 두개의 student 로그인시도. 차단합니다.")
                 //     ws.send(JSON.stringify({
@@ -562,50 +588,110 @@ wss.on('connection', function(ws) {
                     /////방에 새로운 학생 입장.
                     // sendRoomToAll(rooms[roomName])
                 }
+                
+
+
+
+            }
+            catch(e){
+                stop(sessionId)
+            }
+
+            finally{
                 break;
+            }
 
 
 
             case 'studentRequestCallOffer':
+
+
+            try{
                 console.log("학생에게서 call offer를 받았습니다. ")
                 sessions[sessionId].sdpoffer = message.sdpOffer
                 console.log("학생의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
-                studentCall(sessionId, message.roomName,ws);
+                studentCall(sessionId, message.roomName,ws);}
+            catch(error){
+                stop(sessionId)
+            }
+            finally{
                 break;
+            }
+                
             
             case 'studentOnIceCandidate':
-                studentOnIceCandidate(sessionId, message.candidate);
-                break;
+                try{
+                studentOnIceCandidate(sessionId, message.candidate);}
+                catch(error){
+                    stop(sessionId)
+                }
+                finally{
+                    break;
+                }
+                
                 
             case 'directorOffer':
+
+                try{
                 console.log("감독관에게서 offer를 받았습니다. ")
                 console.log(message.studentName)
                 
                 sessions[sessionId].endpointPerStudent[message.studentName].sdpoffer = message.sdpOffer
                 console.log("감독관의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
-                directorCall(sessionId,message.directorName,message.studentName,message.roomName,message.sdpOffer)
+                directorCall(sessionId,message.directorName,message.studentName,message.roomName,message.sdpOffer)}
+                catch(error){
+                    stop(sessionId)
+                }
+                finally{
+                    break;
+                }
                //todo
-                break;
+                
 
             case 'camDirectorOffer':
+                try{
                 console.log("감독관에게서 offer를 받았습니다. ")
                 console.log(message.camName)
                 
                 sessions[sessionId].endpointPerCam[message.camName].sdpoffer = message.sdpOffer
                 console.log("감독관의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
                 camDirectorCall(sessionId,message.directorName,message.camName,message.roomName,message.sdpOffer)
+                }
+                catch(e){
+                    stop(sessionId)
+                }
+                finally{
+                    break;
+                }
                //todo
-                break;
+                
             case 'directorOnIceCandidate':
-                directorOnIceCandidate(sessionId,message.directorName,message.studentName,message.candidate);
-                break;
+                try{
+                directorOnIceCandidate(sessionId,message.directorName,message.studentName,message.candidate);}
+                catch(error){
+                    stop(sessionId)
+                }
+                finally{
+                    break;
+                }
+                
 
             case 'camDirectorOnIceCandidate':
-                camDirectorOnIceCandidate(sessionId,message.directorName,message.camName,message.candidate);
-                break;
+                try{
+                    camDirectorOnIceCandidate(sessionId,message.directorName,message.camName,message.candidate);
+                }
+                catch(e){
+                    stop(sessionId)
+                }
+                finally{
+                    break;
+                }
+                
+                
 
 
             case 'camTryCall':
+                try{
                 // if (sessions[sessionId]){
                 //     console.log("한 세션에서 두개의 Cam 로그인시도. 차단합니다.")
                 //     ws.send(JSON.stringify({
@@ -644,21 +730,42 @@ wss.on('connection', function(ws) {
                     }));
                     // sendRoomToAll(rooms[roomName])
                 }
+
+
+            }
+            catch(e){
+                stop(sessionId)
+            }
+            finally{
                 break;
+            }
+                
             
 
 
             case 'camOnIceCandidate':
-                studentOnIceCandidate(sessionId, message.candidate);
+                try{
+                studentOnIceCandidate(sessionId, message.candidate);}
+                catch(e){
+                    stop(sessionId)
+                }
+                finally{
                 break;
-
+                }
 
             case 'camRequestCallOffer':
+                try{
                 console.log("cam에게서 call offer를 받았습니다. ")
                 sessions[sessionId].sdpoffer = message.sdpOffer
                 console.log("cam의 offer저장완료. 쿠렌토와 연결 시작하겠습니다.")
-                camCall(sessionId, message.roomName,ws);
-                break;
+                camCall(sessionId, message.roomName,ws);}
+                catch(e){
+                    stop(sessionId)
+                }
+                finally{
+                    break;
+                }
+                
         case "stop":
             stop(sessionId);
             break;
