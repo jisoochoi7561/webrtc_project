@@ -305,12 +305,14 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     camName =  sessions[callerId].name
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
+        try{
         if (error) {
             self.sendMessage({id:"shouldStop"});
             return console.log("쿠렌토클라이언트 생성중 오류")
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
+            try{
             if (error) {
                 self.sendMessage({id:"shouldStop"});
                 return console.log("파이프라인 생성중 오류")
@@ -318,6 +320,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
             //쿠렌토측에 webrtcendpoint를 만든다.
             console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, camWebRtcEndpoint) {
+                try{
                 if (error) {
                     self.sendMessage({id:"shouldStop"});
                     pipeline.release();
@@ -345,7 +348,8 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 console.log("디스패처만 만들면 됩니다..")
 
                 //디스패처를 만든다.
-                pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
+                pipeline.create('DispatcherOneToMany', function(error, dispatcher) {  
+                    try{  
                     if (error) {
                         self.sendMessage({id:"shouldStop"});
                         pipeline.release();
@@ -354,6 +358,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
                     dispatcher.createHubPort(function(error,hubport) {
+                        try{
                         if (error) {
                             self.sendMessage({id:"shouldStop"});
                             pipeline.release();
@@ -392,6 +397,7 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                            
                         // });
                         dispatcher.createHubPort(function(error,recordport){
+                            try{
                             file_uri= 'file:///tmp/' +roomName +"_"+ camName + "_"+"cam_"+new Date().toString()+'.webm'
                             var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
                             pipeline.create(elements, function(error, elements){
@@ -406,13 +412,19 @@ Cam.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                                     console.log("record");
                                   });
                             })
+                        }catch(e){throw e}
                         }) 
 
                         callback(null);
+                    }catch(e){throw e}
                     });
+                }catch(e){throw e}
                 });
-        });
+            }catch(e){throw e}
+            });
+        }catch(e){throw e}
     })
+    }catch(e){throw e}
 })
 }
 
@@ -904,6 +916,7 @@ function studentCall(sessionId,roomName,ws){
     console.log("파이프라인 만들기를 시도합니다.");
     //todo
     student.createPipeline(sessionId, roomName, ws, function(error) {
+        try{
         //파이프라인을 만들었으므로, 받아논 offer를 실행해서 연결을 형성한다.
             console.log("createPipeline이후 콜백 실행하겠습니다.")
             var pipeline = sessions[sessionId].pipeline
@@ -915,6 +928,7 @@ function studentCall(sessionId,roomName,ws){
             }
 
             studentWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
+                try{
                 if (error) {
                     student.sendMessage({id:"shouldStop"});
                     console.log("student kurentoside 프로세스 offer도중 에러")
@@ -926,7 +940,7 @@ function studentCall(sessionId,roomName,ws){
                     sdpAnswer:callerSdpAnswer
                 }
                 ws.send(JSON.stringify(message))
-              
+            }catch(e){throw e} 
             });
 
             studentWebRtcEndpoint.gatherCandidates(function(error) {
@@ -935,6 +949,7 @@ function studentCall(sessionId,roomName,ws){
                     return ws.send(error);
                 }
             });
+        }catch(e){throw e}
         });
     
 
@@ -958,6 +973,7 @@ function camCall(sessionId,roomName,ws){
     console.log("cam 파이프라인 만들기를 시도합니다.");
     //todo
     cam.createPipeline(sessionId, roomName, ws, function(error) {
+        try{
         //파이프라인을 만들었으므로, 받아논 offer를 실행해서 연결을 형성한다.
             console.log("cam createPipeline이후 콜백 실행하겠습니다.")
             var pipeline = sessions[sessionId].pipeline
@@ -968,6 +984,7 @@ function camCall(sessionId,roomName,ws){
             }
 
             camWebRtcEndpoint.processOffer(sessions[sessionId].sdpoffer, function(error, callerSdpAnswer) {
+                try{
                 if (error) {
                     cam.sendMessage({id:"shouldStop"});
                     console.log("cam kurentoside 프로세스 offer도중 에러")
@@ -979,7 +996,7 @@ function camCall(sessionId,roomName,ws){
                     sdpAnswer:callerSdpAnswer
                 }
                 ws.send(JSON.stringify(message))
-              
+            }catch(e){throw e}
             });
 
             camWebRtcEndpoint.gatherCandidates(function(error) {
@@ -988,6 +1005,7 @@ function camCall(sessionId,roomName,ws){
                     return ws.send(error);
                 }
             });
+        }catch(e){throw e}
         });
     
 
@@ -1020,6 +1038,7 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
     console.log("파이프라인 획득했습니다. 연결시도합니다. 실행하겠습니다.")
     console.log("파이프라인"+pipeline)
     pipeline.create('WebRtcEndpoint', function(error, directorWebRtcEndpoint) {
+        try{
         if (error) {
             pipeline.release();
             return console.log("엔드포인트 생성중 오류")
@@ -1071,14 +1090,15 @@ function directorCall(sessionId,directorName,studentName,roomName,sdpoffer){
 
         console.log("감독관측 연결 형성되었습니다. 허브포트를 만들고, 감독관측 webrtcendpoint와 연결해보겠씁니다.")
         rooms[roomName].students[studentName].dispatcher.createHubPort(function(error,outputHubport) {
+            try{
             console.log("허브포트 생성완료")
             if (error) {
                 return console.log("createHubPort 에러 발생")
             }
             outputHubport.connect(directorWebRtcEndpoint)
-           
+        }catch(e){throw e}
         });
-        
+    }catch(e){throw e}      
 });
 }
 
@@ -1106,6 +1126,7 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
     console.log("파이프라인 획득했습니다. 연결시도합니다. 실행하겠습니다.")
     console.log("파이프라인"+pipeline)
     pipeline.create('WebRtcEndpoint', function(error, directorWebRtcEndpoint) {
+        try{
         if (error) {
             pipeline.release();
             return console.log("엔드포인트 생성중 오류")
@@ -1157,14 +1178,15 @@ function camDirectorCall(sessionId,directorName,camName,roomName,sdpoffer){
 
         console.log("감독관측 연결 형성되었습니다. 허브포트를 만들고, 감독관측 webrtcendpoint와 연결해보겠씁니다.")
         rooms[roomName].cams[camName].dispatcher.createHubPort(function(error,outputHubport) {
+            try{
             console.log("허브포트 생성완료")
             if (error) {
                 return console.log("createHubPort 에러 발생")
             }
             outputHubport.connect(directorWebRtcEndpoint)
-           
+        }catch(e){throw e}
         });
-        
+    }catch(e){throw e}    
 });
 }
 catch(e){throw e}
