@@ -158,12 +158,16 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
     studentName =  sessions[callerId].name
     // 쿠렌토클라이언트에 접근
     getKurentoClient(function(error, kurentoClient) {
+
+        try{
         if (error) {
             self.sendMessage({id:"shouldStop"});
             return console.log("쿠렌토클라이언트 생성중 오류")
         }
         //파이프라인을 하나 만든다
         kurentoClient.create('MediaPipeline', function(error, pipeline) {
+
+            try{
             if (error) {
                 self.sendMessage({id:"shouldStop"});
                 return console.log("파이프라인 생성중 오류")
@@ -171,6 +175,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
             //쿠렌토측에 webrtcendpoint를 만든다.
             console.log("WebRtcEndpoint생성하겠습니다 ")
             pipeline.create('WebRtcEndpoint', function(error, studentWebRtcEndpoint) {
+                try{
                 if (error) {
                     self.sendMessage({id:"shouldStop"});
                     pipeline.release();
@@ -198,7 +203,8 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                 console.log("디스패처만 만들면 됩니다..")
 
                 //디스패처를 만든다.
-                pipeline.create('DispatcherOneToMany', function(error, dispatcher) {       
+                pipeline.create('DispatcherOneToMany', function(error, dispatcher) {  
+                    try{    
                     if (error) {
                         self.sendMessage({id:"shouldStop"});
                         pipeline.release();
@@ -207,6 +213,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 
                     //디스패처의 소스에 자기자신을 등록, 자기자신의 디스패처,파이프라인.웹rtc기억.
                     dispatcher.createHubPort(function(error,hubport) {
+                        try{
                         if (error) {
                             self.sendMessage({id:"shouldStop"});
                             pipeline.release();
@@ -248,6 +255,7 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
 
                         //저장소 설정
                         dispatcher.createHubPort(function(error,recordport){
+                            try{
                             file_uri= 'file:///tmp/' +roomName +"_"+ studentName + "_"+new Date().toString()+'.webm'
                             var elements =[{type: 'RecorderEndpoint', params: {uri : file_uri, mediaProfile: 'WEBM_VIDEO_ONLY'}},]
                             pipeline.create(elements, function(error, elements){
@@ -262,18 +270,27 @@ Student.prototype.createPipeline = function(callerId, roomName, ws, callback) {
                                     console.log("record");
                                   });
                             })
+                        }catch(e){throw e}
                         }) 
                         
                         callback(null);
+                    }catch(e){throw e}
                     });
+                }catch(e){throw e}
                 });
-        });
+            }catch(e){throw e}
+            });
+    
+        }catch(e){throw e}
+    
     })
+    }catch(e){throw e}
 })
 }
 catch(e){
     throw e
 }
+
 }
 
 
