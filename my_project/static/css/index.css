@@ -14,55 +14,56 @@
  * limitations under the License.
  *
  */
-@CHARSET "UTF-8";
-
+@charset "UTF-8";
 html {
-	position: relative;
-	min-height: 100%;
+  position: relative;
+
+  min-height: 100%;
+
+  margin: 0;
+}
+.container-fluid {
+  width: 100%;
 }
 
 body {
-
+  min-height: 100%;
+  overflow: scroll;
 }
 
-.rounded-circle{
-	border-radius:5px;
+img {
+  display: block;
+  text-align: center;
 }
 
+h1 {
+  text-align: center;
+  margin: auto;
+}
 
+.footer {
+  position: absolute;
+  left: 0;
+  bottom: 0;
+  width: 100%;
+  padding: 15px 0;
+  text-align: center;
+  color: white;
+  background: #98b9f2;
+}
 
-.for-admin{
-	height:80vh; 
-	cursor: pointer;
-	display: -webkit-flex;
-	display: flex;
+.buttonClick {
+  width: 100%;
+  height: 100%;
+  cursor: pointer;
+  display: flex;
   justify-content: center;
   align-items: center;
-}
-.for-admin:hover {
-   background-color: #98B9F2;
-}
-.for-student{
-	height:80vh; 
-	cursor: pointer;
-	display: -webkit-flex;
-	display: flex;
-	
-  justify-content: center;
-  align-items: center;
+  padding: 10px;
+  margin-bottom: 100px;
 }
 
-.for-student:hover {
-	background-color: #6F9CEB;
-}
-.for-cam{
-	height:80vh;
-	cursor: pointer;
-	display: -webkit-flex;
-	display: flex;
-  justify-content: center;
-  align-items: center;
-}
-.for-cam:hover {
-		background-color: #98B9F2;
+.buttonClick:hover {
+  background: #98b9f2;
+  border-radius: 20px;
 }
