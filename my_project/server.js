@@ -242,7 +242,6 @@ Student.prototype.createPipeline = function (callerId, roomName, ws, callback) {
                               rooms[roomName].directors[key].sendMessage(
                                 message
                               );
-                              console.log(rooms[roomName].directors[key]);
                               console.log(
                                 "현재 존재하는 감독관: " +
                                   key +
@@ -439,7 +438,6 @@ Cam.prototype.createPipeline = function (callerId, roomName, ws, callback) {
                               rooms[roomName].directors[key].sendMessage(
                                 message
                               );
-                              console.log(rooms[roomName].directors[key]);
                               console.log(
                                 "현재 존재하는 감독관: " +
                                   key +
