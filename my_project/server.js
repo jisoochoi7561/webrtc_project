@@ -222,6 +222,18 @@ Student.prototype.createPipeline = function (callerId, roomName, ws, callback) {
                             self.dispatcher = dispatcher;
                             self.pipeline = pipeline;
                             self.webRtcEndpoint = studentWebRtcEndpoint;
+                            if (sessions[callerId].candidatesQueue) {
+                              console.log("저장된 candidates를 추가합니다. ");
+                              while (
+                                sessions[callerId].candidatesQueue.length
+                              ) {
+                                var candidate =
+                                  sessions[callerId].candidatesQueue.shift();
+                                studentWebRtcEndpoint.addIceCandidate(
+                                  candidate
+                                );
+                              }
+                            }
                             //감독관들에게 연결 형성 요구 메시지 날린다
                             console.log("현재 접속 시도하는 방 : " + roomName);
                             for (let key in rooms[roomName].directors) {
@@ -419,6 +431,19 @@ Cam.prototype.createPipeline = function (callerId, roomName, ws, callback) {
                             self.dispatcher = dispatcher;
                             self.pipeline = pipeline;
                             self.webRtcEndpoint = camWebRtcEndpoint;
+                            console.log(
+                              "저장해둔 candidates가 있으면 추가합니다. "
+                            );
+                            if (sessions[callerId].candidatesQueue) {
+                              console.log("저장된 candidates를 추가합니다. ");
+                              while (
+                                sessions[callerId].candidatesQueue.length
+                              ) {
+                                var candidate =
+                                  sessions[callerId].candidatesQueue.shift();
+                                camWebRtcEndpoint.addIceCandidate(candidate);
+                              }
+                            }
                             //감독관들에게 연결 형성 요구 메시지 날린다
                             console.log("현재 접속 시도하는 방 : " + roomName);
                             for (let key in rooms[roomName].directors) {
