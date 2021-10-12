@@ -915,22 +915,24 @@ wss.on("connection", function (ws) {
         break;
 
       case "changeScreenResolution":
-        if (rooms[message.roomName].students[message.studentName]) {
+        if (!rooms[message.roomName].students[message.studentName]) {
+          break;
+        } else {
+          rooms[message.roomName].students[message.studentName].sendMessage({
+            id: "changeResolution",
+          });
           break;
         }
-        rooms[message.roomName].students[message.studentName].sendMessage({
-          id: "changeResolution",
-        });
-        break;
 
       case "changeCamResolution":
         if (!rooms[message.roomName].cams[message.camName]) {
           break;
+        } else {
+          rooms[message.roomName].cams[message.camName].sendMessage({
+            id: "changeResolution",
+          });
+          break;
         }
-        rooms[message.roomName].cams[message.camName].sendMessage({
-          id: "changeResolution",
-        });
-        break;
 
       case "sendChat":
         if (rooms[message.room]) {
