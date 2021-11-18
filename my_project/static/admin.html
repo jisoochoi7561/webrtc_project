@@ -1,15 +1,17 @@
 <!DOCTYPE html>
 <html>
-
   <head>
-    <meta charset="utf-8">
-    <meta http-equiv="cache-control" content="no-cache">
-    <meta http-equiv="pragma" content="no-cache">
-    <meta http-equiv="expires" content="0">
-    <meta name="viewport" content="width=device-width, initial-scale=1.0"/>
+    <meta charset="utf-8" />
+    <meta http-equiv="cache-control" content="no-cache" />
+    <meta http-equiv="pragma" content="no-cache" />
+    <meta http-equiv="expires" content="0" />
+    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
 
-    <link rel="stylesheet" href="bower_components/bootstrap/dist/css/bootstrap.min.css">
-    <link rel="stylesheet" href="css/index.css">
+    <link
+      rel="stylesheet"
+      href="bower_components/bootstrap/dist/css/bootstrap.min.css"
+    />
+    <link rel="stylesheet" href="css/index.css" />
 
     <script src="bower_components/webrtc-adapter/release/adapter.js"></script>
     <script src="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
@@ -18,116 +20,231 @@
     <script src="js/admin.js"></script>
     <title>cnu classroom Director</title>
   </head>
- 
 
-
-
-
-
-<body>
-
-
-<nav class="navbar navbar-dark bg-primary">
-  <div class="container-fluid">
-    <a class="navbar-brand" href="./index.html">CNU classroom</a>
-        <div class="nav-item dropdown">
-          <a class="nav-link" href="#" id="navbarDropdownMenuLink" role="button" data-bs-toggle="dropdown" aria-expanded="false">
-            <span class="navbar-toggler-icon"></span>
-          </a>
-          <ul class="dropdown-menu dropdown-menu-end" aria-labelledby="navbarDropdownMenuLink">
-            <li><a class="dropdown-item" href="https://github.com/jisoochoi7561/webrtc_project">소스코드 보러가기</a></li>
-            <li><a class="dropdown-item" href="mailto:jisoochoi7561@gmail.com">개발자에게 메일보내기</a></li>
-          </ul>
-        </div>
-  </div>
-</nav>
-
-
-
-
-
-
-
-    <div class="container-fluid">
-      <div class = "row">
-      <div class="col-md-6">
-        <div class = "row">
-          <label class="control-label" for="directorName">감독관 이름</label>
-          <div class="col-md-3">
-            <input id="directorName" name="directorName" class="form-control" type="text"/>
-          </div>
-          <label class="control-label" for="roomName">방이름</label>
-          <div class="col-md-3">
-              <input id="roomName" name="roomName" class="form-control" type="text"/> 
-          </div>
-          <label class="control-label" for="admin_password">비밀번호</label>
-          <div class="col-md-3">
-              <input id="admin_password" name="admin_password" class="form-control" type="password"/> 
-          </div>
-          <div class="col-md-3 text-right">
-            <a id="directorJoin" href="#" class="btn btn-success">
-              <span class="glyphicon glyphicon-play"></span>방입장</a>
-            <a id="directorTerminate" href="#" class="btn btn-danger">
-              <span class="glyphicon glyphicon-stop"></span>종료</a>
-          </div>
-        </div>
-        <!-- <div class = "row">
-          <div style="border-radius:10%;height:60vh;width:60vh;border:2px solid rgb(226, 79, 103);padding:2%;">
-            <div style="height:45vh;width:55vh;overflow:auto;padding:2%;white-space: pre-line" id="roomBox" name="roomBox">
+  <body>
+    <header>
+      <div class="bg-dark collapse" id="navbarHeader" style="">
+        <div class="container">
+          <div class="row">
+            <div class="col-sm-8 col-md-7 py-4">
+              <h4 class="text-white">About</h4>
+              <p class="text-muted">
+                WebRTC를 활용한 온라인 시험감독 프로젝트 CNUclassroom입니다.
+                시험영상은 감독관에게 송출되며, 모든 영상은 녹화됩니다.
+              </p>
+            </div>
+            <div class="col-sm-4 offset-md-1 py-4">
+              <h4 class="text-white">Contact</h4>
+              <ul class="list-unstyled">
+                <li>
+                  <a
+                    href="https://github.com/jisoochoi7561/webrtc_project"
+                    class="text-white"
+                    >소스코드 보러가기</a
+                  >
+                </li>
+                <li>
+                  <a href="mailto:jisoochoi7561@gmail.com" class="text-white"
+                    >개발자에게 메일보내기</a
+                  >
+                </li>
+              </ul>
             </div>
           </div>
-
-
-
-        </div> -->
-
-      
-
-        
-      </div>
-
-
-
-
-      <div class = "col-md-6">
-        <div style="border-radius:10%;height:60vh;width:60vh;border:2px solid rgb(226, 79, 103);padding:2%;">
-        <div style="height:45vh;width:55vh;overflow:auto;padding:2%;white-space: pre-line" id="chatBox" name="chatBox">
-
-
-       
-
         </div>
-        <div class="d-flex">
-        <select class="form-select" aria-label="Default select example" style="height:3vh;width:15vh;font-size:80%" onchange="specificSelected(this);" id="toSelect" name="toSelect">
-          <option selected value="all">모두</option>
-          <option value="directors">감독관들</option>
-          <option value="specific">학생(귓속말)</option>
-        </select>
-        <input class="form-control mr-1" type="text" id="toSpecific" name="toSpecific" style="height:3vh;width:35vh;overflow:auto;padding:2%;white-space: pre-line; display: none;font-size:80%">
+      </div>
+      <div class="navbar navbar-dark bg-dark shadow-sm">
+        <div class="container">
+          <a href="./index.html" class="navbar-brand d-flex align-items-center">
+            <svg
+              xmlns="http://www.w3.org/2000/svg"
+              width="20"
+              height="20"
+              fill="none"
+              stroke="currentColor"
+              stroke-linecap="round"
+              stroke-linejoin="round"
+              stroke-width="2"
+              aria-hidden="true"
+              class="me-2"
+              viewBox="0 0 24 24"
+            >
+              <path
+                d="M23 19a2 2 0 0 1-2 2H3a2 2 0 0 1-2-2V8a2 2 0 0 1 2-2h4l2-3h6l2 3h4a2 2 0 0 1 2 2z"
+              ></path>
+              <circle cx="12" cy="13" r="4"></circle>
+            </svg>
+            <strong>CNUClassroom</strong>
+          </a>
+          <button
+            class="navbar-toggler collapsed"
+            type="button"
+            data-bs-toggle="collapse"
+            data-bs-target="#navbarHeader"
+            aria-controls="navbarHeader"
+            aria-expanded="false"
+            aria-label="Toggle navigation"
+          >
+            <span class="navbar-toggler-icon"></span>
+          </button>
         </div>
-        <div class="d-flex">
-          <input class="form-control mr-1" type="text" id="chatText" name="chatText" style="height:5vh;width:50vh;overflow:auto;padding:2%;white-space: pre-line;">
-          <a id="sendChat" name="sendChat" href="#" class="btn btn-primary">
-            <span class="glyphicon glyphicon-play"></span>Enter</a>
+      </div>
+    </header>
+
+    <main>
+      <section class="py-5 text-center container">
+        <div class="row py-lg-5">
+          <div class="col-lg-6 col-md-8 mx-auto">
+            <h1 class="fw-light">Director Page</h1>
+            <p class="lead text-muted">
+              <label class="control-label" for="directorName"
+                >감독관 이름</label
+              >
+              <input
+                id="directorName"
+                name="directorName"
+                class="form-control"
+                type="text"
+              />
+              <label class="control-label" for="roomName">방이름</label>
+              <input
+                id="roomName"
+                name="roomName"
+                class="form-control"
+                type="text"
+              />
+              <label class="control-label" for="admin_password">비밀번호</label>
+              <input
+                id="admin_password"
+                name="admin_password"
+                class="form-control"
+                type="password"
+              />
+            </p>
+            <p>
+              <a id="directorJoin" href="#" class="btn btn-primary my-2"
+                >Enter the room</a
+              >
+              <a id="directorTerminate" href="#" class="btn btn-secondary my-2"
+                >Terminate Service</a
+              >
+            </p>
+          </div>
         </div>
-        
+      </section>
+      <div class="album py-5 bg-light">
+        <div class="container">
+          <div id="videoLists"></div>
+          <div class="row row-cols-1 row-cols-sm-2 row-cols-md-3 g-3">
+            <div class="col">
+              <div class="card shadow-sm">
+                <svg
+                  class="bd-placeholder-img card-img-top"
+                  width="100%"
+                  height="225"
+                  xmlns="http://www.w3.org/2000/svg"
+                  role="img"
+                  aria-label="Placeholder: Thumbnail"
+                  preserveAspectRatio="xMidYMid slice"
+                  focusable="false"
+                >
+                  <title>Placeholder</title>
+                  <rect width="100%" height="100%" fill="#55595c"></rect>
+
+                  <text x="50%" y="50%" fill="#eceeef" dy=".3em">
+                    Thumbnail
+                  </text>
+                </svg>
+
+                <div class="card-body">
+                  <p class="card-text"></p>
+                  <div
+                    class="d-flex justify-content-between align-items-center"
+                  >
+                    <small class="text-muted">201902765 최지수</small>
+                  </div>
+                </div>
+              </div>
+            </div>
+          </div>
+        </div>
       </div>
-        
+    </main>
+    <div class="container-fluid">
+      <div class="row">
+        <div class="col-md-6"></div>
 
+        <div class="col-md-6">
+          <div
+            style="
+              border-radius: 10%;
+              height: 60vh;
+              width: 60vh;
+              border: 2px solid rgb(226, 79, 103);
+              padding: 2%;
+            "
+          >
+            <div
+              style="
+                height: 45vh;
+                width: 55vh;
+                overflow: auto;
+                padding: 2%;
+                white-space: pre-line;
+              "
+              id="chatBox"
+              name="chatBox"
+            ></div>
+            <div class="d-flex">
+              <select
+                class="form-select"
+                aria-label="Default select example"
+                style="height: 3vh; width: 15vh; font-size: 80%"
+                onchange="specificSelected(this);"
+                id="toSelect"
+                name="toSelect"
+              >
+                <option selected value="all">모두</option>
+                <option value="directors">감독관들</option>
+                <option value="specific">학생(귓속말)</option>
+              </select>
+              <input
+                class="form-control mr-1"
+                type="text"
+                id="toSpecific"
+                name="toSpecific"
+                style="
+                  height: 3vh;
+                  width: 35vh;
+                  overflow: auto;
+                  padding: 2%;
+                  white-space: pre-line;
+                  display: none;
+                  font-size: 80%;
+                "
+              />
+            </div>
+            <div class="d-flex">
+              <input
+                class="form-control mr-1"
+                type="text"
+                id="chatText"
+                name="chatText"
+                style="
+                  height: 5vh;
+                  width: 50vh;
+                  overflow: auto;
+                  padding: 2%;
+                  white-space: pre-line;
+                "
+              />
+              <a id="sendChat" name="sendChat" href="#" class="btn btn-primary">
+                <span class="glyphicon glyphicon-play"></span>Enter</a
+              >
+            </div>
+          </div>
+        </div>
       </div>
-
-
-      
     </div>
-    <div class="row">
-      <div id="videoLists" class="row">
-      </div>
-    </div>
-
-    </div>
-
-
-
-</body>
-
+  </body>
 </html>
