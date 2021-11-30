@@ -31,7 +31,7 @@ window.onload = function () {
   chatText = document.getElementById("chatText");
   chatBox = document.getElementById("chatBox");
   group = document.getElementById("toSelect");
-
+  chatGroup = document.getElementById("chatGroup");
   //방입장버튼을 누르면, 등록한다.
   document
     .getElementById("directorJoin")
@@ -40,10 +40,10 @@ window.onload = function () {
     });
   // 채팅창 온오프
   document.getElementById("disableChat").addEventListener("click", function () {
-    if (chatBox.style.display === "none") {
-      chatBox.style.display = "block";
+    if (chatGroup.style.display === "none") {
+      chatGroup.style.display = "inline-block";
     } else {
-      chatBox.style.display = "none";
+      chatGroup.style.display = "none";
     }
   });
   //종료버튼을 누르면 시험을 종료한다.
