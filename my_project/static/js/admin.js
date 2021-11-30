@@ -38,7 +38,14 @@ window.onload = function () {
     .addEventListener("click", function () {
       register();
     });
-
+  // 채팅창 온오프
+  document.getElementById("disableChat").addEventListener("click", function () {
+    if (chatBox.style.display === "none") {
+      chatBox.style.display = "block";
+    } else {
+      chatBox.style.display = "none";
+    }
+  });
   //종료버튼을 누르면 시험을 종료한다.
   document
     .getElementById("directorTerminate")
