@@ -32,8 +32,8 @@ var chatText;
 var chatBox;
 var group;
 var globaluserlist = {
-  jisoo: { screen: "true", cam: "true" },
-  jiho: { screen: "true", cam: "true" }
+  jisoo: { screen: "On", cam: " " },
+  jiho: { screen: " ", cam: "On" }
 };
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
@@ -192,6 +192,9 @@ function startCall(studentName, roomName) {
     });
     document.getElementById("videoLists").appendChild(my_student_element);
   }
+  if (!studentName in globaluserlist) {
+    globaluserlist[studentName] = { screen: " ", cam: " " };
+  }
   my_element = document.createElement("video");
   my_element.setAttribute("id", studentName + "screen!");
   // my_element.setAttribute("width","240px");
@@ -200,6 +203,7 @@ function startCall(studentName, roomName) {
   my_element.setAttribute("muted", true);
   my_element.setAttribute("playsinline", true);
   my_element.setAttribute("style", "display: inline");
+  globaluserlist[studentName].screen = "On";
   var reso_message = {
     id: "changeScreenResolution",
     studentName: studentName,
