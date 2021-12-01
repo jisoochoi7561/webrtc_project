@@ -531,7 +531,7 @@ var StudentList = function (_React$Component) {
         React.createElement(
           "button",
           { onClick: function onClick() {
-              return _this2.setState({ userlist: globaluserlist });
+              return _this2.setState({ userlist: [] });
             } },
           "please clcik this button to refresh user list"
         ),

@@ -539,7 +539,7 @@ class StudentList extends React.Component {
     ));
     return (
       <React.Fragment>
-        <button onClick={() => this.setState({ userlist: globaluserlist })}>
+        <button onClick={() => this.setState({ userlist: [] })}>
           please clcik this button to refresh user list
         </button>
         {listItems}
