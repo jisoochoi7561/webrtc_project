@@ -23,7 +23,10 @@ var director = {
 var chatText;
 var chatBox;
 var group;
-var globaluserlist = ["jisoo", "jiho"];
+var globaluserlist = {
+  jisoo: { screen: true, cam: true },
+  jiho: { screen: true, cam: true },
+};
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function () {
@@ -534,8 +537,8 @@ class StudentList extends React.Component {
         </button>
       );
     }
-    const listItems = this.state.userlist.map((student) => (
-      <li key={student}>{student}</li>
+    const listItems = Object.keys(this.state.userlist).map((username) => (
+      <li key={username}>{this.state.userlist[username].screen}</li>
     ));
     return (
       <React.Fragment>

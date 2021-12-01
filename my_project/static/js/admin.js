@@ -31,7 +31,10 @@ var director = {
 var chatText;
 var chatBox;
 var group;
-var globaluserlist = ["jisoo", "jiho"];
+var globaluserlist = {
+  jisoo: { screen: true, cam: true },
+  jiho: { screen: true, cam: true }
+};
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function () {
@@ -518,11 +521,11 @@ var StudentList = function (_React$Component) {
           "please clcik this button to refresh user list"
         );
       }
-      var listItems = this.state.userlist.map(function (student) {
+      var listItems = Object.keys(this.state.userlist).map(function (username) {
         return React.createElement(
           "li",
-          { key: student },
-          student
+          { key: username },
+          _this2.state.userlist[username].screen
         );
       });
       return React.createElement(
