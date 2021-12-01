@@ -1,3 +1,58 @@
+var _createClass = (function () {
+  function defineProperties(target, props) {
+    for (var i = 0; i < props.length; i++) {
+      var descriptor = props[i];
+      descriptor.enumerable = descriptor.enumerable || false;
+      descriptor.configurable = true;
+      if ("value" in descriptor) descriptor.writable = true;
+      Object.defineProperty(target, descriptor.key, descriptor);
+    }
+  }
+  return function (Constructor, protoProps, staticProps) {
+    if (protoProps) defineProperties(Constructor.prototype, protoProps);
+    if (staticProps) defineProperties(Constructor, staticProps);
+    return Constructor;
+  };
+})();
+
+function _classCallCheck(instance, Constructor) {
+  if (!(instance instanceof Constructor)) {
+    throw new TypeError("Cannot call a class as a function");
+  }
+}
+
+function _possibleConstructorReturn(self, call) {
+  if (!self) {
+    throw new ReferenceError(
+      "this hasn't been initialised - super() hasn't been called"
+    );
+  }
+  return call && (typeof call === "object" || typeof call === "function")
+    ? call
+    : self;
+}
+
+function _inherits(subClass, superClass) {
+  if (typeof superClass !== "function" && superClass !== null) {
+    throw new TypeError(
+      "Super expression must either be null or a function, not " +
+        typeof superClass
+    );
+  }
+  subClass.prototype = Object.create(superClass && superClass.prototype, {
+    constructor: {
+      value: subClass,
+      enumerable: false,
+      writable: true,
+      configurable: true,
+    },
+  });
+  if (superClass)
+    Object.setPrototypeOf
+      ? Object.setPrototypeOf(subClass, superClass)
+      : (subClass.__proto__ = superClass);
+}
+
 /*
  * (C) Copyright 2014-2015 Kurento (http://kurento.org/)
  *
@@ -193,7 +248,7 @@ function startCall(studentName, roomName) {
     my_student_element.setAttribute("id", studentName);
     my_student_element.setAttribute("style", "display:inline-block");
     my_student_element.setAttribute("class", "col card");
-    let my_label = document.createElement("div");
+    var my_label = document.createElement("div");
     my_label.setAttribute("class", "card-header");
     my_label.innerHTML = studentName;
     my_student_element.appendChild(my_label);
@@ -212,7 +267,7 @@ function startCall(studentName, roomName) {
   my_element.setAttribute("muted", true);
   my_element.setAttribute("playsinline", true);
   my_element.setAttribute("style", "display: inline");
-  let reso_message = {
+  var reso_message = {
     id: "changeScreenResolution",
     studentName: studentName,
     roomName: roomName,
@@ -240,7 +295,7 @@ function startCall(studentName, roomName) {
   options = {
     remoteVideo: document.getElementById(studentName + "screen!"),
     configuration: my_configuration,
-    onicecandidate: function (candidate) {
+    onicecandidate: function onicecandidate(candidate) {
       console.log("hi");
       console.log("이 컴퓨터의 candidate: " + JSON.stringify(candidate));
       //이 onicecandidate는 식별될 필요가있음
@@ -263,7 +318,7 @@ function startCall(studentName, roomName) {
 
       //create my offer
       console.log("director측 offerSdp 생성하겠습니다.");
-      this.generateOffer((error, offerSdp) => {
+      this.generateOffer(function (error, offerSdp) {
         var message = {
           id: "directorOffer",
           directorName: director.name,
@@ -294,7 +349,7 @@ function camStartCall(camName, roomName) {
     my_student_element.setAttribute("id", camName);
     my_student_element.setAttribute("class", "col card");
     my_student_element.setAttribute("style", "display:inline-block");
-    let my_label = document.createElement("div");
+    var my_label = document.createElement("div");
     my_label.innerHTML = camName;
     my_label.setAttribute("class", "card-header");
     my_student_element.appendChild(my_label);
@@ -313,7 +368,7 @@ function camStartCall(camName, roomName) {
   my_element.setAttribute("autoplay", true);
   my_element.setAttribute("muted", true);
   my_element.setAttribute("playsinline", true);
-  let reso_message = {
+  var reso_message = {
     id: "changeCamResolution",
     camName: camName,
     roomName: roomName,
@@ -339,7 +394,7 @@ function camStartCall(camName, roomName) {
   options = {
     remoteVideo: document.getElementById(camName + "cam!"),
     configuration: my_configuration,
-    onicecandidate: function (candidate) {
+    onicecandidate: function onicecandidate(candidate) {
       console.log("hi");
       console.log("이 컴퓨터의 candidate: " + JSON.stringify(candidate));
       //이 onicecandidate는 식별될 필요가있음
@@ -362,7 +417,7 @@ function camStartCall(camName, roomName) {
 
       //create my offer
       console.log("director측 offerSdp 생성하겠습니다.");
-      this.generateOffer((error, offerSdp) => {
+      this.generateOffer(function (error, offerSdp) {
         var message = {
           id: "camDirectorOffer",
           directorName: director.name,
@@ -493,15 +548,28 @@ function sendChatMessage() {
   chatText.value = "";
 }
 
-function addMessageToChatbox(name, message, color = "black") {
+function addMessageToChatbox(name, message) {
+  var color =
+    arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "black";
+
   if (message == "") {
     return;
   }
   console.log("리시빙~");
   var now = new Date();
-  chatBox.innerHTML = `${
-    chatBox.innerHTML
-  } <span style='color:${color}'> ${name}: ${message} - ${now.getHours()}시 ${now.getMinutes()}분 <br></span>`;
+  chatBox.innerHTML =
+    chatBox.innerHTML +
+    " <span style='color:" +
+    color +
+    "'> " +
+    name +
+    ": " +
+    message +
+    " - " +
+    now.getHours() +
+    "\uC2DC " +
+    now.getMinutes() +
+    "\uBD84 <br></span>";
   // chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
 }
 
@@ -517,25 +585,51 @@ function specificSelected(that) {
   }
 }
 
-const e = React.createElement;
+var e = React.createElement;
 
-class LikeButton extends React.Component {
-  constructor(props) {
-    super(props);
-    this.state = { liked: false };
-  }
+var LikeButton = (function (_React$Component) {
+  _inherits(LikeButton, _React$Component);
 
-  render() {
-    if (this.state.liked) {
-      return "You liked this.";
-    }
+  function LikeButton(props) {
+    _classCallCheck(this, LikeButton);
 
-    return e(
-      "button",
-      { onClick: () => this.setState({ liked: true }) },
-      "Like"
+    var _this = _possibleConstructorReturn(
+      this,
+      (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).call(
+        this,
+        props
+      )
     );
+
+    _this.state = { liked: false };
+    return _this;
   }
-}
-const domContainer = document.querySelector("#like_button_container");
+
+  _createClass(LikeButton, [
+    {
+      key: "render",
+      value: function render() {
+        var _this2 = this;
+
+        if (this.state.liked) {
+          return "You liked this.";
+        }
+
+        return React.createElement(
+          "button",
+          {
+            onClick: function onClick() {
+              return _this2.setState({ liked: true });
+            },
+          },
+          "Like"
+        );
+      },
+    },
+  ]);
+
+  return LikeButton;
+})(React.Component);
+
+var domContainer = document.querySelector("#user_list_container");
 ReactDOM.render(e(LikeButton), domContainer);
