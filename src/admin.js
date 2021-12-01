@@ -23,6 +23,7 @@ var director = {
 var chatText;
 var chatBox;
 var group;
+var globaluserlist = ["jisoo", "jiho"];
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function () {
@@ -519,19 +520,30 @@ function specificSelected(that) {
 
 const e = React.createElement;
 
-class LikeButton extends React.Component {
+class StudentList extends React.Component {
   constructor(props) {
     super(props);
-    this.state = { liked: false };
+    this.state = { userlist: [] };
   }
 
   render() {
-    if (this.state.liked) {
-      return "You liked this.";
+    if (this.state.userlist.length === 0) {
+      return (
+        <button onClick={() => this.setState({ userlist: globaluserlist })}>
+          please clcik this button to refresh
+        </button>
+      );
     }
 
-    return <button onClick={() => this.setState({ liked: true })}>Like</button>;
+    return (
+      <React.Fragment>
+        <button onClick={() => this.setState({ userlist: globaluserlist })}>
+          please clcik this button to refresh
+        </button>
+        <li>userlist[0]</li>
+      </React.Fragment>
+    );
   }
 }
 const domContainer = document.querySelector("#user_list_container");
-ReactDOM.render(e(LikeButton), domContainer);
+ReactDOM.render(e(StudentList), domContainer);
