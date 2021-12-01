@@ -23,10 +23,7 @@ var director = {
 var chatText;
 var chatBox;
 var group;
-var globaluserlist = {
-  jisoo: { screen: "On", cam: " " },
-  jiho: { screen: " ", cam: "On" },
-};
+var globaluserlist = {};
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function () {
@@ -556,9 +553,12 @@ class StudentList extends React.Component {
   render() {
     if (this.state.userlist.length === 0) {
       return (
-        <button onClick={() => this.setState({ userlist: globaluserlist })}>
-          please clcik this button to refresh user list
-        </button>
+        <React.Fragment>
+          <button onClick={() => this.setState({ userlist: globaluserlist })}>
+            버튼을 눌러 출석 학생 리스트 새로고침
+          </button>
+          <p>현재 학생수 : 0</p>
+        </React.Fragment>
       );
     }
     listItems = Object.keys(this.state.userlist).map((username) => (
@@ -572,10 +572,10 @@ class StudentList extends React.Component {
     const usercounter = Object.keys(this.state.userlist).length;
     return (
       <React.Fragment>
-        <button onClick={() => this.setState({ userlist: [] })}>
-          please clcik this button to refresh user list
+        <button onClick={() => this.setState({ userlist: globaluserlist })}>
+          버튼을 눌러 출석 학생 리스트 새로고침
         </button>
-        <p>"현재 학생수 : "{usercounter}</p>
+        <p>현재 학생수 : {usercounter}</p>
         <table>
           <tr>
             <th>학생이름</th>

@@ -31,10 +31,7 @@ var director = {
 var chatText;
 var chatBox;
 var group;
-var globaluserlist = {
-  jisoo: { screen: "On", cam: " " },
-  jiho: { screen: " ", cam: "On" }
-};
+var globaluserlist = {};
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function () {
@@ -538,11 +535,20 @@ var StudentList = function (_React$Component) {
 
       if (this.state.userlist.length === 0) {
         return React.createElement(
-          "button",
-          { onClick: function onClick() {
-              return _this2.setState({ userlist: globaluserlist });
-            } },
-          "please clcik this button to refresh user list"
+          React.Fragment,
+          null,
+          React.createElement(
+            "button",
+            { onClick: function onClick() {
+                return _this2.setState({ userlist: globaluserlist });
+              } },
+            "\uBC84\uD2BC\uC744 \uB20C\uB7EC \uCD9C\uC11D \uD559\uC0DD \uB9AC\uC2A4\uD2B8 \uC0C8\uB85C\uACE0\uCE68"
+          ),
+          React.createElement(
+            "p",
+            null,
+            "\uD604\uC7AC \uD559\uC0DD\uC218 : 0"
+          )
         );
       }
       listItems = Object.keys(this.state.userlist).map(function (username) {
@@ -574,14 +580,14 @@ var StudentList = function (_React$Component) {
         React.createElement(
           "button",
           { onClick: function onClick() {
-              return _this2.setState({ userlist: [] });
+              return _this2.setState({ userlist: globaluserlist });
             } },
-          "please clcik this button to refresh user list"
+          "\uBC84\uD2BC\uC744 \uB20C\uB7EC \uCD9C\uC11D \uD559\uC0DD \uB9AC\uC2A4\uD2B8 \uC0C8\uB85C\uACE0\uCE68"
         ),
         React.createElement(
           "p",
           null,
-          "\"\uD604\uC7AC \uD559\uC0DD\uC218 : \"",
+          "\uD604\uC7AC \uD559\uC0DD\uC218 : ",
           usercounter
         ),
         React.createElement(
