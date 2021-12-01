@@ -209,7 +209,6 @@ function startCall(studentName, roomName) {
     document.getElementById("videoLists").appendChild(my_student_element);
   }
   if (studentName in globaluserlist) {
-    globaluserlist[studentName] = { screen: " ", cam: " " };
     globaluserlist[studentName].screen = "On";
   } else {
     console.log("reached here");
@@ -317,6 +316,13 @@ function camStartCall(camName, roomName) {
       document.getElementById("toSpecific").value = my_label.innerHTML;
     });
     document.getElementById("videoLists").appendChild(my_student_element);
+  }
+  if (camName in globaluserlist) {
+    globaluserlist[camName].cam = "On";
+  } else {
+    console.log("reached cam here");
+    globaluserlist[camName] = { screen: " ", cam: " " };
+    globaluserlist[camName].cam = "On";
   }
   my_element = document.createElement("video");
   my_element.setAttribute("style", "display: inline");
