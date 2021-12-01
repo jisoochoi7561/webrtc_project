@@ -31,6 +31,7 @@ var director = {
 var chatText;
 var chatBox;
 var group;
+var globaluserlist = ["jisoo", "jiho"];
 
 //여기에다가 초기세팅들, 이벤트핸들러들을 핸들한다.
 window.onload = function () {
@@ -491,39 +492,54 @@ function specificSelected(that) {
 
 var e = React.createElement;
 
-var LikeButton = function (_React$Component) {
-  _inherits(LikeButton, _React$Component);
+var StudentList = function (_React$Component) {
+  _inherits(StudentList, _React$Component);
 
-  function LikeButton(props) {
-    _classCallCheck(this, LikeButton);
+  function StudentList(props) {
+    _classCallCheck(this, StudentList);
 
-    var _this = _possibleConstructorReturn(this, (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).call(this, props));
+    var _this = _possibleConstructorReturn(this, (StudentList.__proto__ || Object.getPrototypeOf(StudentList)).call(this, props));
 
-    _this.state = { liked: false };
+    _this.state = { userlist: [] };
     return _this;
   }
 
-  _createClass(LikeButton, [{
+  _createClass(StudentList, [{
     key: "render",
     value: function render() {
       var _this2 = this;
 
-      if (this.state.liked) {
-        return "You liked this.";
+      if (this.state.userlist.length === 0) {
+        return React.createElement(
+          "button",
+          { onClick: function onClick() {
+              return _this2.setState({ userlist: globaluserlist });
+            } },
+          "please clcik this button to refresh"
+        );
       }
 
       return React.createElement(
-        "button",
-        { onClick: function onClick() {
-            return _this2.setState({ liked: true });
-          } },
-        "Like"
+        React.Fragment,
+        null,
+        React.createElement(
+          "button",
+          { onClick: function onClick() {
+              return _this2.setState({ userlist: globaluserlist });
+            } },
+          "please clcik this button to refresh"
+        ),
+        React.createElement(
+          "li",
+          null,
+          "userlist[0]"
+        )
       );
     }
   }]);
 
-  return LikeButton;
+  return StudentList;
 }(React.Component);
 
 var domContainer = document.querySelector("#user_list_container");
-ReactDOM.render(e(LikeButton), domContainer);
+ReactDOM.render(e(StudentList), domContainer);
