@@ -561,21 +561,14 @@ class StudentList extends React.Component {
         </button>
       );
     }
-    const listItems = Object.keys(this.state.userlist).map((username) => (
-      <li key={username}>
-        {username +
-          ": " +
-          this.state.userlist[username].screen +
-          this.state.userlist[username].cam}
-      </li>
+    const listItems = Object.keys(this.state.userlist)((username) => (
+      <tr key={username}>
+        <td>{username}</td>
+        <td>{this.state.userlist[username].screen}</td>
+        <td>{this.state.userlist[username].cam}</td>
+      </tr>
     ));
-    // Object.keys(this.state.userlist)((username) => (
-    //             <tr key={username}>
-    //               <td>{username}</td>
-    //               <td>{this.state.userlist[username].screen}</td>
-    //               <td>{this.state.userlist[username].cam}</td>
-    //             </tr>
-    //           ))
+
     //  <p>
     //    현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
     //  </p>;

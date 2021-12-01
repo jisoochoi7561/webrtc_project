@@ -545,20 +545,28 @@ var StudentList = function (_React$Component) {
           "please clcik this button to refresh user list"
         );
       }
-      var listItems = Object.keys(this.state.userlist).map(function (username) {
+      var listItems = Object.keys(this.state.userlist)(function (username) {
         return React.createElement(
-          "li",
+          "tr",
           { key: username },
-          username + ": " + _this2.state.userlist[username].screen + _this2.state.userlist[username].cam
+          React.createElement(
+            "td",
+            null,
+            username
+          ),
+          React.createElement(
+            "td",
+            null,
+            _this2.state.userlist[username].screen
+          ),
+          React.createElement(
+            "td",
+            null,
+            _this2.state.userlist[username].cam
+          )
         );
       });
-      // Object.keys(this.state.userlist)((username) => (
-      //             <tr key={username}>
-      //               <td>{username}</td>
-      //               <td>{this.state.userlist[username].screen}</td>
-      //               <td>{this.state.userlist[username].cam}</td>
-      //             </tr>
-      //           ))
+
       //  <p>
       //    현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
       //  </p>;
