@@ -410,11 +410,15 @@ function stop() {
     studentsConnection: {},
     camsConnection: {}
   };
+  globaluserlist = {};
 }
 
 function studentStop(studentName) {
   systemAddMessageToChatbox(studentName + "님이 화면공유를 종료합니다.");
   console.log(studentName + "학생이 화면 공유를 끄셨습니다");
+  if (studentName in globaluserlist) {
+    globaluserlist[studentName].screen = " ";
+  }
   if (director.studentsConnection[studentName]) {
     delete director.studentsConnection[studentName];
   }
@@ -425,12 +429,16 @@ function studentStop(studentName) {
   if (!document.getElementById(studentName + "cam!")) {
     console.log("div delete!");
     document.getElementById(studentName).remove();
+    delete globaluserlist[studentName];
   }
 }
 
 function camStop(camName) {
   systemAddMessageToChatbox(camName + "님이 카메라 공유를 종료합니다.");
   console.log(camName + "학생이 캠 공유를 끄셨습니다");
+  if (camName in globaluserlist) {
+    globaluserlist[camName].screen = " ";
+  }
   if (director.camsConnection[camName]) {
     delete director.camsConnection[camName];
   }
@@ -441,6 +449,7 @@ function camStop(camName) {
   if (!document.getElementById(camName + "screen!")) {
     console.log("div delete!");
     document.getElementById(camName).remove();
+    delete globaluserlist[camName];
   }
 }
 
@@ -540,7 +549,7 @@ var StudentList = function (_React$Component) {
         return React.createElement(
           "li",
           { key: username },
-          _this2.state.userlist[username].screen
+          username + ": " + _this2.state.userlist[username].screen + _this2.state.userlist[username].cam
         );
       });
       return React.createElement(
