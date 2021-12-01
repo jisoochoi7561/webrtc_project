@@ -545,13 +545,15 @@ var StudentList = function (_React$Component) {
           "please clcik this button to refresh user list"
         );
       }
-      var listItems = Object.keys(this.state.userlist).map(function (username) {
-        return React.createElement(
-          "li",
-          { key: username },
-          username + ": " + _this2.state.userlist[username].screen + _this2.state.userlist[username].cam
-        );
-      });
+      // const listItems = Object.keys(this.state.userlist).map((username) => (
+      //   <li key={username}>
+      //     {username +
+      //       ": " +
+      //       this.state.userlist[username].screen +
+      //       this.state.userlist[username].cam}
+      //   </li>
+      // ));
+
       return React.createElement(
         React.Fragment,
         null,
@@ -562,7 +564,56 @@ var StudentList = function (_React$Component) {
             } },
           "please clcik this button to refresh user list"
         ),
-        listItems
+        React.createElement(
+          "p",
+          null,
+          "\uD604\uC7AC \uBC29\uC5D0 \uC811\uC18D\uD55C \uD559\uC0DD \uC218 : ",
+          Object.keys(obj).length
+        ),
+        React.createElement(
+          "table",
+          null,
+          React.createElement(
+            "tr",
+            null,
+            React.createElement(
+              "th",
+              null,
+              "\uD559\uC0DD\uC774\uB984"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "\uD654\uBA74\uACF5\uC720"
+            ),
+            React.createElement(
+              "th",
+              null,
+              "\uCE74\uBA54\uB77C\uACF5\uC720"
+            )
+          ),
+          Object.keys(this.state.userlist)(function (username) {
+            return React.createElement(
+              "tr",
+              { key: username },
+              React.createElement(
+                "td",
+                null,
+                username
+              ),
+              React.createElement(
+                "td",
+                null,
+                _this2.state.userlist[username].screen
+              ),
+              React.createElement(
+                "td",
+                null,
+                _this2.state.userlist[username].cam
+              )
+            );
+          })
+        )
       );
     }
   }]);
