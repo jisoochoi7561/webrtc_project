@@ -561,15 +561,24 @@ class StudentList extends React.Component {
         </button>
       );
     }
-    // const listItems = Object.keys(this.state.userlist).map((username) => (
-    //   <li key={username}>
-    //     {username +
-    //       ": " +
-    //       this.state.userlist[username].screen +
-    //       this.state.userlist[username].cam}
-    //   </li>
-    // ));
-
+    const listItems = Object.keys(this.state.userlist).map((username) => (
+      <li key={username}>
+        {username +
+          ": " +
+          this.state.userlist[username].screen +
+          this.state.userlist[username].cam}
+      </li>
+    ));
+    // Object.keys(this.state.userlist)((username) => (
+    //             <tr key={username}>
+    //               <td>{username}</td>
+    //               <td>{this.state.userlist[username].screen}</td>
+    //               <td>{this.state.userlist[username].cam}</td>
+    //             </tr>
+    //           ))
+    //  <p>
+    //    현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
+    //  </p>;
     return (
       <React.Fragment>
         <button onClick={() => this.setState({ userlist: [] })}>
@@ -582,13 +591,7 @@ class StudentList extends React.Component {
             <th>화면공유</th>
             <th>카메라공유</th>
           </tr>
-          {Object.keys(this.state.userlist)((username) => (
-            <tr key={username}>
-              <td>{username}</td>
-              <td>{this.state.userlist[username].screen}</td>
-              <td>{this.state.userlist[username].cam}</td>
-            </tr>
-          ))}
+          {listItems}
         </table>
       </React.Fragment>
     );

@@ -545,15 +545,23 @@ var StudentList = function (_React$Component) {
           "please clcik this button to refresh user list"
         );
       }
-      // const listItems = Object.keys(this.state.userlist).map((username) => (
-      //   <li key={username}>
-      //     {username +
-      //       ": " +
-      //       this.state.userlist[username].screen +
-      //       this.state.userlist[username].cam}
-      //   </li>
-      // ));
-
+      var listItems = Object.keys(this.state.userlist).map(function (username) {
+        return React.createElement(
+          "li",
+          { key: username },
+          username + ": " + _this2.state.userlist[username].screen + _this2.state.userlist[username].cam
+        );
+      });
+      // Object.keys(this.state.userlist)((username) => (
+      //             <tr key={username}>
+      //               <td>{username}</td>
+      //               <td>{this.state.userlist[username].screen}</td>
+      //               <td>{this.state.userlist[username].cam}</td>
+      //             </tr>
+      //           ))
+      //  <p>
+      //    현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
+      //  </p>;
       return React.createElement(
         React.Fragment,
         null,
@@ -586,27 +594,7 @@ var StudentList = function (_React$Component) {
               "\uCE74\uBA54\uB77C\uACF5\uC720"
             )
           ),
-          Object.keys(this.state.userlist)(function (username) {
-            return React.createElement(
-              "tr",
-              { key: username },
-              React.createElement(
-                "td",
-                null,
-                username
-              ),
-              React.createElement(
-                "td",
-                null,
-                _this2.state.userlist[username].screen
-              ),
-              React.createElement(
-                "td",
-                null,
-                _this2.state.userlist[username].cam
-              )
-            );
-          })
+          listItems
         )
       );
     }
