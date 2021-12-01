@@ -1,57 +1,10 @@
-var _createClass = (function () {
-  function defineProperties(target, props) {
-    for (var i = 0; i < props.length; i++) {
-      var descriptor = props[i];
-      descriptor.enumerable = descriptor.enumerable || false;
-      descriptor.configurable = true;
-      if ("value" in descriptor) descriptor.writable = true;
-      Object.defineProperty(target, descriptor.key, descriptor);
-    }
-  }
-  return function (Constructor, protoProps, staticProps) {
-    if (protoProps) defineProperties(Constructor.prototype, protoProps);
-    if (staticProps) defineProperties(Constructor, staticProps);
-    return Constructor;
-  };
-})();
+var _createClass = function () { function defineProperties(target, props) { for (var i = 0; i < props.length; i++) { var descriptor = props[i]; descriptor.enumerable = descriptor.enumerable || false; descriptor.configurable = true; if ("value" in descriptor) descriptor.writable = true; Object.defineProperty(target, descriptor.key, descriptor); } } return function (Constructor, protoProps, staticProps) { if (protoProps) defineProperties(Constructor.prototype, protoProps); if (staticProps) defineProperties(Constructor, staticProps); return Constructor; }; }();
 
-function _classCallCheck(instance, Constructor) {
-  if (!(instance instanceof Constructor)) {
-    throw new TypeError("Cannot call a class as a function");
-  }
-}
+function _classCallCheck(instance, Constructor) { if (!(instance instanceof Constructor)) { throw new TypeError("Cannot call a class as a function"); } }
 
-function _possibleConstructorReturn(self, call) {
-  if (!self) {
-    throw new ReferenceError(
-      "this hasn't been initialised - super() hasn't been called"
-    );
-  }
-  return call && (typeof call === "object" || typeof call === "function")
-    ? call
-    : self;
-}
+function _possibleConstructorReturn(self, call) { if (!self) { throw new ReferenceError("this hasn't been initialised - super() hasn't been called"); } return call && (typeof call === "object" || typeof call === "function") ? call : self; }
 
-function _inherits(subClass, superClass) {
-  if (typeof superClass !== "function" && superClass !== null) {
-    throw new TypeError(
-      "Super expression must either be null or a function, not " +
-        typeof superClass
-    );
-  }
-  subClass.prototype = Object.create(superClass && superClass.prototype, {
-    constructor: {
-      value: subClass,
-      enumerable: false,
-      writable: true,
-      configurable: true,
-    },
-  });
-  if (superClass)
-    Object.setPrototypeOf
-      ? Object.setPrototypeOf(subClass, superClass)
-      : (subClass.__proto__ = superClass);
-}
+function _inherits(subClass, superClass) { if (typeof superClass !== "function" && superClass !== null) { throw new TypeError("Super expression must either be null or a function, not " + typeof superClass); } subClass.prototype = Object.create(superClass && superClass.prototype, { constructor: { value: subClass, enumerable: false, writable: true, configurable: true } }); if (superClass) Object.setPrototypeOf ? Object.setPrototypeOf(subClass, superClass) : subClass.__proto__ = superClass; }
 
 /*
  * (C) Copyright 2014-2015 Kurento (http://kurento.org/)
@@ -73,7 +26,7 @@ function _inherits(subClass, superClass) {
 var ws = new WebSocket("wss://" + location.host + "/websocket");
 var director = {
   studentsConnection: {},
-  camsConnection: {},
+  camsConnection: {}
 };
 var chatText;
 var chatBox;
@@ -88,11 +41,9 @@ window.onload = function () {
   group = document.getElementById("toSelect");
   chatGroup = document.getElementById("chatGroup");
   //방입장버튼을 누르면, 등록한다.
-  document
-    .getElementById("directorJoin")
-    .addEventListener("click", function () {
-      register();
-    });
+  document.getElementById("directorJoin").addEventListener("click", function () {
+    register();
+  });
   // 채팅창 온오프
   document.getElementById("disableChat").addEventListener("click", function () {
     if (chatGroup.style.display === "none") {
@@ -102,11 +53,9 @@ window.onload = function () {
     }
   });
   //종료버튼을 누르면 시험을 종료한다.
-  document
-    .getElementById("directorTerminate")
-    .addEventListener("click", function () {
-      stop();
-    });
+  document.getElementById("directorTerminate").addEventListener("click", function () {
+    stop();
+  });
 
   document.getElementById("sendChat").addEventListener("click", function () {
     sendChatMessage();
@@ -118,13 +67,9 @@ window.onload = function () {
     }
   });
 
-  systemAddMessageToChatbox(
-    "충남대학교 시험감독 프로그램에 오신 것을 환영합니다. 감독관 이름과 방이름을 입력한 후 다른 학생들과 감독관들에게 방이름을 알려주세요."
-  );
+  systemAddMessageToChatbox("충남대학교 시험감독 프로그램에 오신 것을 환영합니다. 감독관 이름과 방이름을 입력한 후 다른 학생들과 감독관들에게 방이름을 알려주세요.");
   systemAddMessageToChatbox("영상을 클릭하면 확대/축소가 가능합니다.");
-  systemAddMessageToChatbox(
-    "방에 입장한 후엔 채팅기능을 이용하실 수 있으며, 화면의 이름을 클릭하면 바로 귓속말을 보낼 수 있습니다."
-  );
+  systemAddMessageToChatbox("방에 입장한 후엔 채팅기능을 이용하실 수 있으며, 화면의 이름을 클릭하면 바로 귓속말을 보낼 수 있습니다.");
 };
 
 window.onbeforeunload = function () {
@@ -154,15 +99,11 @@ function register() {
     id: "directorJoinRoom",
     directorName: directorName,
     roomName: roomName,
-    password: document.getElementById("admin_password").value,
+    password: document.getElementById("admin_password").value
   };
   sendMessage(message);
-  systemAddMessageToChatbox(
-    "관리자" + director.name + "님이 " + director.room + " 에 접속합니다."
-  );
-  console.info(
-    "관리자" + director.name + "님이 " + director.room + " 에 접속시도합니다."
-  );
+  systemAddMessageToChatbox("관리자" + director.name + "님이 " + director.room + " 에 접속합니다.");
+  console.info("관리자" + director.name + "님이 " + director.room + " 에 접속시도합니다.");
 }
 
 ws.onmessage = function (message) {
@@ -170,17 +111,13 @@ ws.onmessage = function (message) {
   console.info("Received message: " + message.data);
   switch (parsedMessage.id) {
     case "sameNameError":
-      systemAddMessageToChatbox(
-        "이미 존재하는 이름입니다. 다른이름을 선택해 주세요"
-      );
+      systemAddMessageToChatbox("이미 존재하는 이름입니다. 다른이름을 선택해 주세요");
       console.log("이미 존재하는 이름입니다. 다른이름을 선택해 주세요");
       delete director.name;
       delete director.room;
       break;
     case "sessionError":
-      systemAddMessageToChatbox(
-        "새로고침해 재접속한 후 다시 진행 부탁드립니다."
-      );
+      systemAddMessageToChatbox("새로고침해 재접속한 후 다시 진행 부탁드립니다.");
       console.log(parsedMessage.message);
       break;
     case "shouldConnect":
@@ -193,25 +130,17 @@ ws.onmessage = function (message) {
       break;
     case "iceCandidate":
       console.log(parsedMessage.message);
-      director.studentsConnection[
-        parsedMessage.studentName
-      ].peer.addIceCandidate(parsedMessage.candidate);
+      director.studentsConnection[parsedMessage.studentName].peer.addIceCandidate(parsedMessage.candidate);
       break;
     case "camIceCandidate":
       console.log(parsedMessage.message);
-      director.camsConnection[parsedMessage.camName].peer.addIceCandidate(
-        parsedMessage.candidate
-      );
+      director.camsConnection[parsedMessage.camName].peer.addIceCandidate(parsedMessage.candidate);
       break;
     case "serverToDirectorSdpAnswer":
-      director.studentsConnection[parsedMessage.studentName].peer.processAnswer(
-        parsedMessage.sdpAnswer
-      );
+      director.studentsConnection[parsedMessage.studentName].peer.processAnswer(parsedMessage.sdpAnswer);
       break;
     case "camServerToDirectorSdpAnswer":
-      director.camsConnection[parsedMessage.camName].peer.processAnswer(
-        parsedMessage.sdpAnswer
-      );
+      director.camsConnection[parsedMessage.camName].peer.processAnswer(parsedMessage.sdpAnswer);
       break;
     case "studentStopped":
       studentStop(parsedMessage.studentName);
@@ -270,7 +199,7 @@ function startCall(studentName, roomName) {
   var reso_message = {
     id: "changeScreenResolution",
     studentName: studentName,
-    roomName: roomName,
+    roomName: roomName
   };
 
   my_student_element.appendChild(my_element);
@@ -283,13 +212,11 @@ function startCall(studentName, roomName) {
   //스트림 = 화면
   //로컬스트림 출력 세팅
   my_configuration = {
-    iceServers: [
-      {
-        urls: "turn:turn.cnuclassroom.shop",
-        username: "kurento",
-        credential: "kurento",
-      },
-    ],
+    iceServers: [{
+      urls: "turn:turn.cnuclassroom.shop",
+      username: "kurento",
+      credential: "kurento"
+    }]
   };
 
   options = {
@@ -304,35 +231,32 @@ function startCall(studentName, roomName) {
         id: "directorOnIceCandidate",
         directorName: director.name,
         studentName: studentName,
-        candidate: candidate,
+        candidate: candidate
       };
       sendMessage(message);
-    },
+    }
   };
 
-  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(
-    options,
-    function (error) {
-      if (error) return onError(error);
-      // i'll work with my peerconnection
+  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function (error) {
+    if (error) return onError(error);
+    // i'll work with my peerconnection
 
-      //create my offer
-      console.log("director측 offerSdp 생성하겠습니다.");
-      this.generateOffer(function (error, offerSdp) {
-        var message = {
-          id: "directorOffer",
-          directorName: director.name,
-          studentName: studentName,
-          roomName: director.room,
-          sdpOffer: offerSdp,
-        };
-        sendMessage(message);
-      });
-      director.studentsConnection[studentName] = {};
-      director.studentsConnection[studentName].peer = this;
-      console.log("reached directorStartCall end");
-    }
-  );
+    //create my offer
+    console.log("director측 offerSdp 생성하겠습니다.");
+    this.generateOffer(function (error, offerSdp) {
+      var message = {
+        id: "directorOffer",
+        directorName: director.name,
+        studentName: studentName,
+        roomName: director.room,
+        sdpOffer: offerSdp
+      };
+      sendMessage(message);
+    });
+    director.studentsConnection[studentName] = {};
+    director.studentsConnection[studentName].peer = this;
+    console.log("reached directorStartCall end");
+  });
 
   //TODO
 }
@@ -371,7 +295,7 @@ function camStartCall(camName, roomName) {
   var reso_message = {
     id: "changeCamResolution",
     camName: camName,
-    roomName: roomName,
+    roomName: roomName
   };
 
   my_student_element.appendChild(my_element);
@@ -383,13 +307,11 @@ function camStartCall(camName, roomName) {
   //스트림 = 화면
   //로컬스트림 출력 세팅
   my_configuration = {
-    iceServers: [
-      {
-        urls: "turn:turn.cnuclassroom.shop",
-        username: "kurento",
-        credential: "kurento",
-      },
-    ],
+    iceServers: [{
+      urls: "turn:turn.cnuclassroom.shop",
+      username: "kurento",
+      credential: "kurento"
+    }]
   };
   options = {
     remoteVideo: document.getElementById(camName + "cam!"),
@@ -403,35 +325,32 @@ function camStartCall(camName, roomName) {
         id: "camDirectorOnIceCandidate",
         directorName: director.name,
         camName: camName,
-        candidate: candidate,
+        candidate: candidate
       };
       sendMessage(message);
-    },
+    }
   };
 
-  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(
-    options,
-    function (error) {
-      if (error) return onError(error);
-      // i'll work with my peerconnection
+  webRtcPeer = kurentoUtils.WebRtcPeer.WebRtcPeerRecvonly(options, function (error) {
+    if (error) return onError(error);
+    // i'll work with my peerconnection
 
-      //create my offer
-      console.log("director측 offerSdp 생성하겠습니다.");
-      this.generateOffer(function (error, offerSdp) {
-        var message = {
-          id: "camDirectorOffer",
-          directorName: director.name,
-          camName: camName,
-          roomName: director.room,
-          sdpOffer: offerSdp,
-        };
-        sendMessage(message);
-      });
-      director.camsConnection[camName] = {};
-      director.camsConnection[camName].peer = this;
-      console.log("reached directorStartCall end");
-    }
-  );
+    //create my offer
+    console.log("director측 offerSdp 생성하겠습니다.");
+    this.generateOffer(function (error, offerSdp) {
+      var message = {
+        id: "camDirectorOffer",
+        directorName: director.name,
+        camName: camName,
+        roomName: director.room,
+        sdpOffer: offerSdp
+      };
+      sendMessage(message);
+    });
+    director.camsConnection[camName] = {};
+    director.camsConnection[camName].peer = this;
+    console.log("reached directorStartCall end");
+  });
 
   //TODO
 }
@@ -465,12 +384,12 @@ function stop() {
     delete director.camsConnection[key];
   }
   var message = {
-    id: "adminStop",
+    id: "adminStop"
   };
   sendMessage(message);
   director = {
     studentsConnection: {},
-    camsConnection: {},
+    camsConnection: {}
   };
 }
 
@@ -516,9 +435,7 @@ function sendMessage(message) {
 function sendChatMessage() {
   console.log("sending 채팅 message");
   if (!director.name) {
-    systemAddMessageToChatbox(
-      "유저가 제대로 등록되지 않았습니다.채팅이 불가능합니다."
-    );
+    systemAddMessageToChatbox("유저가 제대로 등록되지 않았습니다.채팅이 불가능합니다.");
     console.log("등록되지 않은 학생은 사용불가");
     return;
   }
@@ -535,7 +452,7 @@ function sendChatMessage() {
     from: director.name,
     room: director.room,
     text: chatText.value,
-    to: toto,
+    to: toto
   };
   // addMessageToChatbox(message.from,message.text,"red")
   sendMessage(message);
@@ -549,27 +466,14 @@ function sendChatMessage() {
 }
 
 function addMessageToChatbox(name, message) {
-  var color =
-    arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "black";
+  var color = arguments.length > 2 && arguments[2] !== undefined ? arguments[2] : "black";
 
   if (message == "") {
     return;
   }
   console.log("리시빙~");
   var now = new Date();
-  chatBox.innerHTML =
-    chatBox.innerHTML +
-    " <span style='color:" +
-    color +
-    "'> " +
-    name +
-    ": " +
-    message +
-    " - " +
-    now.getHours() +
-    "\uC2DC " +
-    now.getMinutes() +
-    "\uBD84 <br></span>";
+  chatBox.innerHTML = chatBox.innerHTML + " <span style='color:" + color + "'> " + name + ": " + message + " - " + now.getHours() + "\uC2DC " + now.getMinutes() + "\uBD84 <br></span>";
   // chatBox.innerHTML =chatBox.innerHTML+ "<span style='color:red'>"+name +": "+ message + "- " + now.getHours() + "시" + now.getMinutes() + "분<br></span>"
 }
 
@@ -587,49 +491,39 @@ function specificSelected(that) {
 
 var e = React.createElement;
 
-var LikeButton = (function (_React$Component) {
+var LikeButton = function (_React$Component) {
   _inherits(LikeButton, _React$Component);
 
   function LikeButton(props) {
     _classCallCheck(this, LikeButton);
 
-    var _this = _possibleConstructorReturn(
-      this,
-      (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).call(
-        this,
-        props
-      )
-    );
+    var _this = _possibleConstructorReturn(this, (LikeButton.__proto__ || Object.getPrototypeOf(LikeButton)).call(this, props));
 
     _this.state = { liked: false };
     return _this;
   }
 
-  _createClass(LikeButton, [
-    {
-      key: "render",
-      value: function render() {
-        var _this2 = this;
+  _createClass(LikeButton, [{
+    key: "render",
+    value: function render() {
+      var _this2 = this;
 
-        if (this.state.liked) {
-          return "You liked this.";
-        }
+      if (this.state.liked) {
+        return "You liked this.";
+      }
 
-        return React.createElement(
-          "button",
-          {
-            onClick: function onClick() {
-              return _this2.setState({ liked: true });
-            },
-          },
-          "Like"
-        );
-      },
-    },
-  ]);
+      return React.createElement(
+        "button",
+        { onClick: function onClick() {
+            return _this2.setState({ liked: true });
+          } },
+        "Like"
+      );
+    }
+  }]);
 
   return LikeButton;
-})(React.Component);
+}(React.Component);
 
 var domContainer = document.querySelector("#user_list_container");
 ReactDOM.render(e(LikeButton), domContainer);
