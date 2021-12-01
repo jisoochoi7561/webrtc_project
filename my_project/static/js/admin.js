@@ -196,6 +196,7 @@ function startCall(studentName, roomName) {
     globaluserlist[studentName] = { screen: " ", cam: " " };
     globaluserlist[studentName].screen = "On";
   } else {
+    console.log("reached here");
     globaluserlist[studentName] = { screen: " ", cam: " " };
     globaluserlist[studentName].screen = "On";
   }
