@@ -561,7 +561,7 @@ class StudentList extends React.Component {
         </button>
       );
     }
-    const listItems = Object.keys(this.state.userlist).map((username) => (
+    listItems = Object.keys(this.state.userlist).map((username) => (
       <tr key={username}>
         <td>{username}</td>
         <td>{this.state.userlist[username].screen}</td>
@@ -569,15 +569,13 @@ class StudentList extends React.Component {
       </tr>
     ));
 
-    //  <p>
-    //    현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
-    //  </p>;
+    const usercounter = Object.keys(this.state.userlist).length;
     return (
       <React.Fragment>
         <button onClick={() => this.setState({ userlist: [] })}>
           please clcik this button to refresh user list
         </button>
-
+        <p>"현재 학생수 : "{usercounter}</p>
         <table>
           <tr>
             <th>학생이름</th>

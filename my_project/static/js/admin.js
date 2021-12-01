@@ -545,7 +545,7 @@ var StudentList = function (_React$Component) {
           "please clcik this button to refresh user list"
         );
       }
-      var listItems = Object.keys(this.state.userlist).map(function (username) {
+      listItems = Object.keys(this.state.userlist).map(function (username) {
         return React.createElement(
           "tr",
           { key: username },
@@ -567,9 +567,7 @@ var StudentList = function (_React$Component) {
         );
       });
 
-      //  <p>
-      //    현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
-      //  </p>;
+      var usercounter = Object.keys(this.state.userlist).length;
       return React.createElement(
         React.Fragment,
         null,
@@ -579,6 +577,12 @@ var StudentList = function (_React$Component) {
               return _this2.setState({ userlist: [] });
             } },
           "please clcik this button to refresh user list"
+        ),
+        React.createElement(
+          "p",
+          null,
+          "\"\uD604\uC7AC \uD559\uC0DD\uC218 : \"",
+          usercounter
         ),
         React.createElement(
           "table",
