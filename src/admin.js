@@ -561,7 +561,7 @@ class StudentList extends React.Component {
         </button>
       );
     }
-    const listItems = Object.keys(this.state.userlist)((username) => (
+    const listItems = Object.keys(this.state.userlist).map((username) => (
       <tr key={username}>
         <td>{username}</td>
         <td>{this.state.userlist[username].screen}</td>

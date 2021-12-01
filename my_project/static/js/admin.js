@@ -545,7 +545,7 @@ var StudentList = function (_React$Component) {
           "please clcik this button to refresh user list"
         );
       }
-      var listItems = Object.keys(this.state.userlist)(function (username) {
+      var listItems = Object.keys(this.state.userlist).map(function (username) {
         return React.createElement(
           "tr",
           { key: username },
