@@ -192,8 +192,12 @@ function startCall(studentName, roomName) {
     });
     document.getElementById("videoLists").appendChild(my_student_element);
   }
-  if (!studentName in globaluserlist) {
+  if (studentName in globaluserlist) {
     globaluserlist[studentName] = { screen: " ", cam: " " };
+    globaluserlist[studentName].screen = "On";
+  } else {
+    globaluserlist[studentName] = { screen: " ", cam: " " };
+    globaluserlist[studentName].screen = "On";
   }
   my_element = document.createElement("video");
   my_element.setAttribute("id", studentName + "screen!");
@@ -203,7 +207,7 @@ function startCall(studentName, roomName) {
   my_element.setAttribute("muted", true);
   my_element.setAttribute("playsinline", true);
   my_element.setAttribute("style", "display: inline");
-  globaluserlist[studentName].screen = "On";
+
   var reso_message = {
     id: "changeScreenResolution",
     studentName: studentName,
