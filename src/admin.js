@@ -530,20 +530,30 @@ class StudentList extends React.Component {
     if (this.state.userlist.length === 0) {
       return (
         <button onClick={() => this.setState({ userlist: globaluserlist })}>
-          please clcik this button to refresh
+          please clcik this button to refresh user list
         </button>
       );
     }
-
+    const listItems = this.state.userlist.map((student) => (
+      <li key={student}>{student}</li>
+    ));
     return (
       <React.Fragment>
         <button onClick={() => this.setState({ userlist: globaluserlist })}>
-          please clcik this button to refresh
+          please clcik this button to refresh user list
         </button>
-        <li>userlist[0]</li>
+        {listItems}
       </React.Fragment>
     );
   }
 }
+
+class StudentListFrame extends React.Component {
+  constructor(props) {
+    super(props);
+  }
+  render() {}
+}
+
 const domContainer = document.querySelector("#user_list_container");
 ReactDOM.render(e(StudentList), domContainer);

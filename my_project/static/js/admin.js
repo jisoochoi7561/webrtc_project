@@ -515,10 +515,16 @@ var StudentList = function (_React$Component) {
           { onClick: function onClick() {
               return _this2.setState({ userlist: globaluserlist });
             } },
-          "please clcik this button to refresh"
+          "please clcik this button to refresh user list"
         );
       }
-
+      var listItems = this.state.userlist.map(function (student) {
+        return React.createElement(
+          "li",
+          { key: student },
+          student
+        );
+      });
       return React.createElement(
         React.Fragment,
         null,
@@ -527,18 +533,31 @@ var StudentList = function (_React$Component) {
           { onClick: function onClick() {
               return _this2.setState({ userlist: globaluserlist });
             } },
-          "please clcik this button to refresh"
+          "please clcik this button to refresh user list"
         ),
-        React.createElement(
-          "li",
-          null,
-          "userlist[0]"
-        )
+        listItems
       );
     }
   }]);
 
   return StudentList;
+}(React.Component);
+
+var StudentListFrame = function (_React$Component2) {
+  _inherits(StudentListFrame, _React$Component2);
+
+  function StudentListFrame(props) {
+    _classCallCheck(this, StudentListFrame);
+
+    return _possibleConstructorReturn(this, (StudentListFrame.__proto__ || Object.getPrototypeOf(StudentListFrame)).call(this, props));
+  }
+
+  _createClass(StudentListFrame, [{
+    key: "render",
+    value: function render() {}
+  }]);
+
+  return StudentListFrame;
 }(React.Component);
 
 var domContainer = document.querySelector("#user_list_container");
