@@ -575,7 +575,9 @@ class StudentList extends React.Component {
         <button onClick={() => this.setState({ userlist: [] })}>
           please clcik this button to refresh user list
         </button>
-        <p>현재 방에 접속한 학생 수 : {Object.keys(obj).length}</p>
+        <p>
+          현재 방에 접속한 학생 수 : {Object.keys(this.state.userlist).length}
+        </p>
         <table>
           <tr>
             <th>학생이름</th>

@@ -568,7 +568,7 @@ var StudentList = function (_React$Component) {
           "p",
           null,
           "\uD604\uC7AC \uBC29\uC5D0 \uC811\uC18D\uD55C \uD559\uC0DD \uC218 : ",
-          Object.keys(obj).length
+          Object.keys(this.state.userlist).length
         ),
         React.createElement(
           "table",
