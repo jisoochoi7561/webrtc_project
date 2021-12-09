@@ -572,10 +572,7 @@ class StudentList extends React.Component {
     const usercounter = Object.keys(this.state.userlist).length;
     return (
       <React.Fragment>
-        <button
-          className="btn btn-secondary"
-          onClick={() => this.setState({ userlist: globaluserlist })}
-        >
+        <button onClick={() => this.setState({ userlist: globaluserlist })}>
           버튼을 눌러 출석 학생 리스트 새로고침
         </button>
         <h4>
