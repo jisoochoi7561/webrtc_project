@@ -573,7 +573,7 @@ class StudentList extends React.Component {
     return (
       <React.Fragment>
         <button
-          classname="btn btn-secondary"
+          className="btn btn-secondary"
           onClick={() => this.setState({ userlist: globaluserlist })}
         >
           버튼을 눌러 출석 학생 리스트 새로고침
