@@ -14,55 +14,52 @@
  * limitations under the License.
  *
  */
-@CHARSET "UTF-8";
+@charset "UTF-8";
 
 html {
-	position: relative;
-	min-height: 100%;
+  position: relative;
+  min-height: 100%;
 }
 
 body {
-
 }
 
-.rounded-circle{
-	border-radius:5px;
+.rounded-circle {
+  border-radius: 5px;
 }
 
-
-
-.for-admin{
-	height:80vh; 
-	cursor: pointer;
-	display: -webkit-flex;
-	display: flex;
+.for-admin {
+  height: 80vh;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 .for-admin:hover {
-   background-color: #98B9F2;
+  background-color: #98b9f2;
 }
-.for-student{
-	height:80vh; 
-	cursor: pointer;
-	display: -webkit-flex;
-	display: flex;
-	
+.for-student {
+  height: 80vh;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: flex;
+
   justify-content: center;
   align-items: center;
 }
 
 .for-student:hover {
-	background-color: #6F9CEB;
+  background-color: #6f9ceb;
 }
-.for-cam{
-	height:80vh;
-	cursor: pointer;
-	display: -webkit-flex;
-	display: flex;
+.for-cam {
+  height: 80vh;
+  cursor: pointer;
+  display: -webkit-flex;
+  display: flex;
   justify-content: center;
   align-items: center;
 }
 .for-cam:hover {
-		background-color: #98B9F2;
+  background-color: #98b9f2;
 }

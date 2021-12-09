@@ -578,8 +578,10 @@ class StudentList extends React.Component {
         >
           버튼을 눌러 출석 학생 리스트 새로고침
         </button>
-        <p>현재 학생수 : {usercounter}</p>
-        <table className="table">
+        <h4>
+          현재 학생수 : <span className="badge bg-primary">{usercounter}</span>
+        </h4>
+        <table className="table table-striped table-hover table-bordered">
           <tr className="thead-dark">
             <th>학생이름</th>
             <th>화면공유</th>

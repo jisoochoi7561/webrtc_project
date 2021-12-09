@@ -588,14 +588,18 @@ var StudentList = function (_React$Component) {
           "\uBC84\uD2BC\uC744 \uB20C\uB7EC \uCD9C\uC11D \uD559\uC0DD \uB9AC\uC2A4\uD2B8 \uC0C8\uB85C\uACE0\uCE68"
         ),
         React.createElement(
-          "p",
+          "h4",
           null,
           "\uD604\uC7AC \uD559\uC0DD\uC218 : ",
-          usercounter
+          React.createElement(
+            "span",
+            { className: "badge bg-primary" },
+            usercounter
+          )
         ),
         React.createElement(
           "table",
-          { className: "table" },
+          { className: "table table-striped table-hover table-bordered" },
           React.createElement(
             "tr",
             { className: "thead-dark" },
