@@ -579,9 +579,12 @@ var StudentList = function (_React$Component) {
         null,
         React.createElement(
           "button",
-          { onClick: function onClick() {
+          {
+            className: "btn btn-secondary",
+            onClick: function onClick() {
               return _this2.setState({ userlist: globaluserlist });
-            } },
+            }
+          },
           "\uBC84\uD2BC\uC744 \uB20C\uB7EC \uCD9C\uC11D \uD559\uC0DD \uB9AC\uC2A4\uD2B8 \uC0C8\uB85C\uACE0\uCE68"
         ),
         React.createElement(
@@ -592,10 +595,10 @@ var StudentList = function (_React$Component) {
         ),
         React.createElement(
           "table",
-          null,
+          { className: "table" },
           React.createElement(
             "tr",
-            null,
+            { className: "thead-dark" },
             React.createElement(
               "th",
               null,
