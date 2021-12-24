@@ -17,7 +17,6 @@
     <script src="bower_components/bootstrap/dist/js/bootstrap.bundle.min.js"></script>
     <script src="bower_components/kurento-utils/js/kurento-utils.js"></script>
 
-    <script src="js/admin.js"></script>
     <title>cnu classroom Director</title>
   </head>
 
@@ -125,8 +124,11 @@
               <a id="directorJoin" href="#" class="btn btn-primary my-2"
                 >Enter the room</a
               >
-              <a id="directorTerminate" href="#" class="btn btn-secondary my-2"
+              <a id="directorTerminate" href="#" class="btn btn-danger my-2"
                 >Terminate Service</a
+              >
+              <a id="disableChat" href="#" class="btn btn-secondary my-2"
+                >chatroom on/off</a
               >
             </p>
           </div>
@@ -138,11 +140,14 @@
         </div>
       </div>
     </main>
+
     <div class="container-fluid">
       <div class="row">
-        <div class="col-md-6"></div>
-
         <div class="col-md-6">
+          <div id="user_list_container"></div>
+        </div>
+
+        <div class="col-md-6" id="chatGroup">
           <div
             style="
               border-radius: 10%;
@@ -214,5 +219,17 @@
         </div>
       </div>
     </div>
+    <script
+      src="https://unpkg.com/react@17/umd/react.production.min.js"
+      crossorigin
+    ></script>
+    <script
+      src="https://unpkg.com/react-dom@17/umd/react-dom.production.min.js"
+      crossorigin
+    ></script>
+
+    <script src="js/admin.js"></script>
+    <!-- 만든 React 컴포넌트를 실행. -->
+    <!-- <script src="js/like_button.js"></script> -->
   </body>
 </html>
